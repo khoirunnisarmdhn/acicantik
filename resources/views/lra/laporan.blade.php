@@ -123,7 +123,7 @@
                                     <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition">
                                         <td class="p-4 font-semibold text-gray-900 dark:text-white border-l-4 {{ $isOver ? 'border-rose-500' : 'border-indigo-500' }}">
                                             {{ $row->keterangan }}
-                                            <div class="text-[10px] text-gray-400 font-normal italic">Alokasi Plafon: {{ $row->persentase }}%</div>
+                                            <div class="text-[10px] text-gray-400 font-normal italic">Alokasi Anggaran: {{ $row->persentase }}%</div>
                                         </td>
                                         <td class="p-4 text-right bg-gray-50/30">Rp {{ number_format($row->anggaran, 0, ',', '.') }}</td>
                                         <td class="p-4 text-right font-bold {{ $isOver ? 'text-rose-600' : 'text-gray-900 dark:text-white' }}">
@@ -168,6 +168,13 @@
                                 </tr>
                             </tfoot>
                         </table>
+
+                        {{-- Catatan Alokasi Profit --}}
+                        <div class="mt-4 px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl">
+                            <p class="text-xs text-amber-700 font-semibold">
+                                <span class="font-bold">Catatan:</span> Sisa 20% dari nilai kontrak dialokasikan sebagai target keuntungan (profit) perusahaan dan tidak termasuk dalam anggaran biaya operasional proyek.
+                            </p>
+                        </div>
 
                         {{-- Tanda Tangan (Hanya Muncul saat Print) --}}
                         <div class="hidden print:grid grid-cols-2 gap-20 mt-16 text-center">

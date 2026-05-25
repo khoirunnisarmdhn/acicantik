@@ -34,6 +34,7 @@
             --c-bg:  #eff6ff;
             --c-sidebar: #dbeafe;
             --c-header: rgba(219, 234, 254, 0.7);
+            --c-submenu: rgba(191, 219, 254, 0.6);
         }
 
         /* --- GREEN --- */
@@ -50,6 +51,7 @@
             --c-bg:  #ecfdf5;
             --c-sidebar: #d1fae5;
             --c-header: rgba(209, 250, 229, 0.7);
+            --c-submenu: rgba(167, 243, 208, 0.6);
         }
 
         /* --- PINK --- */
@@ -66,6 +68,7 @@
             --c-bg:  #fdf2f8;
             --c-sidebar: #fce7f3;
             --c-header: rgba(252, 231, 243, 0.7);
+            --c-submenu: rgba(251, 207, 232, 0.6);
         }
 
         /* =============================================
@@ -130,6 +133,60 @@
         .dark .bg-white { background-color: #1f2937 !important; }
         .bg-gray-50 { background-color: #f9fafb !important; }
         .dark .bg-gray-50 { background-color: #111827 !important; }
+
+        /* Sub-menu sidebar ikut warna tema */
+        aside .bg-white\/70 { background-color: var(--c-submenu) !important; }
+        aside .hover\:bg-white:hover { background-color: var(--c-100) !important; }
+
+        /* =============================================
+           ANIMASI ZOOM-IN SAAT LOAD
+           ============================================= */
+        @keyframes zoomFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Sidebar animasi slide-in dari kiri */
+        aside {
+            animation: slideInLeft 0.4s ease-out;
+        }
+
+        /* Konten utama animasi zoom-in */
+        aside ~ div > .flex-1 {
+            animation: zoomFadeIn 0.5s ease-out;
+        }
+
+        /* Header animasi fade-in */
+        header {
+            animation: zoomFadeIn 0.4s ease-out 0.1s both;
+        }
+
+        /* Main content animasi zoom-in dengan delay */
+        main {
+            animation: zoomFadeIn 0.5s ease-out 0.15s both;
+        }
+
+        /* Card/tabel animasi zoom-in */
+        main .bg-white {
+            animation: zoomFadeIn 0.4s ease-out 0.2s both;
+        }
     </style>
 
     <script>

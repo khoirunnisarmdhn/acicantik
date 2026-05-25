@@ -42,4 +42,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function akses()
+    {
+        return $this->belongsToMany(Akses::class, 'user_akses', 'user_id', 'id_akses');
+    }
 }
