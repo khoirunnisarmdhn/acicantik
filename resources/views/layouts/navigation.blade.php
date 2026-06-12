@@ -297,6 +297,29 @@
 
     {{-- Footer Section: Theme & Profile --}}
     <div class="bg-gray-50 dark:bg-gray-900/50 border-t border-gray-100 dark:border-gray-700 shrink-0">
+        {{-- Zoom Controls --}}
+        <div class="flex items-center justify-between px-3 py-2 border-b border-gray-100 dark:border-gray-800">
+            <div class="flex items-center gap-2">
+                <p class="text-[9px] font-bold text-indigo-600 uppercase tracking-widest">Zoom:</p>
+                <div class="flex items-center gap-1">
+                    <button onclick="adjustZoom(-10)" title="Zoom Out"
+                        class="w-6 h-6 flex items-center justify-center rounded-md bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 transition-all text-sm font-bold shadow-sm">
+                        −
+                    </button>
+                    <span id="zoom-label" class="text-[9px] font-bold text-gray-500 dark:text-gray-400 w-8 text-center">100%</span>
+                    <button onclick="adjustZoom(10)" title="Zoom In"
+                        class="w-6 h-6 flex items-center justify-center rounded-md bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 transition-all text-sm font-bold shadow-sm">
+                        +
+                    </button>
+                    <button onclick="resetZoom()" title="Reset Zoom"
+                        class="w-6 h-6 flex items-center justify-center rounded-md bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-500 dark:text-gray-400 hover:bg-gray-100 transition-all shadow-sm"
+                        style="font-size:9px; font-weight:bold;">
+                        ↺
+                    </button>
+                </div>
+            </div>
+        </div>
+
         {{-- Theme Switcher --}}
         <div class="flex items-center justify-between px-3 py-2 border-b border-gray-100 dark:border-gray-800">
             <div class="flex items-center gap-2">

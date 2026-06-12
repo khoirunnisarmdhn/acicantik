@@ -207,6 +207,38 @@
             localStorage.setItem('dark-mode', isDark);
         }
 
+        // ===== ZOOM FUNCTIONS =====
+        const ZOOM_MIN = 70;
+        const ZOOM_MAX = 150;
+        const ZOOM_STEP = 10;
+
+        function applyZoom(level) {
+            document.body.style.zoom = level + '%';
+            localStorage.setItem('page-zoom', level);
+            const label = document.getElementById('zoom-label');
+            if (label) label.textContent = level + '%';
+        }
+
+        function adjustZoom(delta) {
+            const current = parseInt(localStorage.getItem('page-zoom') || '100');
+            const next = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, current + delta));
+            applyZoom(next);
+        }
+
+        function resetZoom() {
+            applyZoom(100);
+        }
+
+        // Apply saved zoom on page load
+        (function() {
+            const savedZoom = parseInt(localStorage.getItem('page-zoom') || '100');
+            document.body.style.zoom = savedZoom + '%';
+            document.addEventListener('DOMContentLoaded', function() {
+                const label = document.getElementById('zoom-label');
+                if (label) label.textContent = savedZoom + '%';
+            });
+        })();
+
         $(document).ready(function() {
 
             $(document).on('keyup', '.rupiah-display', function() {
