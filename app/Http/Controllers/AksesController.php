@@ -19,17 +19,19 @@ class AksesController extends Controller
         // Daftar menu sesuai use case SIM Keuangan Konstruksi
         $menus = [
             'dashboard',
-            'user',          // Mengelola User & Role
-            'klien',         // Mengelola Klien (Pemberi Proyek)
-            'vendor',        // Mengelola Vendor
-            'kas_masuk',     // Mengelola Transaksi Kas Masuk
-            'kas_keluar',    // Mengelola Transaksi Kas Keluar
-            'termin',        // Update Termin Proyek
-            'coa',           // Mengelola COA
-            'lra',           // Mengelola LRA
-            'jurnal',        // Melihat Jurnal Umum
+            'user',              // Mengelola User & Role
+            'pemberi_proyek',    // Mengelola Pemberi Proyek
+            'vendor',            // Mengelola Vendor
+            'proyek',            // Mengelola Data Proyek
+            'termin_proyek',     // Mengelola Termin Proyek
+            'coa',               // Mengelola COA
+            'kategori_kas',      // Mengelola Kategori Kas
+            'lra',               // Mengelola Struktur LRA
+            'kas_masuk',         // Mengelola Transaksi Kas Masuk
+            'kas_keluar',        // Mengelola Transaksi Kas Keluar
+            'jurnal',            // Melihat Jurnal Umum
             'laporan_realisasi', // Melihat Laporan Realisasi Anggaran
-            'laba_rugi',     // Melihat Laba Rugi Proyek
+            'laba_rugi',         // Melihat Laba Rugi Proyek
         ];
         return view('akses.create', compact('menus'));
     }
@@ -67,17 +69,19 @@ class AksesController extends Controller
         $akses = DB::table('akses')->where('id_akses', $id)->first();
         $menus = [
             'dashboard',
-            'user',
-            'klien',
-            'vendor',
-            'kas_masuk',
-            'kas_keluar',
-            'termin',
-            'coa',
-            'lra',
-            'jurnal',
-            'laporan_realisasi',
-            'laba_rugi',
+            'user',              // Mengelola User & Role
+            'pemberi_proyek',    // Mengelola Pemberi Proyek
+            'vendor',            // Mengelola Vendor
+            'proyek',            // Mengelola Data Proyek
+            'termin_proyek',     // Mengelola Termin Proyek
+            'coa',               // Mengelola COA
+            'kategori_kas',      // Mengelola Kategori Kas
+            'lra',               // Mengelola Struktur LRA
+            'kas_masuk',         // Mengelola Transaksi Kas Masuk
+            'kas_keluar',        // Mengelola Transaksi Kas Keluar
+            'jurnal',            // Melihat Jurnal Umum
+            'laporan_realisasi', // Melihat Laporan Realisasi Anggaran
+            'laba_rugi',         // Melihat Laba Rugi Proyek
         ];
 
         if (!$akses) {

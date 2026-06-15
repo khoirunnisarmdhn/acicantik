@@ -23,15 +23,12 @@ class ProfileController extends Controller
 
     /**
      * Update the user's profile information.
+     * Email tidak bisa diubah dari sini — hanya nama yang bisa diupdate.
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
-
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
-
+        // Hanya update nama, email dikunci tidak bisa diubah
+        $request->user()->name = $request->name;
         $request->user()->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');

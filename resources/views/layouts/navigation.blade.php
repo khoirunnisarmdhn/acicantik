@@ -19,7 +19,11 @@
     // Fallback jika session kosong ATAU role yang di session tiba-tiba tidak ditemukan
     if (!$activeRole) {
         if ($isSuperAdmin) {
-            $activeRole = (object) ['id_akses' => null, 'nama_akses' => 'Administrator', 'fitur_slug' => 'all'];
+            // Ambil akses pertama milik user dari database
+            $firstAkses = $userAksesData->first();
+            $activeRole = $firstAkses
+                ? (object) ['id_akses' => $firstAkses->id_akses, 'nama_akses' => $firstAkses->nama_akses, 'fitur_slug' => 'all']
+                : (object) ['id_akses' => null, 'nama_akses' => 'Admin', 'fitur_slug' => 'all'];
         } else {
             $activeRole =
                 $userAksesData->first() ?:
@@ -80,7 +84,7 @@
             <p class="text-[10px] font-bold text-indigo-600 uppercase px-4 tracking-widest">Main Menu</p>
         </div>
 
-        @if ($hasAkses('all') || $hasAkses('proyek') || $hasAkses('vendor') || $hasAkses('coa'))
+        @if ($hasAkses('all') || $hasAkses('proyek') || $hasAkses('vendor') || $hasAkses('coa') || $hasAkses('pemberi_proyek') || $hasAkses('termin_proyek') || $hasAkses('kategori_kas') || $hasAkses('lra'))
             <div class="space-y-1">
                 <button @click="toggleMaster()"
                     :class="masterOpen ? 'bg-gray-50 dark:bg-gray-700/50 text-indigo-600' :
@@ -131,7 +135,7 @@
                         </div>
                     @endif
 
-                    @if ($hasAkses('proyek') || $hasAkses('termin') || $hasAkses('all'))
+                    @if ($hasAkses('proyek') || $hasAkses('termin_proyek') || $hasAkses('pemberi_proyek') || $hasAkses('all'))
                         <div x-data="{ subOpen: {{ request()->routeIs('pemberi.*') || request()->routeIs('proyek.*') || request()->routeIs('termin.*') ? 'true' : 'false' }} }">
                             <button @click="subOpen = !subOpen"
                                 class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-semibold transition-all shadow-sm
