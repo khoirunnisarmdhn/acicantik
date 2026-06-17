@@ -8,6 +8,34 @@ use Illuminate\Support\Facades\File;
 
 class KasMasukController extends Controller
 {
+    public function show($id)
+    {
+        $data = DB::table('kas')
+            ->leftJoin('kategori_kas', 'kas.id_kategori', '=', 'kategori_kas.id_kategori')
+            ->leftJoin('proyek', 'kas.id_proyek', '=', 'proyek.id_proyek')
+            ->leftJoin('termin_proyek', 'kas.id_termin_proyek', '=', 'termin_proyek.id_termin_proyek')
+            ->leftJoin('tipe_termin', 'termin_proyek.id_tipe_termin', '=', 'tipe_termin.id_tipe_termin')
+            ->leftJoin('metode_bayar', 'kas.id_metode_bayar', '=', 'metode_bayar.id_metode_bayar')
+            ->select(
+                'kas.*',
+                'kategori_kas.nama_kategori',
+                'proyek.nama as nama_proyek',
+                'proyek.nilai_kontrak',
+                'termin_proyek.persentase',
+                'tipe_termin.nama_termin',
+                'metode_bayar.nama_metode_bayar'
+            )
+            ->where('kas.id_kas', $id)
+            ->where('kas.arus', 'masuk')
+            ->first();
+
+        if (!$data) {
+            return redirect()->route('kas-masuk.index')->with('error', 'Data tidak ditemukan!');
+        }
+
+        return view('kas_masuk.show', compact('data'));
+    }
+
     public function index()
     {
         // Filter 'arus' => 'masuk'

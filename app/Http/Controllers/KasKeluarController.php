@@ -9,6 +9,34 @@ use Illuminate\Support\Facades\Log;
 
 class KasKeluarController extends Controller
 {
+    public function show($id)
+    {
+        $data = DB::table('kas')
+            ->leftJoin('kategori_kas', 'kas.id_kategori', '=', 'kategori_kas.id_kategori')
+            ->leftJoin('proyek', 'kas.id_proyek', '=', 'proyek.id_proyek')
+            ->leftJoin('vendor', 'kas.id_vendor', '=', 'vendor.id_vendor')
+            ->leftJoin('metode_bayar', 'kas.id_metode_bayar', '=', 'metode_bayar.id_metode_bayar')
+            ->select(
+                'kas.*',
+                'kas.tanggal as tanggal_keluar',
+                'kategori_kas.nama_kategori',
+                'proyek.nama as nama_proyek',
+                'vendor.nama',
+                'metode_bayar.nama_metode_bayar'
+            )
+            ->where('kas.id_kas', $id)
+            ->where('kas.arus', 'keluar')
+            ->first();
+
+        if (!$data) {
+            return redirect()->route('kas-keluar.index')->with('error', 'Data tidak ditemukan!');
+        }
+
+        $rincian = DB::table('rincian')->where('id_kas', $id)->get();
+
+        return view('kas_keluar.show', compact('data', 'rincian'));
+    }
+
     public function index()
     {
         $kas_keluars = DB::table('kas')

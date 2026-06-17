@@ -117,8 +117,9 @@
 
                     <div class="flex justify-end gap-4 mt-10 border-t pt-8 border-gray-100 dark:border-gray-700">
                         <a href="{{ route('kategori.index') }}"
-                            class="px-6 py-3 rounded-2xl bg-gray-100 dark:bg-gray-700 text-gray-500 font-bold hover:bg-gray-200 transition-all text-[10px] uppercase tracking-widest">
-                            Batal
+                            class="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-gray-100 dark:bg-gray-700 text-gray-500 font-bold hover:bg-gray-200 transition-all text-[10px] uppercase tracking-widest">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                            Back
                         </a>
                         <button type="submit"
                             class="px-10 py-3 rounded-2xl text-white font-black shadow-2xl transition-all duration-300 transform active:scale-95 text-[10px] uppercase tracking-[0.2em]"

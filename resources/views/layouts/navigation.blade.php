@@ -105,30 +105,30 @@
                     </svg>
                 </button>
 
-                <div x-show="masterOpen" x-collapse x-cloak class="mt-1 space-y-1 px-3">
+                <div x-show="masterOpen" x-collapse x-cloak class="mt-1 space-y-1 px-2">
 
                     @if ($hasAkses('all'))
                         <div x-data="{ userSubOpen: {{ request()->routeIs('akses.*') || request()->routeIs('users.*') ? 'true' : 'false' }} }">
                             <button @click="userSubOpen = !userSubOpen"
-                                class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-semibold transition-all shadow-sm
-                                {{ request()->routeIs('akses.*') || request()->routeIs('users.*') ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300' : 'bg-white/70 dark:bg-gray-700/60 text-gray-600 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-600' }}">
-                                <div class="flex items-center gap-2">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                                class="w-full flex items-center justify-between px-3 py-3 rounded-lg text-sm font-medium transition-all duration-150
+                                {{ request()->routeIs('akses.*') || request()->routeIs('users.*') ? 'text-indigo-600 bg-indigo-50 dark:text-indigo-300' : 'text-gray-500 dark:text-gray-400 hover:text-indigo-600 hover:bg-gray-50 dark:hover:bg-gray-700/30' }}">
+                                <div class="flex items-center gap-3">
+                                    <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                                     <span>User Management</span>
                                 </div>
-                                <svg :class="userSubOpen ? 'rotate-180' : ''" class="w-3 h-3 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg :class="userSubOpen ? 'rotate-180' : ''" class="w-3 h-3 opacity-50 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                                 </svg>
                             </button>
-                            <div x-show="userSubOpen" x-collapse class="mt-1 ml-3 space-y-1 pl-3 border-l-2 border-indigo-100 dark:border-gray-600">
+                            <div x-show="userSubOpen" x-collapse class="ml-4 pl-3 border-l border-gray-200 dark:border-gray-700 space-y-1 mt-1 mb-1">
                                 <a href="{{ route('akses.index') }}"
-                                    class="flex items-center px-3 py-1.5 rounded-lg text-xs font-medium transition-all
-                                    {{ request()->routeIs('akses.*') ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300 font-semibold' : 'text-gray-500 dark:text-gray-400 hover:bg-white dark:hover:bg-gray-700 hover:text-indigo-600' }}">
+                                    class="flex items-center px-3 py-2 rounded-md text-sm transition-all duration-150
+                                    {{ request()->routeIs('akses.*') ? 'text-indigo-600 font-semibold' : 'text-gray-400 hover:text-indigo-600 hover:bg-gray-50 dark:hover:bg-gray-700/30' }}">
                                     Akses User
                                 </a>
                                 <a href="{{ route('users.index') }}"
-                                    class="flex items-center px-3 py-1.5 rounded-lg text-xs font-medium transition-all
-                                    {{ request()->routeIs('users.*') ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300 font-semibold' : 'text-gray-500 dark:text-gray-400 hover:bg-white dark:hover:bg-gray-700 hover:text-indigo-600' }}">
+                                    class="flex items-center px-3 py-2 rounded-md text-sm transition-all duration-150
+                                    {{ request()->routeIs('users.*') ? 'text-indigo-600 font-semibold' : 'text-gray-400 hover:text-indigo-600 hover:bg-gray-50 dark:hover:bg-gray-700/30' }}">
                                     Data User
                                 </a>
                             </div>
@@ -138,30 +138,30 @@
                     @if ($hasAkses('proyek') || $hasAkses('termin_proyek') || $hasAkses('pemberi_proyek') || $hasAkses('all'))
                         <div x-data="{ subOpen: {{ request()->routeIs('pemberi.*') || request()->routeIs('proyek.*') || request()->routeIs('termin.*') ? 'true' : 'false' }} }">
                             <button @click="subOpen = !subOpen"
-                                class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-semibold transition-all shadow-sm
-                                {{ request()->routeIs('pemberi.*') || request()->routeIs('proyek.*') || request()->routeIs('termin.*') ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300' : 'bg-white/70 dark:bg-gray-700/60 text-gray-600 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-600' }}">
-                                <div class="flex items-center gap-2">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                                class="w-full flex items-center justify-between px-3 py-3 rounded-lg text-sm font-medium transition-all duration-150
+                                {{ request()->routeIs('pemberi.*') || request()->routeIs('proyek.*') || request()->routeIs('termin.*') ? 'text-indigo-600 bg-indigo-50 dark:text-indigo-300' : 'text-gray-500 dark:text-gray-400 hover:text-indigo-600 hover:bg-gray-50 dark:hover:bg-gray-700/30' }}">
+                                <div class="flex items-center gap-3">
+                                    <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                                     <span>Proyek</span>
                                 </div>
-                                <svg :class="subOpen ? 'rotate-180' : ''" class="w-3 h-3 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg :class="subOpen ? 'rotate-180' : ''" class="w-3 h-3 opacity-50 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                                 </svg>
                             </button>
-                            <div x-show="subOpen" x-collapse class="mt-1 ml-3 space-y-1 pl-3 border-l-2 border-indigo-100 dark:border-gray-600">
+                            <div x-show="subOpen" x-collapse class="ml-4 pl-3 border-l border-gray-200 dark:border-gray-700 space-y-1 mt-1 mb-1">
                                 <a href="{{ route('pemberi.index') }}"
-                                    class="flex items-center px-3 py-1.5 rounded-lg text-xs font-medium transition-all
-                                    {{ request()->routeIs('pemberi.*') ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300 font-semibold' : 'text-gray-500 dark:text-gray-400 hover:bg-white dark:hover:bg-gray-700 hover:text-indigo-600' }}">
+                                    class="flex items-center px-3 py-2 rounded-md text-sm transition-all duration-150
+                                    {{ request()->routeIs('pemberi.*') ? 'text-indigo-600 font-semibold' : 'text-gray-400 hover:text-indigo-600 hover:bg-gray-50 dark:hover:bg-gray-700/30' }}">
                                     Pemberi Proyek
                                 </a>
                                 <a href="{{ route('proyek.index') }}"
-                                    class="flex items-center px-3 py-1.5 rounded-lg text-xs font-medium transition-all
-                                    {{ request()->routeIs('proyek.*') ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300 font-semibold' : 'text-gray-500 dark:text-gray-400 hover:bg-white dark:hover:bg-gray-700 hover:text-indigo-600' }}">
+                                    class="flex items-center px-3 py-2 rounded-md text-sm transition-all duration-150
+                                    {{ request()->routeIs('proyek.*') ? 'text-indigo-600 font-semibold' : 'text-gray-400 hover:text-indigo-600 hover:bg-gray-50 dark:hover:bg-gray-700/30' }}">
                                     Data Proyek
                                 </a>
                                 <a href="{{ route('termin.index') }}"
-                                    class="flex items-center px-3 py-1.5 rounded-lg text-xs font-medium transition-all
-                                    {{ request()->routeIs('termin.*') ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300 font-semibold' : 'text-gray-500 dark:text-gray-400 hover:bg-white dark:hover:bg-gray-700 hover:text-indigo-600' }}">
+                                    class="flex items-center px-3 py-2 rounded-md text-sm transition-all duration-150
+                                    {{ request()->routeIs('termin.*') ? 'text-indigo-600 font-semibold' : 'text-gray-400 hover:text-indigo-600 hover:bg-gray-50 dark:hover:bg-gray-700/30' }}">
                                     Termin Proyek
                                 </a>
                             </div>
@@ -170,36 +170,36 @@
 
                     @if ($hasAkses('vendor') || $hasAkses('all'))
                         <a href="{{ route('vendor.index') }}"
-                            class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold transition-all shadow-sm
-                            {{ request()->routeIs('vendor.*') ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300' : 'bg-white/70 dark:bg-gray-700/60 text-gray-600 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-600' }}">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                            class="flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-all duration-150
+                            {{ request()->routeIs('vendor.*') ? 'text-indigo-600 bg-indigo-50 dark:text-indigo-300' : 'text-gray-500 dark:text-gray-400 hover:text-indigo-600 hover:bg-gray-50 dark:hover:bg-gray-700/30' }}">
+                            <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                             Vendor
                         </a>
                     @endif
 
                     @if ($hasAkses('coa') || $hasAkses('all'))
                         <a href="{{ route('coa.index') }}"
-                            class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold transition-all shadow-sm
-                            {{ request()->routeIs('coa.*') ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300' : 'bg-white/70 dark:bg-gray-700/60 text-gray-600 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-600' }}">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                            class="flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-all duration-150
+                            {{ request()->routeIs('coa.*') ? 'text-indigo-600 bg-indigo-50 dark:text-indigo-300' : 'text-gray-500 dark:text-gray-400 hover:text-indigo-600 hover:bg-gray-50 dark:hover:bg-gray-700/30' }}">
+                            <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
                             COA (Akun)
                         </a>
                     @endif
 
-                    @if ($hasAkses('all'))
+                    @if ($hasAkses('all') || $hasAkses('kategori_kas'))
                         <a href="{{ route('kategori.index') }}"
-                            class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold transition-all shadow-sm
-                            {{ request()->routeIs('kategori.*') ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300' : 'bg-white/70 dark:bg-gray-700/60 text-gray-600 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-600' }}">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+                            class="flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-all duration-150
+                            {{ request()->routeIs('kategori.*') ? 'text-indigo-600 bg-indigo-50 dark:text-indigo-300' : 'text-gray-500 dark:text-gray-400 hover:text-indigo-600 hover:bg-gray-50 dark:hover:bg-gray-700/30' }}">
+                            <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
                             Kategori Kas
                         </a>
                     @endif
 
                     @if ($hasAkses('all') || $hasAkses('lra'))
                         <a href="{{ route('lra.index') }}"
-                            class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold transition-all shadow-sm
-                            {{ request()->routeIs('lra.*') ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300' : 'bg-white/70 dark:bg-gray-700/60 text-gray-600 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-600' }}">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/></svg>
+                            class="flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-all duration-150
+                            {{ request()->routeIs('lra.*') ? 'text-indigo-600 bg-indigo-50 dark:text-indigo-300' : 'text-gray-500 dark:text-gray-400 hover:text-indigo-600 hover:bg-gray-50 dark:hover:bg-gray-700/30' }}">
+                            <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/></svg>
                             LRA
                         </a>
                     @endif
@@ -229,22 +229,22 @@
                     </svg>
                 </button>
 
-                <div x-show="transaksiOpen" x-collapse x-cloak class="mt-1 space-y-1 px-3">
+                <div x-show="transaksiOpen" x-collapse x-cloak class="mt-1 space-y-1 px-2">
 
                     @if ($hasAkses('kas_masuk') || $hasAkses('all'))
                         <a href="{{ route('kas-masuk.index') }}"
-                            class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold transition-all shadow-sm
-                            {{ request()->routeIs('kas-masuk.*') ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300' : 'bg-white/70 dark:bg-gray-700/60 text-gray-600 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-600' }}">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg>
+                            class="flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-all duration-150
+                            {{ request()->routeIs('kas-masuk.*') ? 'text-indigo-600 bg-indigo-50 dark:text-indigo-300' : 'text-gray-500 dark:text-gray-400 hover:text-indigo-600 hover:bg-gray-50 dark:hover:bg-gray-700/30' }}">
+                            <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg>
                             Kas Masuk
                         </a>
                     @endif
 
                     @if ($hasAkses('kas_keluar') || $hasAkses('all'))
                         <a href="{{ route('kas-keluar.index') }}"
-                            class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold transition-all shadow-sm
-                            {{ request()->routeIs('kas-keluar.*') ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300' : 'bg-white/70 dark:bg-gray-700/60 text-gray-600 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-600' }}">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8V20m0 0l4-4m-4 4l-4-4M7 20V8m0 0L3 12m4-4l4 4"/></svg>
+                            class="flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-all duration-150
+                            {{ request()->routeIs('kas-keluar.*') ? 'text-indigo-600 bg-indigo-50 dark:text-indigo-300' : 'text-gray-500 dark:text-gray-400 hover:text-indigo-600 hover:bg-gray-50 dark:hover:bg-gray-700/30' }}">
+                            <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8V20m0 0l4-4m-4 4l-4-4M7 20V8m0 0L3 12m4-4l4 4"/></svg>
                             Kas Keluar
                         </a>
                     @endif

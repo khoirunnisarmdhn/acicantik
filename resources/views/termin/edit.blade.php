@@ -91,7 +91,10 @@
 
                     <div class="flex justify-end gap-3 mt-8 border-t pt-6">
                         <a href="{{ route('termin.index') }}"
-                            class="px-6 py-2 rounded-xl bg-gray-100 text-gray-600 font-bold hover:bg-gray-200 transition">Batal</a>
+                            class="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-gray-100 text-gray-600 font-bold hover:bg-gray-200 transition">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                            Back
+                        </a>
                         <button type="submit"
                             class="px-8 py-2 rounded-xl bg-emerald-600 text-white font-bold shadow-lg shadow-emerald-200 hover:bg-emerald-700 transition">
                             Simpan Perubahan

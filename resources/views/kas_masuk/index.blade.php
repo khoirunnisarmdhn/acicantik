@@ -52,7 +52,12 @@
                         <tbody class="text-sm">
                             @foreach ($kas_masuks as $k)
                                 <tr>
-                                    <td class="font-mono font-bold text-indigo-600">{{ $k->no_form }}</td>
+                                    <td>
+                                        <a href="{{ route('kas-masuk.show', $k->id_kas) }}" class="font-mono font-bold text-indigo-600 hover:underline hover:text-indigo-800 transition">
+                                            {{ $k->no_form }}
+                                        </a>
+                                        <div class="text-[9px] text-gray-400 italic mt-0.5">klik untuk melihat detail</div>
+                                    </td>
                                     <td>{{ \Carbon\Carbon::parse($k->tanggal)->format('d/m/Y') }}</td>
                                     <td>
                                         <div class="font-bold text-gray-800">{{ $k->nama_kategori }}</div>

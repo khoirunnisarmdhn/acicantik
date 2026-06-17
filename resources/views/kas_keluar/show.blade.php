@@ -49,17 +49,54 @@
                         </p>
                     </div>
 
+                    {{-- TABEL RINCIAN --}}
+                    @if($rincian->count() > 0)
+                    <div class="mb-10">
+                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3">Rincian Pengeluaran</p>
+                        <div class="rounded-2xl border border-gray-100 overflow-hidden">
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="bg-rose-50 text-rose-700 text-[10px] uppercase tracking-widest">
+                                        <th class="text-left px-4 py-3 font-bold">No</th>
+                                        <th class="text-left px-4 py-3 font-bold">Item / Keterangan</th>
+                                        <th class="text-right px-4 py-3 font-bold">Nominal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($rincian as $i => $item)
+                                    <tr class="border-t border-gray-100 {{ $loop->even ? 'bg-gray-50/50' : 'bg-white' }}">
+                                        <td class="px-4 py-3 text-gray-400 font-mono text-xs">{{ $i + 1 }}</td>
+                                        <td class="px-4 py-3 font-medium text-gray-700">{{ $item->nama }}</td>
+                                        <td class="px-4 py-3 text-right font-bold text-rose-600">Rp {{ number_format($item->nominal, 0, ',', '.') }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                                <tfoot>
+                                    <tr class="bg-rose-600 text-white">
+                                        <td colspan="2" class="px-4 py-3 font-bold text-sm">TOTAL</td>
+                                        <td class="px-4 py-3 text-right font-black text-sm">Rp {{ number_format($rincian->sum('nominal'), 0, ',', '.') }}</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                    @endif
+
                     <div class="flex justify-between items-center border-t-2 border-dashed border-gray-100 pt-8">
                         <div>
                             <p class="text-xs font-bold text-gray-400 uppercase">Total Pengeluaran</p>
                             <h3 class="text-4xl font-black text-rose-600">Rp {{ number_format($data->nominal, 0, ',', '.') }}</h3>
                         </div>
-                        
+
                         <div class="text-right print:hidden">
                             @if($data->upload_bukti)
-                                <a href="{{ asset('uploads/kas_keluar/'.$data->upload_bukti) }}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-gray-800 text-white rounded-lg text-xs font-bold hover:bg-black transition">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                    LIHAT BUKTI FISIK
+                                <a href="{{ asset('uploads/kas/' . $data->upload_bukti) }}" target="_blank"
+                                    class="inline-flex items-center gap-2 px-4 py-2 bg-gray-800 text-white rounded-lg text-xs font-bold hover:bg-black transition">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                    </svg>
+                                    LIHAT BUKTI PEMBAYARAN
                                 </a>
                             @else
                                 <span class="text-xs text-gray-400 italic">Tanpa Lampiran Bukti</span>

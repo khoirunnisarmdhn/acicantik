@@ -199,7 +199,10 @@
                     <div
                         class="mt-12 flex flex-col md:flex-row items-center justify-between gap-6 border-t border-gray-100 pt-8">
                         <a href="{{ route('kas-masuk.index') }}"
-                            class="text-xs font-black uppercase tracking-widest text-gray-400">Batal</a>
+                            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gray-100 text-gray-600 font-bold text-xs uppercase tracking-widest hover:bg-gray-200 transition">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                            Back
+                        </a>
                         <button type="submit"
                             class="w-full md:w-auto px-12 py-5 bg-gray-900 text-white rounded-2xl font-black text-xs uppercase tracking-[0.3em] active:scale-95 transition-all">
                             Simpan Transaksi

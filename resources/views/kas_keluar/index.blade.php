@@ -57,7 +57,11 @@
                         <tbody class="text-sm">
                             @foreach ($kas_keluars as $k)
                                 <tr>
-                                    <td class="font-mono font-bold text-rose-600 tracking-tighter">{{ $k->no_form }}
+                                    <td>
+                                        <a href="{{ route('kas-keluar.show', $k->id_kas) }}" class="font-mono font-bold text-rose-600 tracking-tighter hover:underline hover:text-rose-800 transition">
+                                            {{ $k->no_form }}
+                                        </a>
+                                        <div class="text-[9px] text-gray-400 italic mt-0.5">klik untuk melihat detail</div>
                                     </td>
                                     <td>{{ \Carbon\Carbon::parse($k->tanggal)->format('d/m/Y') }}</td>
                                     <td>
