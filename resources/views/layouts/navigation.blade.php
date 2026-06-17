@@ -61,8 +61,8 @@
             <img src="{{ asset('images/logo.png') }}" alt="Logo"
                 class="w-28 h-28 object-contain shrink-0 group-hover:scale-110 transition-transform duration-300">
             <div class="flex flex-col">
-                <span class="font-extrabold text-[15px] leading-tight text-gray-800 dark:text-white">Manajemen Keuangan</span>
-                <span class="font-semibold text-[12px] leading-tight text-gray-500 dark:text-gray-400 mt-0.5">Proyek Konstruksi</span>
+                <span class="font-extrabold text-[15px] leading-tight text-gray-800 dark:text-white">CV Zahfran Mulia Abadi</span>
+                <span class="font-semibold text-[12px] leading-tight text-gray-500 dark:text-gray-400 mt-0.5">Manajemen Keuangan Proyek</span>
             </div>
         </a>
     </div>
