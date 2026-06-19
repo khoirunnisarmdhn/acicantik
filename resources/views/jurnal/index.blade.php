@@ -117,11 +117,11 @@
                                     </td>
                                     <td class="p-4">
                                         <div class="{{ $j->posisi_dr_cr == 'cr' ? 'ml-8 italic text-gray-600 dark:text-gray-400' : 'font-bold text-gray-900 dark:text-white' }}">
+                                            {{ $j->nama_parent ?? $j->nama_akun }}
+                                        </div>
+                                        <div class="text-[10px] text-gray-400 italic mt-1 leading-tight {{ $j->posisi_dr_cr == 'cr' ? 'ml-8' : '' }}">
                                             {{ $j->nama_akun }}
                                         </div>
-                                        @if($j->deskripsi)
-                                            <div class="text-[10px] text-gray-400 italic mt-1 leading-tight">{{ $j->deskripsi }}</div>
-                                        @endif
                                     </td>
                                     <td class="p-4 text-right font-mono font-semibold">
                                         {{ $j->posisi_dr_cr == 'dr' && $j->nominal > 0 ? number_format($j->nominal, 0, ',', '.') : '-' }}

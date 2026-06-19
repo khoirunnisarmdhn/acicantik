@@ -101,7 +101,7 @@
                             <thead>
                                 <tr class="bg-gray-50 dark:bg-gray-800 font-bold uppercase text-gray-700 dark:text-gray-200 border-b-2 border-black dark:border-gray-600">
                                     <th class="p-4 text-left">Keterangan Anggaran</th>
-                                    <th class="p-4 text-right">Budget (Rp)</th>
+                                    <th class="p-4 text-right">Anggaran (Rp)</th>
                                     <th class="p-4 text-right">Realisasi (Rp)</th>
                                     <th class="p-4 text-center">Penyerapan</th>
                                     <th class="p-4 text-right">Sisa Anggaran</th>

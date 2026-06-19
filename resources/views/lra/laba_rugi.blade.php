@@ -71,7 +71,7 @@
         @if($data)
         <div id="printArea" class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm overflow-hidden">
             <div class="p-8 text-center border-b border-gray-100 dark:border-gray-800">
-                <h1 class="text-2xl font-black uppercase dark:text-white tracking-tighter">Analisis Laba Rugi Proyek</h1>
+                <h1 class="text-2xl font-black uppercase dark:text-white tracking-tighter">Laporan Laba Rugi</h1>
                 <p class="text-indigo-600 font-bold mt-1 text-lg uppercase">{{ $data->proyek->nama }}</p>
             </div>
 
