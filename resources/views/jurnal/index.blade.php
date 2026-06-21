@@ -43,11 +43,24 @@
 
             {{-- Toolbar --}}
             <div class="no-print bg-white dark:bg-gray-800 p-4 rounded-b-xl shadow-sm border-x border-b border-gray-100 dark:border-gray-700 mb-6 flex flex-wrap items-end justify-between gap-4 sticky top-0 z-20">
-                <form action="{{ route('jurnal.index') }}" method="GET" class="flex items-end gap-3" id="filterForm">
+                <form action="{{ route('jurnal.index') }}" method="GET" class="flex items-end flex-wrap gap-3" id="filterForm">
                     <div>
-                        <label class="block text-[10px] font-bold text-indigo-500 uppercase mb-1 ml-1 tracking-widest">Bulan Periode</label>
-                        <select name="bulan" onchange="document.getElementById('filterForm').submit()" 
-                            class="rounded-lg border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 text-sm focus:ring-indigo-500 w-48 font-bold cursor-pointer">
+                        <label class="block text-[10px] font-bold text-indigo-500 uppercase mb-1 ml-1 tracking-widest">Proyek</label>
+                        <select name="proyek_id" onchange="document.getElementById('filterForm').submit()"
+                            class="rounded-lg border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 text-sm focus:ring-indigo-500 w-52 font-bold cursor-pointer">
+                            <option value="">-- Semua Proyek --</option>
+                            @foreach ($listProyek as $p)
+                                <option value="{{ $p->id_proyek }}" {{ $proyekId == $p->id_proyek ? 'selected' : '' }}>
+                                    {{ $p->nama }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-indigo-500 uppercase mb-1 ml-1 tracking-widest">Bulan (Opsional)</label>
+                        <select name="bulan" onchange="document.getElementById('filterForm').submit()"
+                            class="rounded-lg border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 text-sm focus:ring-indigo-500 w-40 font-bold cursor-pointer">
+                            <option value="">-- Semua Bulan --</option>
                             @foreach (range(1, 12) as $m)
                                 <option value="{{ sprintf('%02d', $m) }}" {{ $bulan == sprintf('%02d', $m) ? 'selected' : '' }}>
                                     {{ date('F', mktime(0, 0, 0, $m, 1)) }}
@@ -57,7 +70,7 @@
                     </div>
                     <div>
                         <label class="block text-[10px] font-bold text-indigo-500 uppercase mb-1 ml-1 tracking-widest">Tahun</label>
-                        <select name="tahun" onchange="document.getElementById('filterForm').submit()" 
+                        <select name="tahun" onchange="document.getElementById('filterForm').submit()"
                             class="rounded-lg border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 text-sm focus:ring-indigo-500 w-32 font-bold cursor-pointer">
                             @foreach (range(date('Y') - 5, date('Y') + 1) as $y)
                                 <option value="{{ $y }}" {{ $tahun == $y ? 'selected' : '' }}>{{ $y }}</option>

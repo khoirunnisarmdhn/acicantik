@@ -102,15 +102,15 @@
                             <td class="py-4 px-4 font-bold text-xs uppercase tracking-widest text-gray-400" colspan="2">B. Beban & Biaya Lapangan</td>
                         </tr>
                         <tr>
-                            <td class="py-3 px-8 italic font-medium">Anggaran Biaya (Plafon)</td>
+                            <td class="py-3 px-8 italic font-medium">Batas Maksimal Biaya</td>
                             <td class="py-3 px-4 text-right font-medium">Rp {{ number_format($data->anggaran_biaya, 0, ',', '.') }}</td>
                         </tr>
                         <tr>
-                            <td class="py-3 px-8 italic font-medium text-rose-600">Realisasi Pengeluaran (Actual LRA)</td>
+                            <td class="py-3 px-8 italic font-medium text-rose-600">Total Biaya yang Sudah Dikeluarkan</td>
                             <td class="py-3 px-4 text-right text-rose-600 font-bold">(Rp {{ number_format($data->realisasi_biaya, 0, ',', '.') }})</td>
                         </tr>
                         <tr class="bg-indigo-50/30 dark:bg-indigo-900/10">
-                            <td class="py-3 px-8 font-bold italic text-indigo-600">Efisiensi / (Pemborosan) Biaya</td>
+                            <td class="py-3 px-8 font-bold italic text-indigo-600">Sisa Anggaran Biaya</td>
                             <td class="py-3 px-4 text-right font-black {{ $data->efisiensi_biaya < 0 ? 'text-rose-600' : 'text-emerald-600' }}">
                                 Rp {{ number_format($data->efisiensi_biaya, 0, ',', '.') }}
                             </td>
@@ -120,7 +120,7 @@
                     </tbody>
                     <tfoot>
                         <tr class="bg-gray-900 text-white dark:bg-white dark:text-black">
-                            <td class="p-6 text-lg font-black uppercase tracking-tighter">Estimasi Laba Akhir Proyek</td>
+                            <td class="p-6 text-lg font-black uppercase tracking-tighter">Estimasi Keuntungan Proyek</td>
                             <td class="p-6 text-right text-2xl font-black tracking-tight">
                                 Rp {{ number_format($data->total_laba_akhir, 0, ',', '.') }}
                             </td>

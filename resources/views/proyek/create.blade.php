@@ -78,8 +78,8 @@
                         <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Jumlah Termin (termasuk DP & Akhir)</label>
                         <select name="jumlah_termin" id="jumlah_termin" required
                             class="w-full rounded-xl border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            <option value="3" {{ old('jumlah_termin', '3') == '3' ? 'selected' : '' }}>3 (DP + 1 Progress + Akhir)</option>
-                            <option value="4" {{ old('jumlah_termin') == '4' ? 'selected' : '' }}>4 (DP + 2 Progress + Akhir)</option>
+                            <option value="3" {{ old('jumlah_termin', '3') == '3' ? 'selected' : '' }}>3 Termin (DP + 1 Progress + Akhir)</option>
+                            <option value="4" {{ old('jumlah_termin') == '4' ? 'selected' : '' }}>4 Termin (DP + 2 Progress + Akhir)</option>
                         </select>
                         <p class="text-[10px] text-amber-600 dark:text-amber-400 mt-1 italic font-medium">
                             * Pola: DP 20% + Termin Progress (70% dibagi rata) + Akhir 10%. Tidak bisa diubah setelah disimpan.

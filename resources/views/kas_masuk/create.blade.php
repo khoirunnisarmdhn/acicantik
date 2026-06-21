@@ -3,6 +3,7 @@
 
     <div class="py-12" x-data="{
         isProyek: false,
+        isNonProyek: false,
         kategoriUmum: @js($kategoriUmum),
         kategoriProyek: @js($kategoriProyek),
         kategoriAktif: @js($kategoriUmum),
@@ -10,19 +11,85 @@
         nominal: '{{ old('nominal') }}',
         readonlyNominal: false,
         loadingTermin: false,
+        selectedKategoriNama: '',
+        dpTermin: null,
+        dpSudahLunas: false,
 
         handleProyekChange(id) {
             if (id !== '') {
                 this.isProyek = true;
+                this.isNonProyek = false;
                 this.kategoriAktif = this.kategoriProyek;
                 this.fetchTermin(id);
+                this.selectedKategoriNama = '';
+                this.nominal = '';
+                this.readonlyNominal = false;
+                this.dpTermin = null;
+                this.dpSudahLunas = false;
             } else {
                 this.isProyek = false;
+                this.isNonProyek = true;
                 this.kategoriAktif = this.kategoriUmum;
                 this.terminData = [];
                 this.nominal = '';
                 this.readonlyNominal = false;
+                this.selectedKategoriNama = 'penambahan modal pribadi';
+                this.dpTermin = null;
+                this.dpSudahLunas = false;
+                // Auto-set kategori ke Penambahan Modal Pribadi (id=3)
+                this.$nextTick(() => {
+                    const katSelect = document.getElementById('kategori_select');
+                    if (katSelect) katSelect.value = '3';
+                });
             }
+        },
+
+        handleKategoriChange(e) {
+            const selected = e.target.options[e.target.selectedIndex];
+            this.selectedKategoriNama = selected.text.toLowerCase();
+            // Reset termin & nominal saat kategori berubah
+            this.nominal = '';
+            this.readonlyNominal = false;
+            const terminSelect = document.getElementById('termin_select');
+            if (terminSelect) terminSelect.value = '';
+
+            // Kalau pilih Uang Muka, otomatis set nominal dari data DP
+            if (this.selectedKategoriNama.includes('down payment') || this.selectedKategoriNama.includes('dp')) {
+                const dpTermin = this.terminData.find(t => {
+                    const nama = (t.nama_termin || '').toLowerCase();
+                    return nama.includes('dp') || nama.includes('down payment') || nama.includes('uang muka');
+                });
+                if (dpTermin) {
+                    this.dpTermin = dpTermin;
+                    this.nominal = Number(dpTermin.nominal).toLocaleString('id-ID');
+                    this.readonlyNominal = true;
+                    // Set hidden input termin
+                    this.$nextTick(() => {
+                        const hiddenTermin = document.getElementById('hidden_termin_dp');
+                        if (hiddenTermin) hiddenTermin.value = dpTermin.id_termin_proyek;
+                    });
+                }
+            } else {
+                this.dpTermin = null;
+                this.nominal = '';
+                this.readonlyNominal = false;
+                this.$nextTick(() => {
+                    const hiddenTermin = document.getElementById('hidden_termin_dp');
+                    if (hiddenTermin) hiddenTermin.value = '';
+                });
+            }
+        },
+
+        isTerminDisabled(t) {
+            if (!this.selectedKategoriNama) return false;
+            const namaTermin = (t.nama_termin || '').toLowerCase();
+            const isDP = namaTermin.includes('dp') || namaTermin.includes('down payment') || namaTermin.includes('uang muka');
+            const isUangMukaKategori = this.selectedKategoriNama.includes('down payment') || this.selectedKategoriNama.includes('dp');
+            const isTerminKategori = this.selectedKategoriNama.includes('termin') && !isUangMukaKategori;
+
+            if (this.selectedKategoriNama.includes('down payment') || this.selectedKategoriNama.includes('dp')) return !isDP;  // DP kategori → disable non-DP
+            if (this.selectedKategoriNama.includes('termin')) return isDP;                                                        // Termin → disable DP
+            return false;
         },
 
         fetchTermin(proyekId) {
@@ -35,6 +102,13 @@
                 .then(data => {
                     this.terminData = data;
                     this.loadingTermin = false;
+
+                    // Cek apakah DP sudah lunas
+                    const dpTermin = data.find(t => {
+                        const nama = (t.nama_termin || '').toLowerCase();
+                        return nama.includes('dp') || nama.includes('down payment') || nama.includes('uang muka');
+                    });
+                    this.dpSudahLunas = dpTermin && dpTermin.status_pembayaran === 'Lunas';
                 })
                 .catch(err => {
                     this.loadingTermin = false;
@@ -48,11 +122,11 @@
 
         handleTerminChange(e) {
             const selected = e.target.options[e.target.selectedIndex];
-            // Sesuai field database: nominal
             const valNominal = selected.getAttribute('data-nominal');
 
             if (valNominal) {
-                this.nominal = valNominal;
+                // Format dengan pemisah ribuan
+                this.nominal = Number(valNominal).toLocaleString('id-ID');
                 this.readonlyNominal = true;
             } else {
                 this.nominal = '';
@@ -105,15 +179,36 @@
                         <div>
                             <label class="block text-[11px] font-black text-gray-400 uppercase mb-2 tracking-widest">2.
                                 Kategori Transaksi</label>
-                            <select name="id_kategori" required
-                                class="w-full border-2 border-gray-100 rounded-2xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 font-medium">
-                                <option value="">-- Pilih Kategori --</option>
-                                <template x-for="kat in kategoriAktif" :key="kat.id_kategori">
-                                    <option :value="kat.id_kategori"
-                                        :selected="kat.id_kategori == '{{ old('id_kategori') }}'"
-                                        x-text="kat.nama_kategori"></option>
-                                </template>
-                            </select>
+
+                            {{-- Non-Proyek: tampil info box otomatis --}}
+                            <template x-if="isNonProyek">
+                                <div class="px-4 py-3 bg-emerald-50 border-2 border-emerald-100 rounded-2xl">
+                                    <p class="font-black text-emerald-700 text-sm">Penambahan Modal Pribadi</p>
+                                    <p class="text-xs text-emerald-400 mt-1">Kategori otomatis untuk penerimaan umum non-proyek</p>
+                                </div>
+                            </template>
+
+                            {{-- Proyek: tampil dropdown normal --}}
+                            <template x-if="!isNonProyek">
+                                <select name="id_kategori" id="kategori_select" required
+                                    @change="handleKategoriChange($event)"
+                                    class="w-full border-2 border-gray-100 rounded-2xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 font-medium">
+                                    <option value="">-- Pilih Kategori --</option>
+                                    <template x-for="kat in kategoriAktif" :key="kat.id_kategori">
+                                        <option :value="kat.id_kategori"
+                                            :selected="kat.id_kategori == '{{ old('id_kategori') }}'"
+                                            :disabled="dpSudahLunas && (kat.nama_kategori.toLowerCase().includes('down payment') || kat.nama_kategori.toLowerCase().includes('dp'))"
+                                            :style="dpSudahLunas && (kat.nama_kategori.toLowerCase().includes('down payment') || kat.nama_kategori.toLowerCase().includes('dp')) ? 'color:#aaa; background:#f5f5f5;' : ''"
+                                            x-text="dpSudahLunas && (kat.nama_kategori.toLowerCase().includes('down payment') || kat.nama_kategori.toLowerCase().includes('dp')) ? kat.nama_kategori + ' - paid' : kat.nama_kategori">
+                                        </option>
+                                    </template>
+                                </select>
+                            </template>
+
+                            {{-- Hidden input untuk non-proyek — hanya render kalau isNonProyek --}}
+                            <template x-if="isNonProyek">
+                                <input type="hidden" name="id_kategori" value="3">
+                            </template>
                         </div>
 
                         <div>
@@ -125,23 +220,38 @@
 
                         <div class="md:col-span-2 border-t border-gray-50 my-2"></div>
 
-                        <div x-show="isProyek" x-transition x-cloak>
-                            <label
-                                class="block text-[11px] font-black text-indigo-500 uppercase mb-2 tracking-widest flex items-center gap-2">
+                        {{-- UANG MUKA: tampil info DP otomatis, tanpa dropdown --}}
+                        <div x-show="isProyek && (selectedKategoriNama.includes('down payment') || selectedKategoriNama.includes('dp'))" x-transition x-cloak class="md:col-span-1">
+                            <label class="block text-[11px] font-black text-indigo-500 uppercase mb-2 tracking-widest">
+                                4. Info Pembayaran
+                            </label>
+                            <div class="px-4 py-3 bg-indigo-50 border-2 border-indigo-100 rounded-2xl">
+                                <p class="font-black text-indigo-700 text-sm" x-text="dpTermin ? 'Down Payment (DP) ' + parseFloat(dpTermin.persentase) + '% dari nilai kontrak' : 'Memuat...'"></p>
+                                <p class="text-xs text-indigo-400 mt-1" x-text="dpTermin ? 'Nominal: Rp ' + Number(dpTermin.nominal).toLocaleString('id-ID') : ''"></p>
+                            </div>
+                            {{-- Hidden input untuk simpan id_termin_proyek DP --}}
+                            <input type="hidden" name="id_termin_proyek" id="hidden_termin_dp" value="">
+                        </div>
+
+                        {{-- TERMIN: tampil dropdown pilih termin (Progress & Akhir) --}}
+                        <div x-show="isProyek && selectedKategoriNama.includes('termin') && !selectedKategoriNama.includes('down payment') && !selectedKategoriNama.includes('dp')" x-transition x-cloak class="md:col-span-1">
+                            <label class="block text-[11px] font-black text-indigo-500 uppercase mb-2 tracking-widest flex items-center gap-2">
                                 4. Pilih Termin Pembayaran
                                 <template x-if="loadingTermin">
-                                    <span
-                                        class="inline-block animate-spin h-3 w-3 border-2 border-indigo-500 border-t-transparent rounded-full"></span>
+                                    <span class="inline-block animate-spin h-3 w-3 border-2 border-indigo-500 border-t-transparent rounded-full"></span>
                                 </template>
                             </label>
-                            <select name="id_termin_proyek" @change="handleTerminChange($event)"
+                            <select name="id_termin_proyek" id="termin_select" @change="handleTerminChange($event)"
                                 class="w-full border-2 border-indigo-50 border-dashed bg-indigo-50/30 rounded-2xl font-bold text-indigo-700 focus:ring-4 focus:ring-indigo-500/10">
                                 <option value="">-- Pilih Termin --</option>
                                 <template x-for="t in terminData" :key="t.id_termin_proyek">
                                     <option :value="t.id_termin_proyek"
                                         :selected="t.id_termin_proyek == '{{ old('id_termin_proyek') }}'"
                                         :data-nominal="t.nominal"
-                                        x-text="t.nama_termin + ' (' + t.persentase + '%) - Rp ' + Number(t.nominal).toLocaleString('id-ID')">
+                                        :disabled="isTerminDisabled(t) || t.status_pembayaran === 'Lunas'"
+                                        :style="(isTerminDisabled(t) || t.status_pembayaran === 'Lunas') ? 'color: #aaa; background: #f5f5f5;' : ''"
+                                        x-show="!isTerminDisabled(t)"
+                                        x-text="t.status_pembayaran === 'Lunas' ? t.nama_termin + ' (' + parseFloat(t.persentase) + '%) - paid' : t.nama_termin + ' (' + parseFloat(t.persentase) + '%) - Rp ' + Number(t.nominal).toLocaleString('id-ID')">
                                     </option>
                                 </template>
                             </select>
@@ -191,7 +301,7 @@
                             <label
                                 class="block text-[11px] font-black text-gray-400 uppercase mb-2 tracking-widest">Keterangan
                                 Tambahan</label>
-                            <textarea name="keterangan" rows="3" required
+                            <textarea name="keterangan" rows="3"
                                 class="w-full border-2 border-gray-100 rounded-2xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500">{{ old('keterangan') }}</textarea>
                         </div>
                     </div>

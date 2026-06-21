@@ -84,7 +84,7 @@ class KasMasukController extends Controller
             'id_kategori' => 'required|exists:kategori_kas,id_kategori',
             'id_metode_bayar' => 'required',
             'nominal' => 'required|numeric|min:1',
-            'keterangan' => 'required',
+            'keterangan' => 'nullable',
             'upload_bukti' => 'required|image|mimes:jpg,png,jpeg|max:2048'
         ]);
 
@@ -116,7 +116,7 @@ class KasMasukController extends Controller
                 'id_metode_bayar' => $request->id_metode_bayar,
                 'id_termin_proyek' => $request->id_termin_proyek ?: null,
                 'nominal' => $request->nominal,
-                'keterangan' => $request->keterangan,
+                'keterangan' => $request->keterangan ?: '-',
                 'upload_bukti' => $fileName,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -247,7 +247,6 @@ class KasMasukController extends Controller
         $termin = DB::table('termin_proyek')
             ->join('tipe_termin', 'termin_proyek.id_tipe_termin', '=', 'tipe_termin.id_tipe_termin')
             ->where('id_proyek', $id)
-            ->where('status_pembayaran', '!=', 'Lunas')
             ->select('termin_proyek.*', 'tipe_termin.nama_termin')
             ->get();
 
