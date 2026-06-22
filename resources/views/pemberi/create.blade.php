@@ -64,7 +64,7 @@
                         </a>
                         <button type="submit"
                             class="px-8 py-2 rounded-xl bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition">Simpan
-                            Client</button>
+                            Simpan</button>
                     </div>
                 </form>
             </div>

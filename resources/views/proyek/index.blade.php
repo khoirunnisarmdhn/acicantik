@@ -26,7 +26,7 @@
                             {{-- Baris 1: Judul Kolom --}}
                             <tr class="text-left text-gray-500 uppercase text-xs tracking-wider">
                                 <th>Nama Proyek</th>
-                                <th>Client</th>
+                                <th>Pemberi Proyek</th>
                                 <th>Nilai Kontrak</th>
                                 <th>Mulai</th>
                                 <th>Status</th>
@@ -39,7 +39,7 @@
                                         class="w-full text-[10px] rounded-lg border-gray-200 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 focus:ring-indigo-500">
                                 </th>
                                 <th class="p-2">
-                                    <input type="text" placeholder="Cari Client"
+                                    <input type="text" placeholder="Cari Pemberi Proyek"
                                         class="w-full text-[10px] rounded-lg border-gray-200 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 focus:ring-indigo-500">
                                 </th>
                                 <th class="p-2"></th>
@@ -58,7 +58,12 @@
                         <tbody class="text-sm text-gray-600 dark:text-gray-300">
                             @foreach ($proyeks as $p)
                                 <tr>
-                                    <td class="font-bold text-gray-900 dark:text-white">{{ $p->nama }}</td>
+                                    <td>
+                                        <a href="{{ route('proyek.show', $p->id_proyek) }}" class="font-bold text-indigo-600 dark:text-indigo-400 hover:underline">
+                                            {{ $p->nama }}
+                                        </a>
+                                        <div class="text-[9px] text-gray-400 italic mt-0.5">klik untuk melihat detail</div>
+                                    </td>
                                     <td>{{ $p->nama_pemberi }}</td>
                                     <td class="text-emerald-600 font-semibold text-right">Rp
                                         {{ number_format($p->nilai_kontrak, 0, ',', '.') }}</td>

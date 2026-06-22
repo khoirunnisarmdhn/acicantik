@@ -14,7 +14,7 @@
 
                 <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
                     <div>
-                        <h3 class="text-lg font-bold text-gray-800">Penerimaan Kas</h3>
+                        <h3 class="text-lg font-bold text-gray-800">Kas Masuk</h3>
                         <p class="text-xs text-gray-500 font-medium">Monitoring dana masuk dari termin proyek & umum</p>
                     </div>
                     <a href="{{ route('kas-masuk.create') }}"

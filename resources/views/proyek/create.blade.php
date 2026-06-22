@@ -30,11 +30,10 @@
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Pemberi Proyek
-                            (Client)</label>
+                        <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Pemberi Proyek</label>
                         <select name="id_pemberi" required
                             class="w-full rounded-xl border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white placeholder:text-gray-400">
-                            <option value="" disabled selected>Pilih Client</option>
+                            <option value="" disabled selected>Pilih Pemberi Proyek</option>
                             @foreach ($pemberis as $pb)
                                 <option value="{{ $pb->id_pemberi }}"
                                     {{ old('id_pemberi') == $pb->id_pemberi ? 'selected' : '' }}>{{ $pb->nama }}

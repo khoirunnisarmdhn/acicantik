@@ -55,7 +55,7 @@
                             </svg>
                         </div>
                     </div>
-                    <p class="text-xs text-gray-400 mt-4 font-medium italic">Total Saldo Kumulatif</p>
+                    <p class="text-xs text-gray-400 mt-4 font-medium italic">Total seluruh kas masuk dikurangi kas keluar (semua proyek, seluruh waktu)</p>
                 </div>
 
                 <div

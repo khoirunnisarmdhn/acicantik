@@ -111,9 +111,9 @@ class ProyekController extends Controller
                 'id_proyek' => $id_proyek,
                 'id_tipe_termin' => $tipeAkhir,
                 'persentase' => $akhirPersen,
-                'progress_keterangan' => 'Finishing + BA Serah Terima',
+                'progress_keterangan' => 'Finishing + Serah Terima',
                 'nominal' => ($akhirPersen / 100) * $nilaiKontrak,
-                'keterangan' => 'Termin Akhir (Serah Terima)',
+                'keterangan' => 'Termin Akhir',
                 'due_date' => $request->tanggal_selesai,
                 'status_pembayaran' => 'Belum Dibayar',
                 'created_at' => now(),
@@ -135,6 +135,48 @@ class ProyekController extends Controller
         $pemberis = DB::table('pemberi_proyek')->get();
 
         return view('proyek.edit', compact('proyek', 'pemberis'));
+    }
+
+    public function show($id)
+    {
+        $proyek = DB::table('proyek')
+            ->leftJoin('pemberi_proyek', 'proyek.id_pemberi', '=', 'pemberi_proyek.id_pemberi')
+            ->select('proyek.*', 'pemberi_proyek.nama as nama_pemberi', 'pemberi_proyek.jenis')
+            ->where('id_proyek', $id)
+            ->first();
+
+        if (!$proyek) {
+            return redirect()->route('proyek.index')->with('error', 'Proyek tidak ditemukan!');
+        }
+
+        $termins = DB::table('termin_proyek')
+            ->join('tipe_termin', 'termin_proyek.id_tipe_termin', '=', 'tipe_termin.id_tipe_termin')
+            ->where('id_proyek', $id)
+            ->select('termin_proyek.*', 'tipe_termin.nama_termin')
+            ->orderBy('id_termin_proyek')
+            ->get();
+
+        $kasMasuk = DB::table('kas')
+            ->leftJoin('kategori_kas', 'kas.id_kategori', '=', 'kategori_kas.id_kategori')
+            ->where('kas.id_proyek', $id)
+            ->where('kas.arus', 'masuk')
+            ->select('kas.*', 'kategori_kas.nama_kategori')
+            ->orderBy('kas.tanggal')
+            ->get();
+
+        $kasKeluar = DB::table('kas')
+            ->leftJoin('kategori_kas', 'kas.id_kategori', '=', 'kategori_kas.id_kategori')
+            ->leftJoin('vendor', 'kas.id_vendor', '=', 'vendor.id_vendor')
+            ->where('kas.id_proyek', $id)
+            ->where('kas.arus', 'keluar')
+            ->select('kas.*', 'kategori_kas.nama_kategori', 'vendor.nama as nama_vendor')
+            ->orderBy('kas.tanggal')
+            ->get();
+
+        $totalMasuk = $kasMasuk->sum('nominal');
+        $totalKeluar = $kasKeluar->sum('nominal');
+
+        return view('proyek.show', compact('proyek', 'termins', 'kasMasuk', 'kasKeluar', 'totalMasuk', 'totalKeluar'));
     }
 
     public function update(Request $request, $id)

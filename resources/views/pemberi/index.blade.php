@@ -13,7 +13,7 @@
 
                 <div
                     class="p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50/50 dark:bg-gray-900/20">
-                    <h3 class="text-lg font-bold text-gray-800 dark:text-white">Daftar Pemberi Proyek (Client)</h3>
+                    <h3 class="text-lg font-bold text-gray-800 dark:text-white">Daftar Pemberi Proyek</h3>
                     <a href="{{ route('pemberi.create') }}"
                         class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-all shadow-md shadow-indigo-200">
                         + Tambah Pemberi

@@ -180,12 +180,15 @@
                             <label class="block text-[11px] font-black text-gray-400 uppercase mb-2 tracking-widest">2.
                                 Kategori Transaksi</label>
 
-                            {{-- Non-Proyek: tampil info box otomatis --}}
+                            {{-- Non-Proyek: tampil dropdown kategori umum --}}
                             <template x-if="isNonProyek">
-                                <div class="px-4 py-3 bg-emerald-50 border-2 border-emerald-100 rounded-2xl">
-                                    <p class="font-black text-emerald-700 text-sm">Penambahan Modal Pribadi</p>
-                                    <p class="text-xs text-emerald-400 mt-1">Kategori otomatis untuk penerimaan umum non-proyek</p>
-                                </div>
+                                <select name="id_kategori" required
+                                    class="w-full border-2 border-gray-100 rounded-2xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 font-medium">
+                                    <option value="">-- Pilih Kategori --</option>
+                                    <template x-for="kat in kategoriUmum" :key="kat.id_kategori">
+                                        <option :value="kat.id_kategori" x-text="kat.nama_kategori"></option>
+                                    </template>
+                                </select>
                             </template>
 
                             {{-- Proyek: tampil dropdown normal --}}
@@ -205,10 +208,6 @@
                                 </select>
                             </template>
 
-                            {{-- Hidden input untuk non-proyek — hanya render kalau isNonProyek --}}
-                            <template x-if="isNonProyek">
-                                <input type="hidden" name="id_kategori" value="3">
-                            </template>
                         </div>
 
                         <div>

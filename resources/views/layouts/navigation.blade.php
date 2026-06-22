@@ -200,7 +200,7 @@
                             class="flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-all duration-150
                             {{ request()->routeIs('lra.*') ? 'text-indigo-600 bg-indigo-50 dark:text-indigo-300' : 'text-gray-500 dark:text-gray-400 hover:text-indigo-600 hover:bg-gray-50 dark:hover:bg-gray-700/30' }}">
                             <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/></svg>
-                            LRA
+                            Struktur Anggaran (LRA)
                         </a>
                     @endif
                 </div>
@@ -280,7 +280,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
                 </svg>
-                LRA Proyek
+                Laporan Realisasi Anggaran
             </a>
             @endif
 

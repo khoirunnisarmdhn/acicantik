@@ -39,7 +39,7 @@
 
                     <div>
                         <label class="block text-xs font-bold text-gray-400 uppercase mb-2 tracking-widest">Pemberi
-                            Proyek (Client)</label>
+                            Proyek</label>
                         <select name="id_pemberi" required
                             class="w-full rounded-xl border-gray-200 dark:bg-gray-900 dark:border-gray-700 focus:ring-amber-500">
                             @foreach ($pemberis as $pb)
