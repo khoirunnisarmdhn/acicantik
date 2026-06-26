@@ -25,8 +25,8 @@
         <!-- Overlay blur & dark tint to make login card pop -->
         <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(17, 24, 39, 0.45); backdrop-filter: blur(2px); z-index: 1;"></div>
 
-        <div class="w-full sm:max-w-md mt-6 px-8 py-8 shadow-2xl overflow-hidden sm:rounded-2xl"
-            style="position: relative; z-index: 10; background-color: #ffffff;">
+        <div class="w-full sm:max-w-md mt-6 px-8 py-8"
+            style="position: relative; z-index: 10; background-color: #ffffff; border-radius: 24px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04);">
             {{ $slot }}
         </div>
     </div>
