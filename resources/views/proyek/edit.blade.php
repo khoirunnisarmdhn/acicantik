@@ -82,7 +82,7 @@
                     <div>
                         <label class="block text-xs font-bold text-gray-400 uppercase mb-2 tracking-widest">Jumlah
                             Termin</label>
-                        <input type="text" value="{{ $proyek->jumlah_termin }}" readonly
+                        <input type="text" value="{{ $proyek->jumlah_termin == 1 ? 'Full Payment' : $proyek->jumlah_termin . ' Termin' }}" readonly
                             class="rupiah w-full rounded-xl border-gray-100 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 text-gray-500 cursor-not-allowed">
                         <p class="text-[10px] text-amber-600 mt-1 italic font-medium">* Jumlah termin tidak dapat
                             diubah.</p>

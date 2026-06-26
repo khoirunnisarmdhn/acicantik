@@ -76,7 +76,7 @@
                         <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Jumlah Termin (termasuk DP & Akhir)</label>
                         <select name="jumlah_termin" id="jumlah_termin" required
                             class="w-full rounded-xl border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            <option value="1" {{ old('jumlah_termin') == '1' ? 'selected' : '' }}>1 Termin (Full Payment 100%)</option>
+                            <option value="1" {{ old('jumlah_termin') == '1' ? 'selected' : '' }}>Full Payment</option>
                             <option value="3" {{ old('jumlah_termin', '3') == '3' ? 'selected' : '' }}>3 Termin (DP + 1 Progress + Akhir)</option>
                             <option value="4" {{ old('jumlah_termin') == '4' ? 'selected' : '' }}>4 Termin (DP + 2 Progress + Akhir)</option>
                         </select>
