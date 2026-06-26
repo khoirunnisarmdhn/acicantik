@@ -110,10 +110,14 @@
                         </tr>
                     </tbody>
                     <tfoot>
-                        <tr class="bg-gray-900 text-white dark:bg-white dark:text-black">
-                            <td class="p-6 text-lg font-black uppercase tracking-tighter">Laba (Rugi) Kotor</td>
-                            <td class="p-6 text-right text-2xl font-black tracking-tight">
-                                Rp. {{ number_format($data->total_laba_akhir, 0, ',', '.') }}
+                        <tr>
+                            <td colspan="2" class="p-0" style="border: none !important; padding: 0 !important;">
+                                <div class="bg-gray-900 text-white dark:bg-white dark:text-black rounded-2xl p-6 flex justify-between items-center mt-4">
+                                    <span class="text-lg font-black uppercase tracking-tighter">Laba (Rugi) Kotor</span>
+                                    <span class="text-right text-2xl font-black tracking-tight">
+                                        Rp. {{ number_format($data->total_laba_akhir, 0, ',', '.') }}
+                                    </span>
+                                </div>
                             </td>
                         </tr>
                     </tfoot>
