@@ -95,7 +95,7 @@
             <div id="printArea" class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 shadow-sm rounded-2xl overflow-hidden">
                 
                 <div class="p-10 text-center border-b border-gray-100 dark:border-gray-800">
-                    <h1 class="text-2xl font-black uppercase tracking-tighter dark:text-white">Buku Jurnal Umum</h1>
+                    <h1 class="text-2xl font-black uppercase tracking-tighter dark:text-white">Jurnal Umum</h1>
                     <p class="text-md uppercase mt-1 font-bold text-indigo-600">Laporan Transaksi Konstruksi</p>
                     <div class="mt-3 inline-block px-4 py-1">
                         <p class="text-xs font-bold uppercase tracking-widest">
