@@ -71,19 +71,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        DB::table('termin_proyek')->insert([
-            // Proyek 1 (1 Termin)
-            ['id_proyek' => 1, 'id_tipe_termin' => 3, 'nominal' => 1000000, 'keterangan' => 'Pelunasan Proyek Gedung A', 'due_date' => '2026-01-01', 'status_pembayaran' => 'Lunas'],
 
-            // Proyek 2 (2 Termin)
-            ['id_proyek' => 2, 'id_tipe_termin' => 1, 'nominal' => 1000000, 'keterangan' => 'DP Renovasi Kantor B', 'due_date' => '2026-02-01', 'status_pembayaran' => 'Lunas'],
-            ['id_proyek' => 2, 'id_tipe_termin' => 3, 'nominal' => 1000000, 'keterangan' => 'Pelunasan Renovasi Kantor B', 'due_date' => '2026-02-02', 'status_pembayaran' => 'Belum Dibayar'],
-
-            // Proyek 3 (3 Termin - Contoh kosongan)
-            ['id_proyek' => 3, 'id_tipe_termin' => 1, 'nominal' => 0, 'keterangan' => 'Termin 1 (Belum Diatur)', 'due_date' => '2026-03-01', 'status_pembayaran' => 'Belum Dibayar'],
-            ['id_proyek' => 3, 'id_tipe_termin' => 2, 'nominal' => 0, 'keterangan' => 'Termin 2 (Belum Diatur)', 'due_date' => '2026-03-02', 'status_pembayaran' => 'Belum Dibayar'],
-            ['id_proyek' => 3, 'id_tipe_termin' => 3, 'nominal' => 0, 'keterangan' => 'Termin 3 (Belum Diatur)', 'due_date' => '2026-03-03', 'status_pembayaran' => 'Belum Dibayar'],
-        ]);
 
         Schema::create('kas', function (Blueprint $table) {
             $table->id('id_kas');
@@ -106,67 +94,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // Seeding Data Gabungan
-        DB::table('kas')->insert([
-            // Transaksi Masuk
-            [
-                'no_form' => 'KM-20260101-001',
-                'tanggal' => '2026-01-01',
-                'arus' => 'masuk',
-                'id_kategori' => 1, // Pembayaran Proyek - Termin
-                'id_proyek' => 1,
-                'id_vendor' => null,
-                'id_metode_bayar' => 1,
-                'id_termin_proyek' => 1,
-                'nominal' => 1000000,
-                'keterangan' => 'Kas masuk Proyek A',
-                'upload_bukti' => 'km-001-2026.jpg',
-                'created_at' => now(),
-            ],
-            [
-                'no_form' => 'KM-20260101-002',
-                'tanggal' => '2026-01-01',
-                'arus' => 'masuk',
-                'id_kategori' => 2, // Pembayaran Proyek - Termin
-                'id_proyek' => 2,
-                'id_vendor' => null,
-                'id_metode_bayar' => 1,
-                'id_termin_proyek' => 1,
-                'nominal' => 1000000,
-                'keterangan' => 'Kas masuk Proyek A',
-                'upload_bukti' => 'km-001-2026.jpg',
-                'created_at' => now(),
-            ],
-            // Transaksi Keluar
-            [
-                'no_form' => 'KK-20260101-001',
-                'tanggal' => '2026-01-01',
-                'arus' => 'keluar',
-                'id_kategori' => 5, // Pembelian Material (Sesuai ID di seeding kategori)
-                'id_proyek' => 1,
-                'id_vendor' => 1,
-                'id_metode_bayar' => 1,
-                'id_termin_proyek' => null,
-                'nominal' => 1000000,
-                'keterangan' => 'Kas keluar Proyek A',
-                'upload_bukti' => 'kk-001-2026.jpg',
-                'created_at' => now(),
-            ],
-            [
-                'no_form' => 'KK-20260101-002',
-                'tanggal' => '2026-01-01',
-                'arus' => 'keluar',
-                'id_kategori' => 5, // Pembelian Material (Sesuai ID di seeding kategori)
-                'id_proyek' => 2,
-                'id_vendor' => 1,
-                'id_metode_bayar' => 1,
-                'id_termin_proyek' => null,
-                'nominal' => 1000000,
-                'keterangan' => 'Kas keluar Proyek B',
-                'upload_bukti' => 'kk-001-2026.jpg',
-                'created_at' => now(),
-            ],
-        ]);
+
 
         Schema::create('rincian', function (Blueprint $table) {
             $table->id();
