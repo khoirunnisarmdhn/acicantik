@@ -187,7 +187,7 @@ return new class extends Migration {
         ]);
 
         // Tabel LRA
-        Schema::create('lra', function (Blueprint $table) {
+        Schema::create('struktur_lra', function (Blueprint $table) {
             $table->id('id_lra');
             $table->string('keterangan');
             $table->integer('persentase');
@@ -195,7 +195,7 @@ return new class extends Migration {
             $table->timestamps();
         });
 
-        DB::table('lra')->insert([
+        DB::table('struktur_lra')->insert([
             ['keterangan' => 'Biaya Material', 'persentase' => '15', 'id_kategori' => 5],
             ['keterangan' => 'Biaya Upah', 'persentase' => '20', 'id_kategori' => 6],
             ['keterangan' => 'Biaya Subkontraktor', 'persentase' => '30', 'id_kategori' => 7],
@@ -307,7 +307,7 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('lra');
+        Schema::dropIfExists('struktur_lra');
         Schema::dropIfExists('proyek');
         Schema::dropIfExists('pemberi_proyek');
         Schema::dropIfExists('vendor');

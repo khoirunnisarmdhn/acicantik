@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Lra extends Model
 {
-    protected $table = 'lra';
+    protected $table = 'struktur_lra';
     protected $primaryKey = 'id_lra';
 
     protected $fillable = ['keterangan', 'persentase', 'id_kategori'];

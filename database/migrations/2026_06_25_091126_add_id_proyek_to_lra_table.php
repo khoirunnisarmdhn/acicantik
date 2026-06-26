@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('lra', function (Blueprint $table) {
+        Schema::table('struktur_lra', function (Blueprint $table) {
             $table->foreignId('id_proyek')->nullable()->constrained('proyek', 'id_proyek')->cascadeOnDelete();
         });
     }
@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('lra', function (Blueprint $table) {
+        Schema::table('struktur_lra', function (Blueprint $table) {
             $table->dropForeign(['id_proyek']);
             $table->dropColumn('id_proyek');
         });

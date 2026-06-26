@@ -10,11 +10,11 @@ class LraController extends Controller
     public function index()
     {
         // Ambil data LRA beserta nama kategorinya
-        $lras = DB::table('lra')
-            ->leftJoin('kategori_kas', 'lra.id_kategori', '=', 'kategori_kas.id_kategori')
-            ->whereNull('lra.id_proyek')
-            ->select('lra.*', 'kategori_kas.nama_kategori')
-            ->orderBy('lra.id_lra', 'asc')
+        $lras = DB::table('struktur_lra')
+            ->leftJoin('kategori_kas', 'struktur_lra.id_kategori', '=', 'kategori_kas.id_kategori')
+            ->whereNull('struktur_lra.id_proyek')
+            ->select('struktur_lra.*', 'kategori_kas.nama_kategori')
+            ->orderBy('struktur_lra.id_lra', 'asc')
             ->get();
 
         // Ambil list kategori kas KELUAR dan PROYEK untuk dropdown
@@ -38,7 +38,7 @@ class LraController extends Controller
                 'id_kategori' => 'required|exists:kategori_kas,id_kategori',
             ]);
 
-            $totalSaatIni = DB::table('lra')->whereNull('id_proyek')->sum('persentase');
+            $totalSaatIni = DB::table('struktur_lra')->whereNull('id_proyek')->sum('persentase');
 
             // Validasi agar total tidak lebih dari 100%
             if (($totalSaatIni + $request->persentase) > 100) {
@@ -46,7 +46,7 @@ class LraController extends Controller
                 return back()->withInput()->with('error', 'Gagal! Total alokasi anggaran melebihi 100%. Sisa yang tersedia: ' . $sisa . '%');
             }
 
-            DB::table('lra')->insert([
+            DB::table('struktur_lra')->insert([
                 'keterangan' => $request->keterangan,
                 'persentase' => $request->persentase,
                 'id_kategori' => $request->id_kategori,
@@ -71,7 +71,7 @@ class LraController extends Controller
             ]);
 
             // Hitung total persentase selain data yang sedang diedit
-            $totalLainnya = DB::table('lra')
+            $totalLainnya = DB::table('struktur_lra')
                 ->where('id_lra', '!=', $id)
                 ->whereNull('id_proyek')
                 ->sum('persentase');
@@ -81,7 +81,7 @@ class LraController extends Controller
                 return back()->with('error', 'Gagal Update! Total melebihi 100%. Sisa kuota: ' . $sisa . '%');
             }
 
-            DB::table('lra')->where('id_lra', $id)->update([
+            DB::table('struktur_lra')->where('id_lra', $id)->update([
                 'keterangan' => $request->keterangan,
                 'persentase' => $request->persentase,
                 'id_kategori' => $request->id_kategori,
@@ -98,14 +98,14 @@ class LraController extends Controller
     {
         try {
             // Cari data berdasarkan ID
-            $lra = DB::table('lra')->where('id_lra', $id)->first();
+            $lra = DB::table('struktur_lra')->where('id_lra', $id)->first();
 
             if (!$lra) {
                 return redirect()->back()->with('error', 'Data tidak ditemukan atau sudah dihapus.');
             }
 
             // Proses hapus
-            DB::table('lra')->where('id_lra', $id)->delete();
+            DB::table('struktur_lra')->where('id_lra', $id)->delete();
 
             // Mengembalikan pesan sukses ke SweetAlert2 di Blade
             return redirect()->back()->with('success', 'Item Struktur LRA berhasil dihapus!');
@@ -134,11 +134,11 @@ class LraController extends Controller
                     $totalAnggaranProyek = $proyek->nilai_kontrak;
 
                     // Ambil Master LRA khusus proyek
-                    $masterLra = DB::table('lra')->where('id_proyek', $selectedProyek)->get();
+                    $masterLra = DB::table('struktur_lra')->where('id_proyek', $selectedProyek)->get();
 
                     // Fallback ke LRA global jika data khusus proyek belum ada
                     if ($masterLra->isEmpty()) {
-                        $masterLra = DB::table('lra')->whereNull('id_proyek')->get();
+                        $masterLra = DB::table('struktur_lra')->whereNull('id_proyek')->get();
                     }
 
                     foreach ($masterLra as $item) {
@@ -188,9 +188,9 @@ class LraController extends Controller
                     $nominalTargetLaba = ($targetLabaPersen / 100) * $nilaiKontrak;
 
                     // 2. AMBIL DETAIL RAB & REALISASI BIAYA PROYEK (5 Kategori LRA)
-                    $projectLras = DB::table('lra')->where('id_proyek', $selectedProyek)->get();
+                    $projectLras = DB::table('struktur_lra')->where('id_proyek', $selectedProyek)->get();
                     if ($projectLras->isEmpty()) {
-                        $projectLras = DB::table('lra')->whereNull('id_proyek')->get();
+                        $projectLras = DB::table('struktur_lra')->whereNull('id_proyek')->get();
                     }
 
                     $detailBiaya = [];

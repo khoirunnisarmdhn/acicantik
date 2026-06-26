@@ -180,13 +180,13 @@ class KasKeluarController extends Controller
             $warningMessage = null;
             if ($request->id_proyek) {
                 // Cek apakah kategori ini ada di master LRA khusus proyek ini, atau fallback ke global
-                $lraItem = DB::table('lra')
+                $lraItem = DB::table('struktur_lra')
                     ->where('id_proyek', $request->id_proyek)
                     ->where('id_kategori', $request->id_kategori)
                     ->first();
 
                 if (!$lraItem) {
-                    $lraItem = DB::table('lra')
+                    $lraItem = DB::table('struktur_lra')
                         ->whereNull('id_proyek')
                         ->where('id_kategori', $request->id_kategori)
                         ->first();

@@ -21,7 +21,7 @@ class ProyekController extends Controller
     public function create()
     {
         $pemberis = DB::table('pemberi_proyek')->get();
-        $globalLras = DB::table('lra')->whereNull('id_proyek')->get();
+        $globalLras = DB::table('struktur_lra')->whereNull('id_proyek')->get();
         return view('proyek.create', compact('pemberis', 'globalLras'));
     }
 
@@ -73,9 +73,9 @@ class ProyekController extends Controller
 
             // 2. Simpan alokasi anggaran khusus proyek di tabel lra
             foreach ($request->lra_persen as $id_lra_global => $persen) {
-                $globalLra = DB::table('lra')->where('id_lra', $id_lra_global)->whereNull('id_proyek')->first();
+                $globalLra = DB::table('struktur_lra')->where('id_lra', $id_lra_global)->whereNull('id_proyek')->first();
                 if ($globalLra) {
-                    DB::table('lra')->insert([
+                    DB::table('struktur_lra')->insert([
                         'keterangan' => $globalLra->keterangan,
                         'persentase' => $persen,
                         'id_kategori' => $globalLra->id_kategori,
@@ -186,11 +186,11 @@ class ProyekController extends Controller
         $pemberis = DB::table('pemberi_proyek')->get();
 
         // Ambil LRA khusus proyek ini
-        $projectLras = DB::table('lra')->where('id_proyek', $id)->get();
+        $projectLras = DB::table('struktur_lra')->where('id_proyek', $id)->get();
 
         // Fallback ke LRA global jika belum ada data LRA khusus proyek
         if ($projectLras->isEmpty()) {
-            $projectLras = DB::table('lra')->whereNull('id_proyek')->get();
+            $projectLras = DB::table('struktur_lra')->whereNull('id_proyek')->get();
         }
 
         return view('proyek.edit', compact('proyek', 'pemberis', 'projectLras'));
@@ -275,12 +275,12 @@ class ProyekController extends Controller
             ]);
 
             // 3. Update / Insert LRA khusus proyek
-            $hasLra = DB::table('lra')->where('id_proyek', $id)->exists();
+            $hasLra = DB::table('struktur_lra')->where('id_proyek', $id)->exists();
 
             if ($hasLra) {
                 // Jika sudah ada, update masing-masing LRA proyek
                 foreach ($request->lra_persen as $id_lra => $persen) {
-                    DB::table('lra')
+                    DB::table('struktur_lra')
                         ->where('id_lra', $id_lra)
                         ->where('id_proyek', $id)
                         ->update([
@@ -291,9 +291,9 @@ class ProyekController extends Controller
             } else {
                 // Jika belum ada (fallback dari global), buat baru
                 foreach ($request->lra_persen as $id_lra_global => $persen) {
-                    $globalLra = DB::table('lra')->where('id_lra', $id_lra_global)->whereNull('id_proyek')->first();
+                    $globalLra = DB::table('struktur_lra')->where('id_lra', $id_lra_global)->whereNull('id_proyek')->first();
                     if ($globalLra) {
-                        DB::table('lra')->insert([
+                        DB::table('struktur_lra')->insert([
                             'keterangan' => $globalLra->keterangan,
                             'persentase' => $persen,
                             'id_kategori' => $globalLra->id_kategori,
@@ -340,9 +340,9 @@ class ProyekController extends Controller
             }
 
             // Get LRA structure
-            $projectLras = DB::table('lra')->where('id_proyek', $id)->get();
+            $projectLras = DB::table('struktur_lra')->where('id_proyek', $id)->get();
             if ($projectLras->isEmpty()) {
-                $projectLras = DB::table('lra')->whereNull('id_proyek')->get();
+                $projectLras = DB::table('struktur_lra')->whereNull('id_proyek')->get();
             }
 
             $nilaiKontrak = $proyek->nilai_kontrak;
