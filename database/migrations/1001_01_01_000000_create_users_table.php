@@ -52,11 +52,10 @@ return new class extends Migration {
         });
 
         DB::table('users')->insert([
-            ['name' => 'superadmin', 'nama_lengkap' => 'Super Administrator', 'email' => 'superadmin@aci.com', 'id_level' => 1, 'password' => bcrypt('12341234'), 'created_at' => now()],
-            ['name' => 'admin',      'nama_lengkap' => 'Administrator',        'email' => 'admin@aci.com',      'id_level' => 1, 'password' => bcrypt('12341234'), 'created_at' => now()],
-            ['name' => 'administrasi', 'nama_lengkap' => 'Staff Administrasi', 'email' => 'administrasi@aci.com', 'id_level' => 2, 'password' => bcrypt('12341234'), 'created_at' => now()],
-            ['name' => 'keuangan',   'nama_lengkap' => 'Staff Keuangan',       'email' => 'keuangan@aci.com',   'id_level' => 2, 'password' => bcrypt('12341234'), 'created_at' => now()],
-            ['name' => 'pimpinan',   'nama_lengkap' => 'Pimpinan',             'email' => 'pimpinan@aci.com',   'id_level' => 2, 'password' => bcrypt('12341234'), 'created_at' => now()],
+            ['name' => 'admin',        'nama_lengkap' => 'Administrator',        'email' => 'admin@admin.com',               'id_level' => 1, 'password' => bcrypt('12341234'), 'created_at' => now()],
+            ['name' => 'keuangan',     'nama_lengkap' => 'Staff Keuangan',       'email' => 'finance@finance.com',           'id_level' => 2, 'password' => bcrypt('12341234'), 'created_at' => now()],
+            ['name' => 'administrasi', 'nama_lengkap' => 'Staff Administrasi',   'email' => 'administrasi@administrasi.com', 'id_level' => 2, 'password' => bcrypt('12341234'), 'created_at' => now()],
+            ['name' => 'pemimpin',     'nama_lengkap' => 'Pemimpin',             'email' => 'pemimpin@pemimpin.com',         'id_level' => 2, 'password' => bcrypt('12341234'), 'created_at' => now()],
         ]);
 
         // 3. Tabel Pivot (Biar 1 User bisa punya banyak akses)
@@ -68,11 +67,10 @@ return new class extends Migration {
         });
 
         DB::table('user_akses')->insert([
-            ['user_id' => 1, 'id_akses' => 1, 'created_at' => now(), 'updated_at' => now()], // superadmin -> Super Admin
-            ['user_id' => 2, 'id_akses' => 2, 'created_at' => now(), 'updated_at' => now()], // admin -> Admin
+            ['user_id' => 1, 'id_akses' => 2, 'created_at' => now(), 'updated_at' => now()], // admin -> Admin
+            ['user_id' => 2, 'id_akses' => 4, 'created_at' => now(), 'updated_at' => now()], // keuangan -> Keuangan
             ['user_id' => 3, 'id_akses' => 3, 'created_at' => now(), 'updated_at' => now()], // administrasi -> Administrasi
-            ['user_id' => 4, 'id_akses' => 4, 'created_at' => now(), 'updated_at' => now()], // keuangan -> Keuangan
-            ['user_id' => 5, 'id_akses' => 5, 'created_at' => now(), 'updated_at' => now()], // pimpinan -> Pimpinan
+            ['user_id' => 4, 'id_akses' => 5, 'created_at' => now(), 'updated_at' => now()], // pemimpin -> Pimpinan
         ]);
 
         // 4. Tabel Pendukung Laravel
