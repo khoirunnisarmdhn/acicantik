@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Black Box Testing - CV Zahfran Mulia Abadi</title>
+    <style>
+        body { font-family: "Times New Roman", Times, serif; font-size: 12pt; margin: 2.5cm 3cm 2.5cm 4cm; color: #000; }
+        h2, h3 { font-size: 13pt; margin-bottom: 4px; }
+        h3 { font-size: 12pt; }
+        p { text-align: justify; margin-bottom: 8px; }
+        .sub { font-weight: bold; margin-top: 20px; margin-bottom: 4px; font-size: 12pt; }
+        .subsub { font-weight: normal; font-style: italic; margin-top: 12px; margin-bottom: 4px; font-size: 12pt; }
+        .caption { text-align: center; font-size: 11pt; margin-bottom: 6px; margin-top: 8px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 11pt; }
+        th { background-color: #ffffff; border: 1px solid #000; padding: 6px 8px; text-align: center; font-weight: bold; }
+        td { border: 1px solid #000; padding: 6px 8px; vertical-align: top; }
+        .c { text-align: center; vertical-align: middle; }
+        .section-row td { font-weight: bold; background-color: #f2f2f2; }
+        ol { margin: 0; padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+<h2>4.3 Pengujian Luaran</h2>
+<p>Pengujian <em>Black Box</em> digunakan untuk mengevaluasi fungsi sistem informasi manajemen keuangan konstruksi CV Zahfran Mulia Abadi dari sisi pengguna. Setiap fitur diuji melalui skenario input tertentu, lalu hasil yang ditampilkan sistem dibandingkan dengan hasil yang seharusnya muncul. Pengujian ini dilakukan untuk memastikan bahwa fitur yang tersedia sudah sesuai dengan <em>requirement</em> dan hak akses pengguna. Dokumentasi hasil pengujian disajikan dalam bentuk tabel <em>test case</em>.</p>
+
+<!-- ============================================================ -->
+<div class="sub">4.3.1 Pengujian Berdasarkan Hak Akses Admin</div>
+
+<div class="subsub">1) <em>Login</em> Admin</div>
+<div class="caption">Tabel 4.1 Pengujian <em>Login</em> Admin</div>
+<table>
+    <thead><tr><th style="width:5%">No</th><th style="width:20%">Fungsi yang Diuji</th><th style="width:35%">Test Steps</th><th style="width:25%">Expected Result</th><th style="width:15%">Actual Result</th></tr></thead>
+    <tbody>
+        <tr class="section-row"><td colspan="5">Data Valid</td></tr>
+        <tr>
+            <td class="c">1</td>
+            <td><em>Login</em> Admin</td>
+            <td><ol><li>Buka halaman <em>login</em>.</li><li>Masukkan email "icha@admin.com".</li><li>Masukkan password "admin1234".</li><li>Klik tombol Masuk ke Sistem.</li></ol></td>
+            <td>Sistem mengarahkan pengguna ke halaman <em>dashboard</em></td>
+            <td class="c">Berhasil</td>
+        </tr>
+        <tr class="section-row"><td colspan="5">Data Invalid</td></tr>
+        <tr>
+            <td class="c">2</td>
+            <td><em>Login</em> Admin (password salah)</td>
+            <td><ol><li>Buka halaman <em>login</em>.</li><li>Masukkan email "icha@admin.com".</li><li>Masukkan password "salah123" (invalid).</li><li>Klik tombol Masuk ke Sistem.</li></ol></td>
+            <td>Muncul pesan error "These credentials do not match our records"</td>
+            <td class="c">Berhasil</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="subsub">2) Dashboard Admin</div>
+<div class="caption">Tabel 4.2 Pengujian Dashboard Admin</div>
+<table>
+    <thead><tr><th style="width:5%">No</th><th style="width:20%">Fungsi yang Diuji</th><th style="width:35%">Test Steps</th><th style="width:25%">Expected Result</th><th style="width:15%">Actual Result</th></tr></thead>
+    <tbody>
+        <tr class="section-row"><td colspan="5">Data Valid</td></tr>
+        <tr>
+            <td class="c">1</td>
+            <td>Menampilkan Dashboard</td>
+            <td><ol><li><em>Login</em> sebagai admin.</li><li>Buka halaman <em>dashboard</em>.</li></ol></td>
+            <td>Sistem menampilkan total proyek, proyek aktif, saldo kas, kas masuk bulan ini, kas keluar bulan ini, dan 5 transaksi terbaru</td>
+            <td class="c">Berhasil</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="subsub">3) Mengelola Data User</div>
+<div class="caption">Tabel 4.3 Pengujian Mengelola Data User</div>
+<table>
+    <thead><tr><th style="width:5%">No</th><th style="width:20%">Fungsi yang Diuji</th><th style="width:35%">Test Steps</th><th style="width:25%">Expected Result</th><th style="width:15%">Actual Result</th></tr></thead>
+    <tbody>
+        <tr class="section-row"><td colspan="5">Data Valid</td></tr>
+        <tr>
+            <td class="c">1</td>
+            <td>Tambah User</td>
+            <td><ol><li><em>Login</em> sebagai admin.</li><li>Pilih menu User Management → Data User.</li><li>Klik tombol "+ Tambah User".</li><li>Masukkan username, nama lengkap, email, pilih hak akses, masukkan password dan konfirmasi password.</li><li>Klik tombol Simpan.</li></ol></td>
+            <td>Sistem menyimpan data user baru beserta hak aksesnya dan menampilkan notifikasi sukses</td>
+            <td class="c">Berhasil</td>
+        </tr>
+        <tr>
+            <td class="c">2</td>
+            <td>Edit User</td>
+            <td><ol><li><em>Login</em> sebagai admin.</li><li>Pilih menu User Management → Data User.</li><li>Klik tombol edit pada salah satu user.</li><li>Ubah nama lengkap atau hak akses.</li><li>Klik tombol Simpan.</li></ol></td>
+            <td>Sistem memperbarui data user dan menampilkan notifikasi sukses</td>
+            <td class="c">Berhasil</td>
+        </tr>
+        <tr>
+            <td class="c">3</td>
+            <td>Hapus User</td>
+            <td><ol><li><em>Login</em> sebagai admin.</li><li>Pilih menu User Management → Data User.</li><li>Klik tombol hapus pada salah satu user.</li><li>Konfirmasi penghapusan.</li></ol></td>
+            <td>Sistem menghapus data user beserta hak aksesnya dan menampilkan notifikasi sukses</td>
+            <td class="c">Berhasil</td>
+        </tr>
+        <tr class="section-row"><td colspan="5">Data Invalid</td></tr>
+        <tr>
+            <td class="c">4</td>
+            <td>Tambah User (password tidak cocok)</td>
+            <td><ol><li><em>Login</em> sebagai admin.</li><li>Pilih menu User Management → Data User.</li><li>Klik tombol "+ Tambah User".</li><li>Masukkan password dan konfirmasi password yang berbeda.</li><li>Klik tombol Simpan.</li></ol></td>
+            <td>Sistem menampilkan notifikasi "konfirmasi password tidak cocok", data tidak tersimpan</td>
+            <td class="c">Berhasil</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="subsub">4) Mengelola Hak Akses</div>
+<div class="caption">Tabel 4.4 Pengujian Mengelola Hak Akses</div>
+<table>
+    <thead><tr><th style="width:5%">No</th><th style="width:20%">Fungsi yang Diuji</th><th style="width:35%">Test Steps</th><th style="width:25%">Expected Result</th><th style="width:15%">Actual Result</th></tr></thead>
+    <tbody>
+        <tr class="section-row"><td colspan="5">Data Valid</td></tr>
+        <tr>
+            <td class="c">1</td>
+            <td>Tambah Akses</td>
+            <td><ol><li><em>Login</em> sebagai admin.</li><li>Pilih menu User Management → Akses User.</li><li>Klik tombol tambah.</li><li>Masukkan nama akses dan pilih izin menu.</li><li>Klik tombol Simpan.</li></ol></td>
+            <td>Sistem menyimpan data hak akses baru dan menampilkan notifikasi sukses</td>
+            <td class="c">Berhasil</td>
+        </tr>
+        <tr>
+            <td class="c">2</td>
+            <td>Edit Akses</td>
+            <td><ol><li><em>Login</em> sebagai admin.</li><li>Pilih menu User Management → Akses User.</li><li>Klik tombol edit pada salah satu akses.</li><li>Ubah izin menu.</li><li>Klik tombol Simpan.</li></ol></td>
+            <td>Sistem memperbarui data akses dan menampilkan notifikasi sukses</td>
+            <td class="c">Berhasil</td>
+        </tr>
+        <tr class="section-row"><td colspan="5">Data Invalid</td></tr>
+        <tr>
+            <td class="c">3</td>
+            <td>Hapus Akses (masih digunakan user)</td>
+            <td><ol><li><em>Login</em> sebagai admin.</li><li>Pilih menu User Management → Akses User.</li><li>Klik tombol hapus pada akses yang masih dimiliki user.</li></ol></td>
+            <td>Sistem menampilkan pesan error "Akses ini masih digunakan oleh beberapa user"</td>
+            <td class="c">Berhasil</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="subsub">5) Mengelola Pemberi Proyek</div>
+<div class="caption">Tabel 4.5 Pengujian Mengelola Pemberi Proyek</div>
+<table>
+    <thead><tr><th style="width:5%">No</th><th style="width:20%">Fungsi yang Diuji</th><th style="width:35%">Test Steps</th><th style="width:25%">Expected Result</th><th style="width:15%">Actual Result</th></tr></thead>
+    <tbody>
+        <tr class="section-row"><td colspan="5">Data Valid</td></tr>
+        <tr>
+            <td class="c">1</td>
+            <td>Tambah Pemberi Proyek</td>
+            <td><ol><li><em>Login</em> sebagai admin.</li><li>Pilih menu Master Data → Proyek → Pemberi Proyek.</li><li>Klik tombol tambah.</li><li>Masukkan jenis, nama, penanggung jawab, alamat, no. telp, email.</li><li>Klik tombol Simpan.</li></ol></td>
+            <td>Sistem menyimpan data pemberi proyek dan menampilkan notifikasi sukses</td>
+            <td class="c">Berhasil</td>
+        </tr>
+        <tr>
+            <td class="c">2</td>
+            <td>Edit Pemberi Proyek</td>
+            <td><ol><li><em>Login</em> sebagai admin.</li><li>Pilih menu Pemberi Proyek.</li><li>Klik tombol edit.</li><li>Ubah data yang diperlukan.</li><li>Klik tombol Simpan.</li></ol></td>
+            <td>Sistem memperbarui data pemberi proyek dan menampilkan notifikasi sukses</td>
+            <td class="c">Berhasil</td>
+        </tr>
+        <tr>
+            <td class="c">3</td>
+            <td>Hapus Pemberi Proyek</td>
+            <td><ol><li><em>Login</em> sebagai admin.</li><li>Pilih menu Pemberi Proyek.</li><li>Klik tombol hapus, konfirmasi penghapusan.</li></ol></td>
+            <td>Sistem menghapus data pemberi proyek dan menampilkan notifikasi sukses</td>
+            <td class="c">Berhasil</td>
+        </tr>
+        <tr class="section-row"><td colspan="5">Data Invalid</td></tr>
+        <tr>
+            <td class="c">4</td>
+            <td>Tambah Pemberi Proyek (nama kosong)</td>
+            <td><ol><li><em>Login</em> sebagai admin.</li><li>Pilih menu Pemberi Proyek, klik tambah.</li><li>Biarkan field nama kosong.</li><li>Klik tombol Simpan.</li></ol></td>
+            <td>Sistem menampilkan notifikasi validasi, data tidak tersimpan</td>
+            <td class="c">Berhasil</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="subsub">6) Mengelola Data Proyek</div>
+<div class="caption">Tabel 4.6 Pengujian Mengelola Data Proyek</div>
+<table>
+    <thead><tr><th style="width:5%">No</th><th style="width:20%">Fungsi yang Diuji</th><th style="width:35%">Test Steps</th><th style="width:25%">Expected Result</th><th style="width:15%">Actual Result</th></tr></thead>
+    <tbody>
+        <tr class="section-row"><td colspan="5">Data Valid</td></tr>
+        <tr>
+            <td class="c">1</td>
+            <td>Tambah Proyek</td>
+            <td><ol><li><em>Login</em> sebagai admin.</li><li>Pilih menu Master Data → Proyek → Data Proyek.</li><li>Klik tombol tambah.</li><li>Masukkan nama, pilih client, nilai kontrak, jumlah termin (3 atau 4), tanggal mulai, tanggal selesai, status.</li><li>Klik tombol Simpan.</li></ol></td>
+            <td>Sistem menyimpan data proyek, termin otomatis terbuat (DP 20%, Termin, Termin Akhir 10%), notifikasi sukses muncul</td>
+            <td class="c">Berhasil</td>
+        </tr>
+        <tr>
+            <td class="c">2</td>
+            <td>Edit Proyek</td>
+            <td><ol><li><em>Login</em> sebagai admin.</li><li>Pilih menu Data Proyek.</li><li>Klik tombol edit.</li><li>Ubah status proyek.</li><li>Klik tombol Simpan.</li></ol></td>
+            <td>Sistem memperbarui data proyek dan menampilkan notifikasi sukses</td>
+            <td class="c">Berhasil</td>
+        </tr>
+        <tr>
+            <td class="c">3</td>
+            <td>Hapus Proyek</td>
+            <td><ol><li><em>Login</em> sebagai admin.</li><li>Pilih menu Data Proyek.</li><li>Klik tombol hapus, konfirmasi penghapusan.</li></ol></td>
+            <td>Sistem menghapus data proyek dan menampilkan notifikasi sukses</td>
+            <td class="c">Berhasil</td>
+        </tr>
+        <tr class="section-row"><td colspan="5">Data Invalid</td></tr>
+        <tr>
+            <td class="c">4</td>
+            <td>Tambah Proyek (jumlah termin tidak valid)</td>
+            <td><ol><li><em>Login</em> sebagai admin.</li><li>Pilih menu Data Proyek, klik tambah.</li><li>Masukkan jumlah termin = 2.</li><li>Klik tombol Simpan.</li></ol></td>
+            <td>Sistem menampilkan notifikasi validasi, data tidak tersimpan</td>
+            <td class="c">Berhasil</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="subsub">7) Mengelola Termin Proyek</div>
+<div class="caption">Tabel 4.7 Pengujian Mengelola Termin Proyek</div>
+<table>
+    <thead><tr><th style="width:5%">No</th><th style="width:20%">Fungsi yang Diuji</th><th style="width:35%">Test Steps</th><th style="width:25%">Expected Result</th><th style="width:15%">Actual Result</th></tr></thead>
+    <tbody>
+        <tr class="section-row"><td colspan="5">Data Valid</td></tr>
+        <tr>
+            <td class="c">1</td>
+            <td>Edit Termin Proyek</td>
+            <td><ol><li><em>Login</em> sebagai admin.</li><li>Pilih menu Master Data → Proyek → Termin Proyek.</li><li>Klik tombol edit pada salah satu termin.</li><li>Ubah due date dan keterangan.</li><li>Klik tombol Simpan.</li></ol></td>
+            <td>Sistem memperbarui data termin, nominal otomatis terhitung ulang dari persentase × nilai kontrak</td>
+            <td class="c">Berhasil</td>
+        </tr>
+        <tr class="section-row"><td colspan="5">Data Invalid</td></tr>
+        <tr>
+            <td class="c">2</td>
+            <td>Edit Termin (persentase melebihi 100%)</td>
+            <td><ol><li><em>Login</em> sebagai admin.</li><li>Pilih menu Termin Proyek.</li><li>Klik tombol edit.</li><li>Ubah persentase sehingga total termin dalam satu proyek melebihi 100%.</li><li>Klik tombol Simpan.</li></ol></td>
+            <td>Sistem menampilkan pesan error dan menginformasikan sisa kuota persentase yang tersedia</td>
+            <td class="c">Berhasil</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="subsub">8) Mengelola Vendor</div>
+<div class="caption">Tabel 4.8 Pengujian Mengelola Vendor</div>
+<table>
+    <thead><tr><th style="width:5%">No</th><th style="width:20%">Fungsi yang Diuji</th><th style="width:35%">Test Steps</th><th style="width:25%">Expected Result</th><th style="width:15%">Actual Result</th></tr></thead>
+    <tbody>
+        <tr class="section-row"><td colspan="5">Data Valid</td></tr>
+        <tr>
+            <td class="c">1</td>
+            <td>Tambah Vendor</td>
+            <td><ol><li><em>Login</em> sebagai admin.</li><li>Pilih menu Master Data → Vendor.</li><li>Klik tombol tambah.</li><li>Masukkan nama, penanggung jawab, alamat, no. telp, email.</li><li>Klik tombol Simpan.</li></ol></td>
+            <td>Sistem menyimpan data vendor dan menampilkan notifikasi sukses</td>
+            <td class="c">Berhasil</td>
+        </tr>
+        <tr>
+            <td class="c">2</td>
+            <td>Edit Vendor</td>
+            <td><ol><li><em>Login</em> sebagai admin.</li><li>Pilih menu Vendor.</li><li>Klik tombol edit, ubah data, klik Simpan.</li></ol></td>
+            <td>Sistem memperbarui data vendor dan menampilkan notifikasi sukses</td>
+            <td class="c">Berhasil</td>
+        </tr>
+        <tr>
+            <td class="c">3</td>
+            <td>Hapus Vendor</td>
+            <td><ol><li><em>Login</em> sebagai admin.</li><li>Pilih menu Vendor.</li><li>Klik tombol hapus, konfirmasi penghapusan.</li></ol></td>
+            <td>Sistem menghapus data vendor dan menampilkan notifikasi sukses</td>
+            <td class="c">Berhasil</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="subsub">9) Mengelola COA</div>
+<div class="caption">Tabel 4.9 Pengujian Mengelola COA</div>
+<table>
+    <thead><tr><th style="width:5%">No</th><th style="width:20%">Fungsi yang Diuji</th><th style="width:35%">Test Steps</th><th style="width:25%">Expected Result</th><th style="width:15%">Actual Result</th></tr></thead>
+    <tbody>
+        <tr class="section-row"><td colspan="5">Data Valid</td></tr>
+        <tr>
+            <td class="c">1</td>
+            <td>Tambah COA</td>
+            <td><ol><li><em>Login</em> sebagai admin.</li><li>Pilih menu Master Data → COA.</li><li>Klik tombol tambah.</li><li>Masukkan kode akun, nama akun, level, urutan.</li><li>Klik tombol Simpan.</li></ol></td>
+            <td>Sistem menyimpan data COA baru dan menampilkan notifikasi sukses</td>
+            <td class="c">Berhasil</td>
+        </tr>
+        <tr class="section-row"><td colspan="5">Data Invalid</td></tr>
+        <tr>
+            <td class="c">2</td>
+            <td>Tambah COA (kode akun duplikat)</td>
+            <td><ol><li><em>Login</em> sebagai admin.</li><li>Pilih menu COA, klik tambah.</li><li>Masukkan kode akun yang sudah ada.</li><li>Klik tombol Simpan.</li></ol></td>
+            <td>Sistem menampilkan pesan error "Kode Akun sudah terdaftar di sistem"</td>
+            <td class="c">Berhasil</td>
+        </tr>
+        <tr>
+            <td class="c">3</td>
+            <td>Hapus COA (masih memiliki sub-akun)</td>
+            <td><ol><li><em>Login</em> sebagai admin.</li><li>Pilih menu COA.</li><li>Klik tombol hapus pada akun yang masih memiliki sub-akun.</li></ol></td>
+            <td>Sistem menampilkan pesan error "Akun ini masih memiliki sub-akun. Hapus sub-akunnya dulu"</td>
+            <td class="c">Berhasil</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="subsub">10) Mengelola Kategori Kas</div>
+<div class="caption">Tabel 4.10 Pengujian Mengelola Kategori Kas</div>
+<table>
+    <thead><tr><th style="width:5%">No</th><th style="width:20%">Fungsi yang Diuji</th><th style="width:35%">Test Steps</th><th style="width:25%">Expected Result</th><th style="width:15%">Actual Result</th></tr></thead>
+    <tbody>
+        <tr class="section-row"><td colspan="5">Data Valid</td></tr>
+        <tr>
+            <td class="c">1</td>
+            <td>Tambah Kategori Kas</td>
+            <td><ol><li><em>Login</em> sebagai admin.</li><li>Pilih menu Master Data → Kategori Kas.</li><li>Klik tombol tambah.</li><li>Masukkan nama kategori, pilih arus, jenis, COA debit, dan COA kredit.</li><li>Klik tombol Simpan.</li></ol></td>
+            <td>Sistem menyimpan data kategori kas dan menampilkan notifikasi sukses</td>
+            <td class="c">Berhasil</td>
+        </tr>
+        <tr class="section-row"><td colspan="5">Data Invalid</td></tr>
+        <tr>
+            <td class="c">2</td>
+            <td>Hapus Kategori Kas (sudah digunakan transaksi)</td>
+            <td><ol><li><em>Login</em> sebagai admin.</li><li>Pilih menu Kategori Kas.</li><li>Klik tombol hapus pada kategori yang sudah digunakan di transaksi kas.</li></ol></td>
+            <td>Sistem menampilkan pesan error "Kategori tidak bisa dihapus karena sudah memiliki data transaksi"</td>
+            <td class="c">Berhasil</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="subsub">11) Mengelola Struktur LRA</div>
+<div class="caption">Tabel 4.11 Pengujian Mengelola Struktur LRA</div>
+<table>
+    <thead><tr><th style="width:5%">No</th><th style="width:20%">Fungsi yang Diuji</th><th style="width:35%">Test Steps</th><th style="width:25%">Expected Result</th><th style="width:15%">Actual Result</th></tr></thead>
+    <tbody>
+        <tr class="section-row"><td colspan="5">Data Valid</td></tr>
+        <tr>
+            <td class="c">1</td>
+            <td>Tambah Item LRA</td>
+            <td><ol><li><em>Login</em> sebagai admin.</li><li>Pilih menu Master Data → LRA.</li><li>Klik tombol tambah.</li><li>Masukkan keterangan, persentase, pilih kategori.</li><li>Klik tombol Simpan.</li></ol></td>
+            <td>Sistem menyimpan item LRA dan menampilkan notifikasi sukses</td>
+            <td class="c">Berhasil</td>
+        </tr>
+        <tr class="section-row"><td colspan="5">Data Invalid</td></tr>
+        <tr>
+            <td class="c">2</td>
+            <td>Tambah Item LRA (total melebihi 100%)</td>
+            <td><ol><li><em>Login</em> sebagai admin.</li><li>Pilih menu LRA, klik tambah.</li><li>Masukkan persentase yang menyebabkan total seluruh item LRA melebihi 100%.</li><li>Klik tombol Simpan.</li></ol></td>
+            <td>Sistem menampilkan pesan error dan menginformasikan sisa persentase yang tersedia</td>
+            <td class="c">Berhasil</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- ============================================================ -->
+<div class="sub">4.3.2 Pengujian Berdasarkan Hak Akses Administrasi</div>
+
+<div class="subsub">1) <em>Login</em> Administrasi</div>
+<div class="caption">Tabel 4.12 Pengujian <em>Login</em> Administrasi</div>
+<table>
+    <thead><tr><th style="width:5%">No</th><th style="width:20%">Fungsi yang Diuji</th><th style="width:35%">Test Steps</th><th style="width:25%">Expected Result</th><th style="width:15%">Actual Result</th></tr></thead>
+    <tbody>
+        <tr class="section-row"><td colspan="5">Data Valid</td></tr>
+        <tr>
+            <td class="c">1</td>
+            <td><em>Login</em> Administrasi</td>
+            <td><ol><li>Buka halaman <em>login</em>.</li><li>Masukkan email "icha@administrasi.com".</li><li>Masukkan password yang sesuai.</li><li>Klik tombol Masuk ke Sistem.</li></ol></td>
+            <td>Sistem mengarahkan pengguna ke halaman <em>dashboard</em>, menu laporan tidak ditampilkan</td>
+            <td class="c">Berhasil</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="subsub">2) Mengelola Transaksi Kas Masuk</div>
+<div class="caption">Tabel 4.13 Pengujian Mengelola Transaksi Kas Masuk (Administrasi)</div>
+<table>
+    <thead><tr><th style="width:5%">No</th><th style="width:20%">Fungsi yang Diuji</th><th style="width:35%">Test Steps</th><th style="width:25%">Expected Result</th><th style="width:15%">Actual Result</th></tr></thead>
+    <tbody>
+        <tr class="section-row"><td colspan="5">Data Valid</td></tr>
+        <tr>
+            <td class="c">1</td>
+            <td>Tambah Kas Masuk</td>
+            <td><ol><li><em>Login</em> sebagai administrasi.</li><li>Pilih menu Transaksi → Kas Masuk.</li><li>Klik tombol tambah.</li><li>Masukkan tanggal, pilih kategori, proyek, termin, metode bayar, nominal, keterangan, upload bukti.</li><li>Klik tombol Simpan.</li></ol></td>
+            <td>Sistem menyimpan transaksi kas masuk, status termin berubah "Lunas", jurnal otomatis terbuat</td>
+            <td class="c">Berhasil</td>
+        </tr>
+        <tr class="section-row"><td colspan="5">Data Invalid</td></tr>
+        <tr>
+            <td class="c">2</td>
+            <td>Tambah Kas Masuk (bukti tidak diupload)</td>
+            <td><ol><li><em>Login</em> sebagai administrasi.</li><li>Pilih menu Kas Masuk, klik tambah.</li><li>Isi semua field kecuali upload bukti.</li><li>Klik tombol Simpan.</li></ol></td>
+            <td>Sistem menampilkan notifikasi "bukti transfer wajib diupload", data tidak tersimpan</td>
+            <td class="c">Berhasil</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="subsub">3) Mengelola Transaksi Kas Keluar</div>
+<div class="caption">Tabel 4.14 Pengujian Mengelola Transaksi Kas Keluar (Administrasi)</div>
+<table>
+    <thead><tr><th style="width:5%">No</th><th style="width:20%">Fungsi yang Diuji</th><th style="width:35%">Test Steps</th><th style="width:25%">Expected Result</th><th style="width:15%">Actual Result</th></tr></thead>
+    <tbody>
+        <tr class="section-row"><td colspan="5">Data Valid</td></tr>
+        <tr>
+            <td class="c">1</td>
+            <td>Tambah Kas Keluar</td>
+            <td><ol><li><em>Login</em> sebagai administrasi.</li><li>Pilih menu Transaksi → Kas Keluar.</li><li>Klik tombol tambah.</li><li>Masukkan tanggal, pilih kategori, proyek, vendor, metode bayar, isi rincian item, keterangan.</li><li>Klik tombol Simpan.</li></ol></td>
+            <td>Sistem menyimpan transaksi kas keluar dengan total nominal rincian, jurnal otomatis terbuat</td>
+            <td class="c">Berhasil</td>
+        </tr>
+        <tr class="section-row"><td colspan="5">Data Invalid</td></tr>
+        <tr>
+            <td class="c">2</td>
+            <td>Tambah Kas Keluar (rincian kosong)</td>
+            <td><ol><li><em>Login</em> sebagai administrasi.</li><li>Pilih menu Kas Keluar, klik tambah.</li><li>Isi semua field tetapi biarkan tabel rincian kosong.</li><li>Klik tombol Simpan.</li></ol></td>
+            <td>Sistem menampilkan notifikasi "rincian minimal 1 item wajib diisi", data tidak tersimpan</td>
+            <td class="c">Berhasil</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- ============================================================ -->
+<div class="sub">4.3.3 Pengujian Berdasarkan Hak Akses Keuangan</div>
+
+<div class="subsub">1) <em>Login</em> Keuangan</div>
+<div class="caption">Tabel 4.15 Pengujian <em>Login</em> Keuangan</div>
+<table>
+    <thead><tr><th style="width:5%">No</th><th style="width:20%">Fungsi yang Diuji</th><th style="width:35%">Test Steps</th><th style="width:25%">Expected Result</th><th style="width:15%">Actual Result</th></tr></thead>
+    <tbody>
+        <tr class="section-row"><td colspan="5">Data Valid</td></tr>
+        <tr>
+            <td class="c">1</td>
+            <td><em>Login</em> Keuangan</td>
+            <td><ol><li>Buka halaman <em>login</em>.</li><li>Masukkan email "icha@finance.com".</li><li>Masukkan password yang sesuai.</li><li>Klik tombol Masuk ke Sistem.</li></ol></td>
+            <td>Sistem mengarahkan pengguna ke halaman <em>dashboard</em>, menu yang tampil hanya transaksi dan laporan</td>
+            <td class="c">Berhasil</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="subsub">2) Melihat Jurnal Umum</div>
+<div class="caption">Tabel 4.16 Pengujian Melihat Jurnal Umum (Keuangan)</div>
+<table>
+    <thead><tr><th style="width:5%">No</th><th style="width:20%">Fungsi yang Diuji</th><th style="width:35%">Test Steps</th><th style="width:25%">Expected Result</th><th style="width:15%">Actual Result</th></tr></thead>
+    <tbody>
+        <tr class="section-row"><td colspan="5">Data Valid</td></tr>
+        <tr>
+            <td class="c">1</td>
+            <td>Melihat Jurnal Umum</td>
+            <td><ol><li><em>Login</em> sebagai keuangan.</li><li>Pilih menu Laporan → Jurnal Umum.</li><li>Pilih filter bulan dan tahun.</li><li>Klik tombol Filter.</li></ol></td>
+            <td>Sistem menampilkan daftar jurnal dengan kolom tanggal, no referensi, kode akun, nama akun, debit, dan kredit sesuai periode</td>
+            <td class="c">Berhasil</td>
+        </tr>
+        <tr class="section-row"><td colspan="5">Data Invalid</td></tr>
+        <tr>
+            <td class="c">2</td>
+            <td>Filter periode tidak ada transaksi</td>
+            <td><ol><li><em>Login</em> sebagai keuangan.</li><li>Pilih menu Jurnal Umum.</li><li>Pilih bulan dan tahun yang tidak memiliki transaksi.</li><li>Klik tombol Filter.</li></ol></td>
+            <td>Sistem menampilkan pesan "Data jurnal periode tersebut tidak ditemukan"</td>
+            <td class="c">Berhasil</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="subsub">3) Melihat Laporan Realisasi Anggaran (LRA)</div>
+<div class="caption">Tabel 4.17 Pengujian Melihat Laporan LRA (Keuangan)</div>
+<table>
+    <thead><tr><th style="width:5%">No</th><th style="width:20%">Fungsi yang Diuji</th><th style="width:35%">Test Steps</th><th style="width:25%">Expected Result</th><th style="width:15%">Actual Result</th></tr></thead>
+    <tbody>
+        <tr class="section-row"><td colspan="5">Data Valid</td></tr>
+        <tr>
+            <td class="c">1</td>
+            <td>Melihat Laporan LRA</td>
+            <td><ol><li><em>Login</em> sebagai keuangan.</li><li>Pilih menu Laporan → LRA Proyek.</li><li>Pilih proyek dari dropdown.</li><li>Klik tombol Lihat Laporan.</li></ol></td>
+            <td>Sistem menampilkan tabel perbandingan anggaran vs realisasi per kategori dilengkapi kolom selisih</td>
+            <td class="c">Berhasil</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- ============================================================ -->
+<div class="sub">4.3.4 Pengujian Berdasarkan Hak Akses Pimpinan</div>
+
+<div class="subsub">1) <em>Login</em> Pimpinan</div>
+<div class="caption">Tabel 4.18 Pengujian <em>Login</em> Pimpinan</div>
+<table>
+    <thead><tr><th style="width:5%">No</th><th style="width:20%">Fungsi yang Diuji</th><th style="width:35%">Test Steps</th><th style="width:25%">Expected Result</th><th style="width:15%">Actual Result</th></tr></thead>
+    <tbody>
+        <tr class="section-row"><td colspan="5">Data Valid</td></tr>
+        <tr>
+            <td class="c">1</td>
+            <td><em>Login</em> Pimpinan</td>
+            <td><ol><li>Buka halaman <em>login</em>.</li><li>Masukkan email "icha@pimpinan.com".</li><li>Masukkan password yang sesuai.</li><li>Klik tombol Masuk ke Sistem.</li></ol></td>
+            <td>Sistem mengarahkan pengguna ke halaman <em>dashboard</em>, menu yang tampil hanya dashboard dan laporan</td>
+            <td class="c">Berhasil</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="subsub">2) Melihat Laporan Laba Rugi</div>
+<div class="caption">Tabel 4.19 Pengujian Melihat Laporan Laba Rugi (Pimpinan)</div>
+<table>
+    <thead><tr><th style="width:5%">No</th><th style="width:20%">Fungsi yang Diuji</th><th style="width:35%">Test Steps</th><th style="width:25%">Expected Result</th><th style="width:15%">Actual Result</th></tr></thead>
+    <tbody>
+        <tr class="section-row"><td colspan="5">Data Valid</td></tr>
+        <tr>
+            <td class="c">1</td>
+            <td>Melihat Laporan Laba Rugi</td>
+            <td><ol><li><em>Login</em> sebagai pimpinan.</li><li>Pilih menu Laporan → Laba Rugi Proyek.</li><li>Pilih proyek dari dropdown.</li><li>Klik tombol Lihat Laporan.</li></ol></td>
+            <td>Sistem menampilkan nilai kontrak, target laba, anggaran biaya, realisasi biaya, efisiensi biaya, dan total laba akhir proyek</td>
+            <td class="c">Berhasil</td>
+        </tr>
+        <tr>
+            <td class="c">2</td>
+            <td>Melihat Dashboard</td>
+            <td><ol><li><em>Login</em> sebagai pimpinan.</li><li>Buka halaman <em>dashboard</em>.</li></ol></td>
+            <td>Sistem menampilkan ringkasan total proyek, proyek aktif, saldo kas, dan transaksi terbaru</td>
+            <td class="c">Berhasil</td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

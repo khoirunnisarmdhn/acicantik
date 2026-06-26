@@ -21,20 +21,36 @@ class ProyekController extends Controller
     public function create()
     {
         $pemberis = DB::table('pemberi_proyek')->get();
-        return view('proyek.create', compact('pemberis'));
+        $globalLras = DB::table('lra')->whereNull('id_proyek')->get();
+        return view('proyek.create', compact('pemberis', 'globalLras'));
     }
 
     public function store(Request $request)
     {
+        // Bersihkan format titik/rupiah dari nilai_kontrak sebelum validasi
+        if ($request->has('nilai_kontrak')) {
+            $request->merge([
+                'nilai_kontrak' => str_replace('.', '', $request->nilai_kontrak)
+            ]);
+        }
+
         $request->validate([
             'nama' => 'required|max:150',
             'id_pemberi' => 'required',
             'nilai_kontrak' => 'required|numeric',
-            'jumlah_termin' => 'required|integer|min:3|max:4', // 3 atau 4 termin saja
+            'jumlah_termin' => 'required|integer|in:1,3,4', // 1, 3, atau 4 termin
             'tanggal_mulai' => 'required|date',
-            'tanggal_selesai' => 'required|date',
-            'status' => 'required'
+            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+            'target_laba' => 'required|integer|min:1|max:100',
+            'lra_persen' => 'required|array',
+            'lra_persen.*' => 'required|numeric|min:0|max:100',
         ]);
+
+        // Validasi penjumlahan target_laba + lra_persen = 100%
+        $sum = intval($request->target_laba) + array_sum(array_map('floatval', $request->lra_persen));
+        if ($sum != 100) {
+            return back()->withInput()->withErrors(['lra_persen' => 'Total persentase alokasi + target laba harus tepat 100%!']);
+        }
 
         // Gunakan Transaction supaya data konsisten
         DB::beginTransaction();
@@ -45,80 +61,112 @@ class ProyekController extends Controller
                 'nama' => $request->nama,
                 'id_pemberi' => $request->id_pemberi,
                 'nilai_kontrak' => $request->nilai_kontrak,
-                'target_laba' => $request->target_laba ?? 20,
+                'target_laba' => $request->target_laba,
                 'jumlah_termin' => $request->jumlah_termin,
                 'tanggal_mulai' => $request->tanggal_mulai,
                 'tanggal_selesai' => $request->tanggal_selesai,
-                'status' => $request->status,
+                'status' => 'aktif', // Default aktif saat pendaftaran
                 'deskripsi' => $request->deskripsi,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
 
-            // 2. Auto-generate termin dengan pola: DP (20%) + Termin Progress + Termin Akhir (10%)
-            // Pola default: DP=20%, sisanya dibagi rata ke termin tengah, termin akhir=10%
-            $jumlahTermin = $request->jumlah_termin;
-            $dpPersen = 20;
-            $akhirPersen = 10;
-            $sisaPersen = 100 - $dpPersen - $akhirPersen; // 70%
-            $jumlahTerminTengah = $jumlahTermin - 2; // Dikurangi DP dan Termin Akhir
-
-            // Ambil ID tipe termin
-            $tipeDP = DB::table('tipe_termin')->where('nama_termin', 'LIKE', '%DP%')->value('id_tipe_termin') ?? 1;
-            $tipeProgress = DB::table('tipe_termin')->where('nama_termin', 'LIKE', '%Progress%')->value('id_tipe_termin') ?? 2;
-            $tipeAkhir = DB::table('tipe_termin')->where('nama_termin', 'LIKE', '%Akhir%')->value('id_tipe_termin') ?? 3;
-
-            $nilaiKontrak = $request->nilai_kontrak;
-
-            // Insert DP
-            DB::table('termin_proyek')->insert([
-                'id_proyek' => $id_proyek,
-                'id_tipe_termin' => $tipeDP,
-                'persentase' => $dpPersen,
-                'progress_keterangan' => 'Sebelum kerja',
-                'nominal' => ($dpPersen / 100) * $nilaiKontrak,
-                'keterangan' => 'DP (Down Payment)',
-                'due_date' => $request->tanggal_mulai,
-                'status_pembayaran' => 'Belum Dibayar',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-
-            // Insert Termin Progress (tengah)
-            if ($jumlahTerminTengah > 0) {
-                $persenPerTermin = round($sisaPersen / $jumlahTerminTengah, 2);
-                $progressStep = round(75 / $jumlahTerminTengah); // Progress fisik dibagi rata sampai 75%
-
-                for ($i = 1; $i <= $jumlahTerminTengah; $i++) {
-                    $progressPersen = min($progressStep * $i, 75);
-                    DB::table('termin_proyek')->insert([
+            // 2. Simpan alokasi anggaran khusus proyek di tabel lra
+            foreach ($request->lra_persen as $id_lra_global => $persen) {
+                $globalLra = DB::table('lra')->where('id_lra', $id_lra_global)->whereNull('id_proyek')->first();
+                if ($globalLra) {
+                    DB::table('lra')->insert([
+                        'keterangan' => $globalLra->keterangan,
+                        'persentase' => $persen,
+                        'id_kategori' => $globalLra->id_kategori,
                         'id_proyek' => $id_proyek,
-                        'id_tipe_termin' => $tipeProgress,
-                        'persentase' => $persenPerTermin,
-                        'progress_keterangan' => 'Progress ' . $progressPersen . '%',
-                        'nominal' => ($persenPerTermin / 100) * $nilaiKontrak,
-                        'keterangan' => 'Termin ' . $i,
-                        'due_date' => $request->tanggal_selesai,
-                        'status_pembayaran' => 'Belum Dibayar',
                         'created_at' => now(),
                         'updated_at' => now(),
                     ]);
                 }
             }
 
-            // Insert Termin Akhir
-            DB::table('termin_proyek')->insert([
-                'id_proyek' => $id_proyek,
-                'id_tipe_termin' => $tipeAkhir,
-                'persentase' => $akhirPersen,
-                'progress_keterangan' => 'Finishing + Serah Terima',
-                'nominal' => ($akhirPersen / 100) * $nilaiKontrak,
-                'keterangan' => 'Termin Akhir',
-                'due_date' => $request->tanggal_selesai,
-                'status_pembayaran' => 'Belum Dibayar',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+            // 3. Auto-generate termin
+            $jumlahTermin = $request->jumlah_termin;
+            $nilaiKontrak = $request->nilai_kontrak;
+
+            if ($jumlahTermin == 1) {
+                // Ambil ID tipe termin untuk Pelunasan / Akhir
+                $tipeAkhir = DB::table('tipe_termin')->where('nama_termin', 'LIKE', '%Akhir%')->value('id_tipe_termin') ?? 3;
+                DB::table('termin_proyek')->insert([
+                    'id_proyek' => $id_proyek,
+                    'id_tipe_termin' => $tipeAkhir,
+                    'persentase' => 100,
+                    'progress_keterangan' => 'Pelunasan Sekaligus',
+                    'nominal' => $nilaiKontrak,
+                    'keterangan' => 'Pembayaran Penuh (Full Payment)',
+                    'due_date' => $request->tanggal_selesai,
+                    'status_pembayaran' => 'Belum Dibayar',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            } else {
+                // Pola default: DP=20%, sisanya dibagi rata ke termin tengah, termin akhir=10%
+                $dpPersen = 20;
+                $akhirPersen = 10;
+                $sisaPersen = 100 - $dpPersen - $akhirPersen; // 70%
+                $jumlahTerminTengah = $jumlahTermin - 2; // Dikurangi DP dan Termin Akhir
+
+                // Ambil ID tipe termin
+                $tipeDP = DB::table('tipe_termin')->where('nama_termin', 'LIKE', '%DP%')->value('id_tipe_termin') ?? 1;
+                $tipeProgress = DB::table('tipe_termin')->where('nama_termin', 'LIKE', '%Progress%')->value('id_tipe_termin') ?? 2;
+                $tipeAkhir = DB::table('tipe_termin')->where('nama_termin', 'LIKE', '%Akhir%')->value('id_tipe_termin') ?? 3;
+
+                // Insert DP
+                DB::table('termin_proyek')->insert([
+                    'id_proyek' => $id_proyek,
+                    'id_tipe_termin' => $tipeDP,
+                    'persentase' => $dpPersen,
+                    'progress_keterangan' => 'Sebelum kerja',
+                    'nominal' => ($dpPersen / 100) * $nilaiKontrak,
+                    'keterangan' => 'DP (Down Payment)',
+                    'due_date' => $request->tanggal_mulai,
+                    'status_pembayaran' => 'Belum Dibayar',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+
+                // Insert Termin Progress (tengah)
+                if ($jumlahTerminTengah > 0) {
+                    $persenPerTermin = round($sisaPersen / $jumlahTerminTengah, 2);
+                    $progressStep = round(75 / $jumlahTerminTengah); // Progress fisik dibagi rata sampai 75%
+
+                    for ($i = 1; $i <= $jumlahTerminTengah; $i++) {
+                        $progressPersen = min($progressStep * $i, 75);
+                        DB::table('termin_proyek')->insert([
+                            'id_proyek' => $id_proyek,
+                            'id_tipe_termin' => $tipeProgress,
+                            'persentase' => $persenPerTermin,
+                            'progress_keterangan' => 'Progress ' . $progressPersen . '%',
+                            'nominal' => ($persenPerTermin / 100) * $nilaiKontrak,
+                            'keterangan' => 'Termin ' . $i,
+                            'due_date' => $request->tanggal_selesai,
+                            'status_pembayaran' => 'Belum Dibayar',
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ]);
+                    }
+                }
+
+                // Insert Termin Akhir
+                DB::table('termin_proyek')->insert([
+                    'id_proyek' => $id_proyek,
+                    'id_tipe_termin' => $tipeAkhir,
+                    'persentase' => $akhirPersen,
+                    'progress_keterangan' => 'Finishing + Serah Terima',
+                    'nominal' => ($akhirPersen / 100) * $nilaiKontrak,
+                    'keterangan' => 'Termin Akhir',
+                    'due_date' => $request->tanggal_selesai,
+                    'status_pembayaran' => 'Belum Dibayar',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
 
             DB::commit();
             return redirect()->route('proyek.index')->with('success', 'Proyek dan ' . $request->jumlah_termin . ' termin berhasil didaftarkan!');
@@ -132,9 +180,20 @@ class ProyekController extends Controller
     public function edit($id)
     {
         $proyek = DB::table('proyek')->where('id_proyek', $id)->first();
+        if (!$proyek) {
+            return redirect()->route('proyek.index')->with('error', 'Proyek tidak ditemukan!');
+        }
         $pemberis = DB::table('pemberi_proyek')->get();
 
-        return view('proyek.edit', compact('proyek', 'pemberis'));
+        // Ambil LRA khusus proyek ini
+        $projectLras = DB::table('lra')->where('id_proyek', $id)->get();
+
+        // Fallback ke LRA global jika belum ada data LRA khusus proyek
+        if ($projectLras->isEmpty()) {
+            $projectLras = DB::table('lra')->whereNull('id_proyek')->get();
+        }
+
+        return view('proyek.edit', compact('proyek', 'pemberis', 'projectLras'));
     }
 
     public function show($id)
@@ -188,14 +247,26 @@ class ProyekController extends Controller
                 'id_pemberi' => 'required',
                 'tanggal_mulai' => 'required|date',
                 'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai', // Tambah pengaman tanggal
-                'status' => 'required'
+                'status' => 'required',
+                'target_laba' => 'required|integer|min:1|max:100',
+                'lra_persen' => 'required|array',
+                'lra_persen.*' => 'required|numeric|min:0|max:100',
             ]);
+
+            // Validasi penjumlahan target_laba + lra_persen = 100%
+            $sum = intval($request->target_laba) + array_sum(array_map('floatval', $request->lra_persen));
+            if ($sum != 100) {
+                return back()->withInput()->withErrors(['lra_persen' => 'Total persentase alokasi + target laba harus tepat 100%!']);
+            }
+
+            DB::beginTransaction();
 
             // 2. Eksekusi Update
             // Data nilai_kontrak dan jumlah_termin tidak ikut di-update agar tetap konsisten dengan kontrak awal
             DB::table('proyek')->where('id_proyek', $id)->update([
                 'nama' => $request->nama,
                 'id_pemberi' => $request->id_pemberi,
+                'target_laba' => $request->target_laba,
                 'tanggal_mulai' => $request->tanggal_mulai,
                 'tanggal_selesai' => $request->tanggal_selesai,
                 'status' => $request->status,
@@ -203,13 +274,47 @@ class ProyekController extends Controller
                 'updated_at' => now(),
             ]);
 
+            // 3. Update / Insert LRA khusus proyek
+            $hasLra = DB::table('lra')->where('id_proyek', $id)->exists();
+
+            if ($hasLra) {
+                // Jika sudah ada, update masing-masing LRA proyek
+                foreach ($request->lra_persen as $id_lra => $persen) {
+                    DB::table('lra')
+                        ->where('id_lra', $id_lra)
+                        ->where('id_proyek', $id)
+                        ->update([
+                            'persentase' => $persen,
+                            'updated_at' => now(),
+                        ]);
+                }
+            } else {
+                // Jika belum ada (fallback dari global), buat baru
+                foreach ($request->lra_persen as $id_lra_global => $persen) {
+                    $globalLra = DB::table('lra')->where('id_lra', $id_lra_global)->whereNull('id_proyek')->first();
+                    if ($globalLra) {
+                        DB::table('lra')->insert([
+                            'keterangan' => $globalLra->keterangan,
+                            'persentase' => $persen,
+                            'id_kategori' => $globalLra->id_kategori,
+                            'id_proyek' => $id,
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ]);
+                    }
+                }
+            }
+
+            DB::commit();
             return redirect()->route('proyek.index')->with('success', 'Data proyek berhasil diperbarui!');
 
         } catch (\Illuminate\Validation\ValidationException $e) {
+            DB::rollBack();
             // Jika validasi gagal (misal tanggal tidak sesuai)
             return back()->withErrors($e->errors())->withInput();
 
         } catch (\Exception $e) {
+            DB::rollBack();
             // Jika ada error database atau sistem, munculkan SweetAlert2 dengan pesan aslinya
             return back()->with('error', 'Gagal update: ' . $e->getMessage())->withInput();
         }
@@ -219,5 +324,52 @@ class ProyekController extends Controller
     {
         DB::table('proyek')->where('id_proyek', $id)->delete();
         return redirect()->route('proyek.index')->with('success', 'Data proyek berhasil dihapus!');
+    }
+
+    public function printRab($id)
+    {
+        try {
+            $proyek = DB::table('proyek')
+                ->leftJoin('pemberi_proyek', 'proyek.id_pemberi', '=', 'pemberi_proyek.id_pemberi')
+                ->where('proyek.id_proyek', $id)
+                ->select('proyek.*', 'pemberi_proyek.nama as nama_pemberi', 'pemberi_proyek.alamat as alamat_pemberi', 'pemberi_proyek.penanggung_jawab as pj_pemberi')
+                ->first();
+
+            if (!$proyek) {
+                return redirect()->back()->with('error', 'Proyek tidak ditemukan.');
+            }
+
+            // Get LRA structure
+            $projectLras = DB::table('lra')->where('id_proyek', $id)->get();
+            if ($projectLras->isEmpty()) {
+                $projectLras = DB::table('lra')->whereNull('id_proyek')->get();
+            }
+
+            $nilaiKontrak = $proyek->nilai_kontrak;
+            $targetLabaPersen = $proyek->target_laba;
+            $nominalTargetLaba = ($targetLabaPersen / 100) * $nilaiKontrak;
+
+            $items = [];
+            foreach ($projectLras as $item) {
+                $nominalItem = ($item->persentase / 100) * $nilaiKontrak;
+                $items[] = (object)[
+                    'keterangan' => $item->keterangan,
+                    'persentase' => $item->persentase,
+                    'nominal' => $nominalItem
+                ];
+            }
+
+            // Add Markup row
+            $items[] = (object)[
+                'keterangan' => 'Jasa Management & Profit Margin (Markup)',
+                'persentase' => $targetLabaPersen,
+                'nominal' => $nominalTargetLaba
+            ];
+
+            return view('proyek.rab', compact('proyek', 'items'));
+
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal memproses cetak RAB: ' . $e->getMessage());
+        }
     }
 }

@@ -77,6 +77,13 @@ class KasMasukController extends Controller
 
     public function store(Request $request)
     {
+        // Bersihkan format titik/rupiah dari nominal sebelum validasi
+        if ($request->has('nominal')) {
+            $request->merge([
+                'nominal' => str_replace('.', '', $request->nominal)
+            ]);
+        }
+
         // Validasi diperketat agar tidak lolos data sampah
         $request->validate([
             'no_form' => 'required|unique:kas,no_form',
@@ -133,20 +140,24 @@ class KasMasukController extends Controller
 
                 // --- TAMBAHAN: CEK STATUS PROYEK ---
                 if ($request->id_proyek) {
-                    // Hitung termin yang BELUM lunas pada proyek ini
-                    $terminBelumLunas = DB::table('termin_proyek')
-                        ->where('id_proyek', $request->id_proyek)
-                        ->where('status_pembayaran', '!=', 'Lunas')
-                        ->count();
-
-                    // Kalau sudah lunas semua (count = 0), update status proyek jadi Selesai
-                    if ($terminBelumLunas === 0) {
-                        DB::table('proyek')
+                    $proyek = DB::table('proyek')->where('id_proyek', $request->id_proyek)->first();
+                    
+                    if ($proyek && $proyek->jumlah_termin > 1) {
+                        // Hitung termin yang BELUM lunas pada proyek ini (Hanya untuk Multi-Termin)
+                        $terminBelumLunas = DB::table('termin_proyek')
                             ->where('id_proyek', $request->id_proyek)
-                            ->update([
-                                'status' => 'Selesai', // Pastikan nama kolom 'status' sesuai di tabel proyek lo
-                                'updated_at' => now()
-                            ]);
+                            ->where('status_pembayaran', '!=', 'Lunas')
+                            ->count();
+
+                        // Kalau sudah lunas semua (count = 0), update status proyek jadi Selesai
+                        if ($terminBelumLunas === 0) {
+                            DB::table('proyek')
+                                ->where('id_proyek', $request->id_proyek)
+                                ->update([
+                                    'status' => 'Selesai',
+                                    'updated_at' => now()
+                                ]);
+                        }
                     }
                 }
                 // -----------------------------------
@@ -246,8 +257,9 @@ class KasMasukController extends Controller
     {
         $termin = DB::table('termin_proyek')
             ->join('tipe_termin', 'termin_proyek.id_tipe_termin', '=', 'tipe_termin.id_tipe_termin')
-            ->where('id_proyek', $id)
-            ->select('termin_proyek.*', 'tipe_termin.nama_termin')
+            ->join('proyek', 'termin_proyek.id_proyek', '=', 'proyek.id_proyek')
+            ->where('termin_proyek.id_proyek', $id)
+            ->select('termin_proyek.*', 'tipe_termin.nama_termin', 'proyek.nilai_kontrak', 'proyek.jumlah_termin')
             ->get();
 
         return response()->json($termin);

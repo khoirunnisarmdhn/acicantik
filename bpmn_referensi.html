@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Referensi BPMN - CV Zahfran Mulia Abadi</title>
+    <style>
+        body { font-family: "Times New Roman", serif; font-size: 11pt; margin: 1.5cm 2cm; color: #000; }
+        h1 { text-align: center; font-size: 14pt; margin-bottom: 4px; }
+        h2 { font-size: 13pt; margin-top: 30px; margin-bottom: 6px; border-bottom: 2px solid #000; padding-bottom: 4px; }
+        h3 { font-size: 12pt; margin-top: 16px; margin-bottom: 4px; color: #1a3c6b; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 10.5pt; }
+        th { background-color: #1a3c6b; color: white; border: 1px solid #000; padding: 6px 10px; text-align: left; }
+        td { border: 1px solid #000; padding: 6px 10px; vertical-align: top; }
+        .lane { background-color: #dce6f1; font-weight: bold; }
+        .task { background-color: #fff; }
+        .gateway { background-color: #fffacd; font-style: italic; }
+        .system { background-color: #e2efda; }
+        .note { background-color: #fff2cc; border-left: 4px solid #f4b942; padding: 8px 12px; margin: 10px 0; font-size: 10pt; }
+        .aktor-table th { background-color: #2e5fa3; }
+        .no { text-align: center; width: 4%; }
+        .step-no { font-weight: bold; color: #1a3c6b; }
+        .arrow { text-align: center; color: #666; }
+    </style>
+</head>
+<body>
+
+<h1>Referensi Alur BPMN<br>Proses Kas Masuk &amp; Kas Keluar<br>CV Zahfran Mulia Abadi</h1>
+
+<!-- ============================================================ -->
+<h2>A. Daftar Aktor (Lane)</h2>
+
+<h3>1. Kas Masuk</h3>
+<table class="aktor-table">
+    <thead><tr><th style="width:20%">Aktor / Lane</th><th>Peran dalam Proses</th></tr></thead>
+    <tbody>
+        <tr><td><b>Klien</b></td><td>Melakukan pembayaran proyek berdasarkan termin yang jatuh tempo, mengirimkan bukti transfer ke perusahaan</td></tr>
+        <tr><td><b>Keuangan</b></td><td>Menerima bukti transfer, memverifikasi kesesuaian nominal dengan termin, mencatat transaksi kas masuk di sistem</td></tr>
+        <tr><td><b>Sistem (Aplikasi)</b></td><td>Otomatis mengupdate status termin menjadi "Lunas", membuat jurnal debit-kredit, mengecek apakah semua termin sudah lunas</td></tr>
+        <tr><td><b>Pimpinan</b></td><td>Menerima dan mereview laporan keuangan yang di-generate sistem</td></tr>
+    </tbody>
+</table>
+
+<h3>2. Kas Keluar</h3>
+<table class="aktor-table">
+    <thead><tr><th style="width:20%">Aktor / Lane</th><th>Peran dalam Proses</th></tr></thead>
+    <tbody>
+        <tr><td><b>Tim Proyek / Bagian Proyek</b></td><td>Mengidentifikasi kebutuhan dana, mengisi Form Permintaan Dana (FPD), mengirimkan ke Administrasi</td></tr>
+        <tr><td><b>Administrasi</b></td><td>Menerima FPD, memeriksa kelengkapan data, meneruskan ke Keuangan jika lengkap</td></tr>
+        <tr><td><b>Keuangan</b></td><td>Menerima dan memverifikasi FPD, mengajukan persetujuan ke Pimpinan, mencatat kas keluar di sistem beserta rincian item</td></tr>
+        <tr><td><b>Pimpinan</b></td><td>Menerima pengajuan persetujuan dana, memutuskan disetujui atau tidak</td></tr>
+        <tr><td><b>Vendor</b></td><td>Menerima pembayaran dari perusahaan</td></tr>
+        <tr><td><b>Sistem (Aplikasi)</b></td><td>Otomatis generate jurnal debit-kredit, mengecek apakah pengeluaran melebihi anggaran LRA, menampilkan peringatan jika melebihi</td></tr>
+    </tbody>
+</table>
+
+<!-- ============================================================ -->
+<h2>B. Alur BPMN — Proses Kas Masuk</h2>
+
+<div class="note">
+    <b>Start Event:</b> Tanggal jatuh tempo termin tiba → Klien melakukan pembayaran
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th class="no">No</th>
+            <th style="width:18%">Lane</th>
+            <th style="width:25%">Task / Gateway</th>
+            <th style="width:30%">Keterangan</th>
+            <th style="width:20%">Lanjut ke</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="no">1</td>
+            <td class="lane">Klien</td>
+            <td class="task">Melakukan pembayaran proyek</td>
+            <td>Klien membayar sesuai nominal termin yang disepakati</td>
+            <td>→ Task 2</td>
+        </tr>
+        <tr>
+            <td class="no">2</td>
+            <td class="lane">Klien</td>
+            <td class="task">Mengirim bukti transfer ke perusahaan</td>
+            <td>Klien mengirimkan foto/scan bukti transfer ke bagian keuangan</td>
+            <td>→ Task 3</td>
+        </tr>
+        <tr>
+            <td class="no">3</td>
+            <td class="lane">Keuangan</td>
+            <td class="task">Menerima bukti pembayaran</td>
+            <td>Keuangan menerima bukti transfer dari klien</td>
+            <td>→ Task 4</td>
+        </tr>
+        <tr>
+            <td class="no">4</td>
+            <td class="lane">Keuangan</td>
+            <td class="task">Verifikasi pembayaran</td>
+            <td>Keuangan mengecek kesesuaian nominal dengan termin yang ada di sistem</td>
+            <td>→ Gateway 5</td>
+        </tr>
+        <tr>
+            <td class="no">5</td>
+            <td class="lane">Keuangan</td>
+            <td class="gateway">⬦ Apakah valid? (Gateway)</td>
+            <td>Cek apakah nominal dan data sudah sesuai</td>
+            <td>YES → Task 6<br>NO → Kembali ke Klien (Task 2)</td>
+        </tr>
+        <tr>
+            <td class="no">6</td>
+            <td class="lane">Keuangan</td>
+            <td class="task">Mencatat Kas Masuk di Sistem</td>
+            <td>Keuangan membuka form Kas Masuk, mengisi: tanggal, kategori, proyek, pilih termin, nominal, metode bayar, upload bukti, keterangan → klik Simpan</td>
+            <td>→ Task 7 (Sistem)</td>
+        </tr>
+        <tr>
+            <td class="no">7</td>
+            <td class="lane" style="background:#e2efda;">Sistem</td>
+            <td class="system">Update Status Termin → "Lunas"</td>
+            <td>Sistem otomatis mengubah status termin yang dipilih menjadi "Lunas"</td>
+            <td>→ Task 8</td>
+        </tr>
+        <tr>
+            <td class="no">8</td>
+            <td class="lane" style="background:#e2efda;">Sistem</td>
+            <td class="system">Generate Jurnal Otomatis</td>
+            <td>Sistem membuat 2 baris jurnal: Debit (Kas/Bank) dan Kredit (Piutang Proyek) berdasarkan mapping COA kategori</td>
+            <td>→ Gateway 9</td>
+        </tr>
+        <tr>
+            <td class="no">9</td>
+            <td class="lane" style="background:#e2efda;">Sistem</td>
+            <td class="gateway">⬦ Apakah semua termin lunas? (Gateway)</td>
+            <td>Sistem mengecek sisa termin yang belum lunas di proyek tersebut</td>
+            <td>YES → Task 10 (Update proyek)<br>NO → Task 11</td>
+        </tr>
+        <tr>
+            <td class="no">10</td>
+            <td class="lane" style="background:#e2efda;">Sistem</td>
+            <td class="system">Update Status Proyek → "Selesai"</td>
+            <td>Sistem otomatis mengubah status proyek menjadi "Selesai"</td>
+            <td>→ Task 11</td>
+        </tr>
+        <tr>
+            <td class="no">11</td>
+            <td class="lane" style="background:#e2efda;">Sistem</td>
+            <td class="system">Generate Laporan (LRA &amp; Laba Rugi)</td>
+            <td>Data tersimpan, laporan dapat diakses melalui menu Laporan</td>
+            <td>→ Task 12</td>
+        </tr>
+        <tr>
+            <td class="no">12</td>
+            <td class="lane">Pimpinan</td>
+            <td class="task">Menerima &amp; Mereview Laporan</td>
+            <td>Pimpinan membuka menu Laporan → LRA Proyek / Laba Rugi untuk memonitor keuangan</td>
+            <td>→ End Event</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- ============================================================ -->
+<h2>C. Alur BPMN — Proses Kas Keluar</h2>
+
+<div class="note">
+    <b>Start Event:</b> Bagian proyek mengidentifikasi kebutuhan dana operasional atau pembelian material
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th class="no">No</th>
+            <th style="width:18%">Lane</th>
+            <th style="width:25%">Task / Gateway</th>
+            <th style="width:30%">Keterangan</th>
+            <th style="width:20%">Lanjut ke</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="no">1</td>
+            <td class="lane">Tim Proyek</td>
+            <td class="task">Mengidentifikasi kebutuhan dana proyek</td>
+            <td>Tim proyek menghitung kebutuhan material/operasional yang diperlukan</td>
+            <td>→ Task 2</td>
+        </tr>
+        <tr>
+            <td class="no">2</td>
+            <td class="lane">Tim Proyek</td>
+            <td class="task">Mengisi Form Permintaan Dana (FPD)</td>
+            <td>Mengisi detail kebutuhan: jenis pengeluaran, rincian item, nominal, keperluan</td>
+            <td>→ Task 3</td>
+        </tr>
+        <tr>
+            <td class="no">3</td>
+            <td class="lane">Tim Proyek</td>
+            <td class="task">Mengirimkan FPD ke Administrasi</td>
+            <td>FPD diserahkan ke bagian Administrasi untuk diperiksa</td>
+            <td>→ Task 4</td>
+        </tr>
+        <tr>
+            <td class="no">4</td>
+            <td class="lane">Administrasi</td>
+            <td class="task">Menerima FPD</td>
+            <td>Administrasi menerima dokumen FPD dari Tim Proyek</td>
+            <td>→ Task 5</td>
+        </tr>
+        <tr>
+            <td class="no">5</td>
+            <td class="lane">Administrasi</td>
+            <td class="task">Memeriksa kelengkapan FPD</td>
+            <td>Administrasi mengecek apakah semua data sudah lengkap dan sesuai</td>
+            <td>→ Gateway 6</td>
+        </tr>
+        <tr>
+            <td class="no">6</td>
+            <td class="lane">Administrasi</td>
+            <td class="gateway">⬦ Apakah lengkap? (Gateway)</td>
+            <td>Cek kelengkapan dokumen FPD</td>
+            <td>YES → Task 7<br>NO → Kembali ke Tim Proyek (Task 2)</td>
+        </tr>
+        <tr>
+            <td class="no">7</td>
+            <td class="lane">Administrasi</td>
+            <td class="task">Mengirimkan FPD ke Bagian Keuangan</td>
+            <td>FPD yang sudah lengkap diteruskan ke Keuangan untuk diverifikasi</td>
+            <td>→ Task 8</td>
+        </tr>
+        <tr>
+            <td class="no">8</td>
+            <td class="lane">Keuangan</td>
+            <td class="task">Menerima dan memverifikasi FPD</td>
+            <td>Keuangan mengecek ketersediaan anggaran dan kesesuaian permintaan dengan rencana proyek</td>
+            <td>→ Gateway 9</td>
+        </tr>
+        <tr>
+            <td class="no">9</td>
+            <td class="lane">Keuangan</td>
+            <td class="gateway">⬦ Apakah permintaan dana valid? (Gateway)</td>
+            <td>Keuangan menilai apakah permintaan wajar dan sesuai kebutuhan proyek</td>
+            <td>YES → Task 10<br>NO → Kembali ke Tim Proyek (Task 2)</td>
+        </tr>
+        <tr>
+            <td class="no">10</td>
+            <td class="lane">Keuangan</td>
+            <td class="task">Mengajukan persetujuan dana ke Pimpinan</td>
+            <td>Keuangan mengajukan FPD yang telah diverifikasi kepada Pimpinan untuk mendapat persetujuan</td>
+            <td>→ Task 11</td>
+        </tr>
+        <tr>
+            <td class="no">11</td>
+            <td class="lane">Pimpinan</td>
+            <td class="task">Menerima pengajuan persetujuan dana</td>
+            <td>Pimpinan mempelajari FPD yang diajukan</td>
+            <td>→ Task 12</td>
+        </tr>
+        <tr>
+            <td class="no">12</td>
+            <td class="lane">Pimpinan</td>
+            <td class="task">Memeriksa dan meninjau data pengajuan</td>
+            <td>Pimpinan mengecek nominal, tujuan pembayaran, dan ketersediaan anggaran</td>
+            <td>→ Gateway 13</td>
+        </tr>
+        <tr>
+            <td class="no">13</td>
+            <td class="lane">Pimpinan</td>
+            <td class="gateway">⬦ Apakah disetujui? (Gateway)</td>
+            <td>Pimpinan memutuskan persetujuan</td>
+            <td>YES → Task 14<br>NO → Pemberitahuan ke Keuangan → End Event</td>
+        </tr>
+        <tr>
+            <td class="no">14</td>
+            <td class="lane">Pimpinan</td>
+            <td class="task">Menyetujui dan mengirimkan persetujuan ke Keuangan</td>
+            <td>Pimpinan memberikan persetujuan, diteruskan ke Keuangan</td>
+            <td>→ Task 15</td>
+        </tr>
+        <tr>
+            <td class="no">15</td>
+            <td class="lane">Keuangan</td>
+            <td class="task">Menerima persetujuan dana</td>
+            <td>Keuangan menerima konfirmasi persetujuan dari Pimpinan</td>
+            <td>→ Task 16</td>
+        </tr>
+        <tr>
+            <td class="no">16</td>
+            <td class="lane">Keuangan</td>
+            <td class="task">Menentukan tujuan pembayaran</td>
+            <td>Keuangan menentukan apakah dana untuk operasional proyek atau pembayaran vendor</td>
+            <td>→ Gateway 17</td>
+        </tr>
+        <tr>
+            <td class="no">17</td>
+            <td class="lane">Keuangan</td>
+            <td class="gateway">⬦ Dana untuk siapa? (Gateway)</td>
+            <td>Membedakan tujuan pembayaran</td>
+            <td>Operasional → Task 18a<br>Vendor → Task 18b</td>
+        </tr>
+        <tr>
+            <td class="no">18a</td>
+            <td class="lane">Keuangan</td>
+            <td class="task">Mencatat Kas Keluar (Operasional Proyek) di Sistem</td>
+            <td>Keuangan membuka form Kas Keluar, mengisi: tanggal, kategori operasional, proyek, rincian item, nominal, metode bayar, keterangan → klik Simpan</td>
+            <td>→ Task 19 (Sistem)</td>
+        </tr>
+        <tr>
+            <td class="no">18b</td>
+            <td class="lane">Keuangan</td>
+            <td class="task">Mencatat Kas Keluar (Pembayaran Vendor) di Sistem</td>
+            <td>Keuangan membuka form Kas Keluar, mengisi: tanggal, kategori pembelian, proyek, vendor, rincian item, nominal, metode bayar → klik Simpan</td>
+            <td>→ Task 19 (Sistem)</td>
+        </tr>
+        <tr>
+            <td class="no">19</td>
+            <td class="lane" style="background:#e2efda;">Sistem</td>
+            <td class="system">Generate Jurnal Otomatis</td>
+            <td>Sistem membuat 2 baris jurnal: Debit (Beban/Biaya) dan Kredit (Kas/Bank) berdasarkan mapping COA kategori</td>
+            <td>→ Gateway 20</td>
+        </tr>
+        <tr>
+            <td class="no">20</td>
+            <td class="lane" style="background:#e2efda;">Sistem</td>
+            <td class="gateway">⬦ Apakah melebihi anggaran LRA? (Gateway)</td>
+            <td>Sistem mengecek apakah total realisasi kategori ini sudah melebihi % LRA × nilai kontrak</td>
+            <td>YES → Task 21 (Warning)<br>NO → Task 22</td>
+        </tr>
+        <tr>
+            <td class="no">21</td>
+            <td class="lane" style="background:#e2efda;">Sistem</td>
+            <td class="system">Menampilkan peringatan over budget</td>
+            <td>Sistem menampilkan pesan warning beserta selisih kelebihan anggaran. Data tetap tersimpan</td>
+            <td>→ Task 22</td>
+        </tr>
+        <tr>
+            <td class="no">22</td>
+            <td class="lane">Keuangan</td>
+            <td class="task">Melakukan pembayaran ke Vendor / Dana Operasional</td>
+            <td>Keuangan mentransfer dana sesuai metode yang dipilih (Cash/Bank)</td>
+            <td>→ Task 23</td>
+        </tr>
+        <tr>
+            <td class="no">23</td>
+            <td class="lane">Vendor</td>
+            <td class="task">Menerima pembayaran</td>
+            <td>Vendor menerima transfer pembayaran dari perusahaan</td>
+            <td>→ End Event (Vendor)</td>
+        </tr>
+        <tr>
+            <td class="no">24</td>
+            <td class="lane">Pimpinan</td>
+            <td class="task">Menerima pembayaran operasional proyek</td>
+            <td>Pimpinan dapat memantau realisasi pengeluaran melalui laporan LRA di sistem</td>
+            <td>→ End Event (Pimpinan)</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="note">
+    <b>Catatan Lane untuk BPMN:</b><br>
+    <b>Kas Masuk:</b> 4 lane → Klien | Keuangan | Sistem | Pimpinan<br>
+    <b>Kas Keluar:</b> 6 lane → Tim Proyek | Administrasi | Keuangan | Pimpinan | Sistem | Vendor
+</div>
+
+</body>
+</html>

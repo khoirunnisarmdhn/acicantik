@@ -9,11 +9,15 @@
         kategoriAktif: @js($kategoriUmum),
         terminData: [],
         nominal: '{{ old('nominal') }}',
+        rawNominal: '{{ old('nominal') }}',
         readonlyNominal: false,
         loadingTermin: false,
         selectedKategoriNama: '',
         dpTermin: null,
         dpSudahLunas: false,
+        formulaText: '',
+        selectedTerminId: '{{ old('id_termin_proyek') }}',
+        proyekJumlahTermin: 0,
 
         handleProyekChange(id) {
             if (id !== '') {
@@ -23,19 +27,35 @@
                 this.fetchTermin(id);
                 this.selectedKategoriNama = '';
                 this.nominal = '';
+                this.rawNominal = '';
                 this.readonlyNominal = false;
                 this.dpTermin = null;
                 this.dpSudahLunas = false;
+                this.formulaText = '';
+                this.selectedTerminId = '';
+                this.proyekJumlahTermin = 0;
+                this.$nextTick(() => {
+                    const katSelect = document.getElementById('kategori_select');
+                    if (katSelect) katSelect.value = '';
+                    const terminSelect = document.getElementById('termin_select');
+                    if (terminSelect) terminSelect.value = '';
+                    const hiddenTermin = document.getElementById('hidden_termin_dp');
+                    if (hiddenTermin) hiddenTermin.value = '';
+                });
             } else {
                 this.isProyek = false;
                 this.isNonProyek = true;
                 this.kategoriAktif = this.kategoriUmum;
                 this.terminData = [];
                 this.nominal = '';
+                this.rawNominal = '';
                 this.readonlyNominal = false;
                 this.selectedKategoriNama = 'penambahan modal pribadi';
                 this.dpTermin = null;
                 this.dpSudahLunas = false;
+                this.formulaText = '';
+                this.selectedTerminId = '';
+                this.proyekJumlahTermin = 0;
                 // Auto-set kategori ke Penambahan Modal Pribadi (id=3)
                 this.$nextTick(() => {
                     const katSelect = document.getElementById('kategori_select');
@@ -46,50 +66,47 @@
 
         handleKategoriChange(e) {
             const selected = e.target.options[e.target.selectedIndex];
-            this.selectedKategoriNama = selected.text.toLowerCase();
+            this.selectedKategoriNama = selected ? selected.text.toLowerCase() : '';
             // Reset termin & nominal saat kategori berubah
             this.nominal = '';
+            this.rawNominal = '';
             this.readonlyNominal = false;
+            this.formulaText = '';
+            this.selectedTerminId = '';
             const terminSelect = document.getElementById('termin_select');
             if (terminSelect) terminSelect.value = '';
 
-            // Kalau pilih Uang Muka, otomatis set nominal dari data DP
-            if (this.selectedKategoriNama.includes('down payment') || this.selectedKategoriNama.includes('dp')) {
-                const dpTermin = this.terminData.find(t => {
-                    const nama = (t.nama_termin || '').toLowerCase();
-                    return nama.includes('dp') || nama.includes('down payment') || nama.includes('uang muka');
-                });
-                if (dpTermin) {
-                    this.dpTermin = dpTermin;
-                    this.nominal = Number(dpTermin.nominal).toLocaleString('id-ID');
+            // Kalau pilih Full Payment, otomatis set nominal dari satu-satunya termin 100%
+            if (this.selectedKategoriNama.includes('full payment') || this.selectedKategoriNama.includes('pembayaran penuh') || this.selectedKategoriNama.includes('pelunasan sekaligus')) {
+                const fullTermin = this.terminData.find(t => parseFloat(t.persentase) === 100);
+                if (fullTermin) {
+                    const nilaiKontrak = Number(fullTermin.nilai_kontrak || 0);
+                    const persentase = parseFloat(fullTermin.persentase || 0);
+                    const nominalFull = Number(fullTermin.nominal || 0);
+
+                    this.nominal = nominalFull.toLocaleString('id-ID');
+                    this.rawNominal = nominalFull;
                     this.readonlyNominal = true;
+                    this.formulaText = `Rp. ${nilaiKontrak.toLocaleString('id-ID')} x ${persentase}% = Rp. ${nominalFull.toLocaleString('id-ID')}`;
+                    this.selectedTerminId = fullTermin.id_termin_proyek;
                     // Set hidden input termin
                     this.$nextTick(() => {
                         const hiddenTermin = document.getElementById('hidden_termin_dp');
-                        if (hiddenTermin) hiddenTermin.value = dpTermin.id_termin_proyek;
+                        if (hiddenTermin) hiddenTermin.value = fullTermin.id_termin_proyek;
                     });
                 }
             } else {
                 this.dpTermin = null;
                 this.nominal = '';
+                this.rawNominal = '';
                 this.readonlyNominal = false;
+                this.formulaText = '';
+                this.selectedTerminId = '';
                 this.$nextTick(() => {
                     const hiddenTermin = document.getElementById('hidden_termin_dp');
                     if (hiddenTermin) hiddenTermin.value = '';
                 });
             }
-        },
-
-        isTerminDisabled(t) {
-            if (!this.selectedKategoriNama) return false;
-            const namaTermin = (t.nama_termin || '').toLowerCase();
-            const isDP = namaTermin.includes('dp') || namaTermin.includes('down payment') || namaTermin.includes('uang muka');
-            const isUangMukaKategori = this.selectedKategoriNama.includes('down payment') || this.selectedKategoriNama.includes('dp');
-            const isTerminKategori = this.selectedKategoriNama.includes('termin') && !isUangMukaKategori;
-
-            if (this.selectedKategoriNama.includes('down payment') || this.selectedKategoriNama.includes('dp')) return !isDP;  // DP kategori → disable non-DP
-            if (this.selectedKategoriNama.includes('termin')) return isDP;                                                        // Termin → disable DP
-            return false;
         },
 
         fetchTermin(proyekId) {
@@ -103,12 +120,29 @@
                     this.terminData = data;
                     this.loadingTermin = false;
 
+                    // Set proyekJumlahTermin
+                    this.proyekJumlahTermin = data.length > 0 ? (parseInt(data[0].jumlah_termin) || 0) : 0;
+
                     // Cek apakah DP sudah lunas
                     const dpTermin = data.find(t => {
                         const nama = (t.nama_termin || '').toLowerCase();
                         return nama.includes('dp') || nama.includes('down payment') || nama.includes('uang muka');
                     });
                     this.dpSudahLunas = dpTermin && dpTermin.status_pembayaran === 'Lunas';
+
+                    // AUTO-SET CATEGORY if project is Full Payment (1 termin)
+                    if (this.proyekJumlahTermin === 1) {
+                        this.$nextTick(() => {
+                            const katSelect = document.getElementById('kategori_select');
+                            if (katSelect) {
+                                // Cari option Kategori Kas ID = 2 (Full Payment)
+                                katSelect.value = '2';
+                                // Trigger change
+                                const event = new Event('change');
+                                katSelect.dispatchEvent(event);
+                            }
+                        });
+                    }
                 })
                 .catch(err => {
                     this.loadingTermin = false;
@@ -123,14 +157,25 @@
         handleTerminChange(e) {
             const selected = e.target.options[e.target.selectedIndex];
             const valNominal = selected.getAttribute('data-nominal');
+            const valPersentase = selected.getAttribute('data-persentase');
+            const valNilaiKontrak = selected.getAttribute('data-nilai-kontrak');
 
             if (valNominal) {
-                // Format dengan pemisah ribuan
-                this.nominal = Number(valNominal).toLocaleString('id-ID');
+                const nilaiKontrak = Number(valNilaiKontrak || 0);
+                const persentase = parseFloat(valPersentase || 0);
+                const nominalTermin = Number(valNominal || 0);
+
+                this.nominal = nominalTermin.toLocaleString('id-ID');
+                this.rawNominal = nominalTermin;
                 this.readonlyNominal = true;
+                this.formulaText = `Rp. ${nilaiKontrak.toLocaleString('id-ID')} x ${persentase}% = Rp. ${nominalTermin.toLocaleString('id-ID')}`;
+                this.selectedTerminId = selected.value;
             } else {
                 this.nominal = '';
+                this.rawNominal = '';
                 this.readonlyNominal = false;
+                this.formulaText = '';
+                this.selectedTerminId = '';
             }
         }
     }" x-init="@if(old('id_proyek'))
@@ -159,6 +204,7 @@
                     class="p-8 md:p-10">
                     @csrf
                     <input type="hidden" name="no_form" value="{{ $no_form }}">
+                    <input type="hidden" name="id_termin_proyek" :value="selectedTerminId">
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
 
@@ -200,9 +246,15 @@
                                     <template x-for="kat in kategoriAktif" :key="kat.id_kategori">
                                         <option :value="kat.id_kategori"
                                             :selected="kat.id_kategori == '{{ old('id_kategori') }}'"
-                                            :disabled="dpSudahLunas && (kat.nama_kategori.toLowerCase().includes('down payment') || kat.nama_kategori.toLowerCase().includes('dp'))"
-                                            :style="dpSudahLunas && (kat.nama_kategori.toLowerCase().includes('down payment') || kat.nama_kategori.toLowerCase().includes('dp')) ? 'color:#aaa; background:#f5f5f5;' : ''"
-                                            x-text="dpSudahLunas && (kat.nama_kategori.toLowerCase().includes('down payment') || kat.nama_kategori.toLowerCase().includes('dp')) ? kat.nama_kategori + ' - paid' : kat.nama_kategori">
+                                            :disabled="
+                                                (proyekJumlahTermin === 1 && (kat.nama_kategori.toLowerCase().includes('termin'))) ||
+                                                (proyekJumlahTermin > 1 && (kat.nama_kategori.toLowerCase().includes('full payment')))
+                                            "
+                                            :style="
+                                                ((proyekJumlahTermin === 1 && (kat.nama_kategori.toLowerCase().includes('termin'))) ||
+                                                (proyekJumlahTermin > 1 && (kat.nama_kategori.toLowerCase().includes('full payment')))) ? 'color:#aaa; background:#f5f5f5;' : ''
+                                            "
+                                            x-text="kat.nama_kategori">
                                         </option>
                                     </template>
                                 </select>
@@ -219,38 +271,39 @@
 
                         <div class="md:col-span-2 border-t border-gray-50 my-2"></div>
 
-                        {{-- UANG MUKA: tampil info DP otomatis, tanpa dropdown --}}
-                        <div x-show="isProyek && (selectedKategoriNama.includes('down payment') || selectedKategoriNama.includes('dp'))" x-transition x-cloak class="md:col-span-1">
+                        {{-- FULL PAYMENT: tampil info pelunasan otomatis, tanpa dropdown --}}
+                        <div x-show="isProyek && (selectedKategoriNama.includes('full payment') || selectedKategoriNama.includes('pembayaran penuh') || selectedKategoriNama.includes('pelunasan sekaligus'))" x-transition x-cloak class="md:col-span-1">
                             <label class="block text-[11px] font-black text-indigo-500 uppercase mb-2 tracking-widest">
                                 4. Info Pembayaran
                             </label>
                             <div class="px-4 py-3 bg-indigo-50 border-2 border-indigo-100 rounded-2xl">
-                                <p class="font-black text-indigo-700 text-sm" x-text="dpTermin ? 'Down Payment (DP) ' + parseFloat(dpTermin.persentase) + '% dari nilai kontrak' : 'Memuat...'"></p>
-                                <p class="text-xs text-indigo-400 mt-1" x-text="dpTermin ? 'Nominal: Rp ' + Number(dpTermin.nominal).toLocaleString('id-ID') : ''"></p>
+                                <p class="font-black text-indigo-700 text-sm">Pelunasan Sekaligus (100% dari nilai kontrak)</p>
+                                <p class="text-xs text-indigo-400 mt-1" x-text="nominal ? 'Nominal: Rp ' + nominal : ''"></p>
                             </div>
-                            {{-- Hidden input untuk simpan id_termin_proyek DP --}}
-                            <input type="hidden" name="id_termin_proyek" id="hidden_termin_dp" value="">
+                            {{-- Hidden input untuk simpan id_termin_proyek --}}
+                            <input type="hidden" id="hidden_termin_dp" value="">
                         </div>
 
-                        {{-- TERMIN: tampil dropdown pilih termin (Progress & Akhir) --}}
-                        <div x-show="isProyek && selectedKategoriNama.includes('termin') && !selectedKategoriNama.includes('down payment') && !selectedKategoriNama.includes('dp')" x-transition x-cloak class="md:col-span-1">
+                        {{-- TERMIN: tampil dropdown pilih termin (DP, Progress & Akhir) --}}
+                        <div x-show="isProyek && selectedKategoriNama.includes('termin') && !selectedKategoriNama.includes('full payment')" x-transition x-cloak class="md:col-span-1">
                             <label class="block text-[11px] font-black text-indigo-500 uppercase mb-2 tracking-widest flex items-center gap-2">
                                 4. Pilih Termin Pembayaran
                                 <template x-if="loadingTermin">
                                     <span class="inline-block animate-spin h-3 w-3 border-2 border-indigo-500 border-t-transparent rounded-full"></span>
                                 </template>
                             </label>
-                            <select name="id_termin_proyek" id="termin_select" @change="handleTerminChange($event)"
+                            <select id="termin_select" @change="handleTerminChange($event)"
                                 class="w-full border-2 border-indigo-50 border-dashed bg-indigo-50/30 rounded-2xl font-bold text-indigo-700 focus:ring-4 focus:ring-indigo-500/10">
                                 <option value="">-- Pilih Termin --</option>
                                 <template x-for="t in terminData" :key="t.id_termin_proyek">
                                     <option :value="t.id_termin_proyek"
                                         :selected="t.id_termin_proyek == '{{ old('id_termin_proyek') }}'"
                                         :data-nominal="t.nominal"
-                                        :disabled="isTerminDisabled(t) || t.status_pembayaran === 'Lunas'"
-                                        :style="(isTerminDisabled(t) || t.status_pembayaran === 'Lunas') ? 'color: #aaa; background: #f5f5f5;' : ''"
-                                        x-show="!isTerminDisabled(t)"
-                                        x-text="t.status_pembayaran === 'Lunas' ? t.nama_termin + ' (' + parseFloat(t.persentase) + '%) - paid' : t.nama_termin + ' (' + parseFloat(t.persentase) + '%) - Rp ' + Number(t.nominal).toLocaleString('id-ID')">
+                                        :data-persentase="t.persentase"
+                                        :data-nilai-kontrak="t.nilai_kontrak"
+                                        :disabled="t.status_pembayaran === 'Lunas'"
+                                        :style="(t.status_pembayaran === 'Lunas') ? 'color: #aaa; background: #f5f5f5;' : ''"
+                                        x-text="t.status_pembayaran === 'Lunas' ? t.keterangan + ' (' + parseFloat(t.persentase) + '%) - paid' : t.keterangan + ' (' + parseFloat(t.persentase) + '%) - Rp ' + Number(t.nominal).toLocaleString('id-ID')">
                                     </option>
                                 </template>
                             </select>
@@ -263,11 +316,20 @@
                                 <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
                                     <span class="text-gray-400 font-black text-sm">Rp</span>
                                 </div>
-                                <input type="text" name="nominal" x-model="nominal" :readonly="readonlyNominal"
-                                    required
-                                    class="rupiah w-full pl-12 pr-4 py-4 border-2 rounded-2xl font-black text-2xl focus:ring-4 focus:ring-emerald-500/10 transition-all outline-none"
-                                    :class="readonlyNominal ? 'bg-gray-50 border-gray-200 text-gray-400' :
-                                        'bg-white border-emerald-100 text-emerald-700'">
+                                <template x-if="readonlyNominal">
+                                    <div>
+                                        <input type="hidden" name="nominal" :value="rawNominal">
+                                        <input type="text" :value="nominal" readonly
+                                            class="w-full pl-12 pr-4 py-4 border-2 rounded-2xl font-black text-2xl focus:ring-4 focus:ring-emerald-500/10 transition-all outline-none bg-gray-50 border-gray-200 text-gray-400">
+                                    </div>
+                                </template>
+                                <template x-if="!readonlyNominal">
+                                    <input type="text" name="nominal" x-model="nominal" required
+                                        class="rupiah w-full pl-12 pr-4 py-4 border-2 rounded-2xl font-black text-2xl focus:ring-4 focus:ring-emerald-500/10 transition-all outline-none bg-white border-emerald-100 text-emerald-700">
+                                </template>
+                            </div>
+                            <div x-show="readonlyNominal" x-transition class="mt-2">
+                                <p class="text-xs font-semibold text-gray-500 bg-gray-100/50 border border-gray-100 rounded-xl px-3 py-2 inline-flex items-center gap-1.5" x-text="'Rumus: ' + formulaText"></p>
                             </div>
                         </div>
 

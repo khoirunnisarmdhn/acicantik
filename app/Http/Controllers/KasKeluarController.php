@@ -179,8 +179,18 @@ class KasKeluarController extends Controller
             // === CEK WARNING ANGGARAN LRA ===
             $warningMessage = null;
             if ($request->id_proyek) {
-                // Cek apakah kategori ini ada di master LRA
-                $lraItem = DB::table('lra')->where('id_kategori', $request->id_kategori)->first();
+                // Cek apakah kategori ini ada di master LRA khusus proyek ini, atau fallback ke global
+                $lraItem = DB::table('lra')
+                    ->where('id_proyek', $request->id_proyek)
+                    ->where('id_kategori', $request->id_kategori)
+                    ->first();
+
+                if (!$lraItem) {
+                    $lraItem = DB::table('lra')
+                        ->whereNull('id_proyek')
+                        ->where('id_kategori', $request->id_kategori)
+                        ->first();
+                }
 
                 if ($lraItem) {
                     // Ambil nilai kontrak proyek

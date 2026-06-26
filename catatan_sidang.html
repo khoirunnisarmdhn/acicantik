@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Catatan Persiapan Sidang - Khoirunnisa</title>
+    <style>
+        body { font-family: "Times New Roman", serif; font-size: 12pt; margin: 2cm 3cm; color: #000; line-height: 1.6; }
+        h1 { text-align: center; font-size: 14pt; margin-bottom: 4px; }
+        h2 { font-size: 13pt; margin-top: 24px; margin-bottom: 6px; background-color: #1a3c6b; color: white; padding: 6px 12px; border-radius: 4px; }
+        h3 { font-size: 12pt; margin-top: 14px; margin-bottom: 4px; color: #1a3c6b; border-left: 4px solid #1a3c6b; padding-left: 8px; }
+        p { margin: 4px 0 8px 0; text-align: justify; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 11pt; }
+        th { background-color: #1a3c6b; color: white; border: 1px solid #000; padding: 6px 10px; text-align: left; }
+        td { border: 1px solid #000; padding: 6px 10px; vertical-align: top; }
+        .note { background-color: #fff2cc; border-left: 4px solid #f4b942; padding: 8px 12px; margin: 10px 0; font-size: 11pt; }
+        .sub { color: #555; font-style: italic; font-size: 10.5pt; }
+        ul { margin: 4px 0 8px 16px; }
+        li { margin-bottom: 3px; }
+        .code { font-family: monospace; background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 10.5pt; }
+    </style>
+</head>
+<body>
+
+<h1>CATATAN PERSIAPAN SIDANG TA</h1>
+<p style="text-align:center; font-size:11pt; color:#555;">Aplikasi Berbasis Web untuk Pengelolaan Keuangan — CV Zahfran Mulia Abadi</p>
+
+<!-- ======================================================= -->
+<h2>1. Konsep Pemrograman yang Dipakai</h2>
+
+<p>Aplikasi ini menggunakan konsep <b>MVC (Model-View-Controller)</b> yang merupakan bagian dari framework <b>Laravel (PHP)</b>.</p>
+
+<table>
+    <tr><th style="width:20%">Bagian</th><th>Fungsi</th><th>Lokasi di Proyek</th></tr>
+    <tr><td><b>Model</b></td><td>Merepresentasikan tabel database dan hubungan antar tabel</td><td><span class="code">app/Models/</span></td></tr>
+    <tr><td><b>View</b></td><td>Tampilan halaman yang dilihat pengguna di browser</td><td><span class="code">resources/views/</span></td></tr>
+    <tr><td><b>Controller</b></td><td>Logika bisnis — menghubungkan Model dan View, memproses request</td><td><span class="code">app/Http/Controllers/</span></td></tr>
+</table>
+
+<!-- ======================================================= -->
+<h2>2. Fungsi Method di Controller</h2>
+
+<table>
+    <tr><th style="width:20%">Method</th><th>Fungsi</th></tr>
+    <tr><td><span class="code">index()</span></td><td>Menampilkan <b>daftar semua data</b> (halaman utama suatu menu)</td></tr>
+    <tr><td><span class="code">create()</span></td><td>Menampilkan <b>form tambah</b> data baru</td></tr>
+    <tr><td><span class="code">store()</span></td><td><b>Menyimpan</b> data baru ke database</td></tr>
+    <tr><td><span class="code">show($id)</span></td><td>Menampilkan <b>detail satu data</b> berdasarkan ID</td></tr>
+    <tr><td><span class="code">edit($id)</span></td><td>Menampilkan <b>form edit</b> data yang sudah ada</td></tr>
+    <tr><td><span class="code">update($id)</span></td><td><b>Menyimpan perubahan</b> data ke database</td></tr>
+    <tr><td><span class="code">destroy($id)</span></td><td><b>Menghapus</b> data dari database</td></tr>
+</table>
+
+<!-- ======================================================= -->
+<h2>3. Semua Komponen yang Membangun Aplikasi</h2>
+
+<table>
+    <tr><th style="width:35%">Folder / File</th><th>Fungsi</th></tr>
+    <tr><td><span class="code">app/Http/Controllers/</span></td><td>Logika bisnis semua fitur (KasMasuk, KasKeluar, Proyek, dll)</td></tr>
+    <tr><td><span class="code">app/Models/</span></td><td>Representasi tabel database</td></tr>
+    <tr><td><span class="code">resources/views/</span></td><td>Semua file tampilan HTML (Blade template)</td></tr>
+    <tr><td><span class="code">routes/web.php</span></td><td>Mendaftarkan semua URL/route aplikasi</td></tr>
+    <tr><td><span class="code">database/migrations/</span></td><td>Script pembuatan struktur tabel database</td></tr>
+    <tr><td><span class="code">resources/css/ & js/</span></td><td>Styling (Tailwind CSS) dan JavaScript</td></tr>
+    <tr><td><span class="code">public/</span></td><td>File yang bisa diakses langsung browser (gambar, hasil build CSS/JS)</td></tr>
+    <tr><td><span class="code">.env</span></td><td>Konfigurasi aplikasi: nama database, password, dll</td></tr>
+</table>
+
+<!-- ======================================================= -->
+<h2>4. Fungsi Controller, Model, dan Resource (Views)</h2>
+
+<h3>Controller</h3>
+<p>"Otak" aplikasi. Menerima request dari user, memproses data menggunakan Model, lalu mengembalikan tampilan (View) ke browser. Semua logika bisnis ada di sini.</p>
+
+<h3>Model</h3>
+<p>Representasi tabel di database. Digunakan untuk query data. Contoh: <span class="code">Kas::all()</span> artinya ambil semua data dari tabel kas. Di aplikasi ini sebagian besar menggunakan <span class="code">DB::table()</span> langsung.</p>
+
+<h3>Resource / Views</h3>
+<p>Folder <span class="code">resources/views/</span> berisi semua file tampilan <span class="code">.blade.php</span>. Disebut "resource" karena ini sumber daya tampilan aplikasi. Setiap halaman web punya file tampilan tersendiri (index = daftar, create = form tambah, edit = form ubah, show = detail).</p>
+
+<!-- ======================================================= -->
+<h2>5. Lokasi File-File Penting</h2>
+
+<table>
+    <tr><th style="width:40%">Yang Ditanya</th><th>Lokasi File</th></tr>
+    <tr><td>Tampilan halaman web</td><td><span class="code">resources/views/[nama_menu]/*.blade.php</span></td></tr>
+    <tr><td>Background halaman</td><td><span class="code">resources/views/layouts/app.blade.php</span> — gambar di <span class="code">public/images/bg-user.jpg</span></td></tr>
+    <tr><td>Kodingan Login</td><td><span class="code">app/Http/Controllers/Auth/AuthenticatedSessionController.php</span></td></tr>
+    <tr><td>Tampilan Login</td><td><span class="code">resources/views/auth/login.blade.php</span></td></tr>
+    <tr><td>Kodingan Dashboard</td><td><span class="code">app/Http/Controllers/DashboardController.php</span></td></tr>
+    <tr><td>Tampilan Dashboard</td><td><span class="code">resources/views/dashboard.blade.php</span></td></tr>
+    <tr><td>Sidebar / Navigasi</td><td><span class="code">resources/views/layouts/navigation.blade.php</span></td></tr>
+    <tr><td>Layout utama halaman</td><td><span class="code">resources/views/layouts/app.blade.php</span></td></tr>
+</table>
+
+<!-- ======================================================= -->
+<h2>6. Kenapa Dashboard Tidak Ada di Database?</h2>
+
+<p>Dashboard <b>tidak punya data sendiri</b> — dia hanya <b>membaca dan merangkum</b> data dari tabel-tabel lain (kas, proyek, dll) lalu menampilkannya sebagai ringkasan. Tidak perlu tabel khusus karena tidak ada data baru yang disimpan.</p>
+<p>Sedangkan <b>tipe_termin, metode_bayar, rincian</b> ada di database karena mereka menyimpan data yang dibutuhkan oleh transaksi dan perlu di-query saat form diisi.</p>
+
+<!-- ======================================================= -->
+<h2>7. Jika Dosen Minta Ubah Langsung Saat Sidang</h2>
+
+<div class="note">Ini pengalaman yang sering terjadi — dosen minta demonstrasi perubahan langsung di hadapan penguji. Hafal lokasi filenya!</div>
+
+<table>
+    <tr><th style="width:40%">Yang Diminta Dosen</th><th>Lokasi & Cara</th></tr>
+    <tr><td>Ganti teks/kalimat di halaman</td><td>Buka <span class="code">resources/views/[nama_menu]/index.blade.php</span> → cari teksnya → ubah</td></tr>
+    <tr><td>Rata kiri/kanan teks</td><td>Cari class <span class="code">text-left</span> → ganti jadi <span class="code">text-right</span> atau <span class="code">text-center</span></td></tr>
+    <tr><td>Tambah kolom tabel</td><td>Di file blade, tambah <span class="code">&lt;th&gt;</span> di header dan <span class="code">&lt;td&gt;</span> di baris data</td></tr>
+    <tr><td>Hapus kolom tabel</td><td>Hapus baris <span class="code">&lt;th&gt;</span> dan <span class="code">&lt;td&gt;</span> yang sesuai di file blade</td></tr>
+    <tr><td>Hapus tombol/fitur</td><td>Hapus baris <span class="code">&lt;a href...&gt;</span> atau <span class="code">&lt;button&gt;</span> di file blade</td></tr>
+    <tr><td>Ganti warna tulisan</td><td>Cari class Tailwind seperti <span class="code">text-red-600</span> → ganti warnanya</td></tr>
+    <tr><td>Ganti ukuran tulisan</td><td>Cari class <span class="code">text-sm</span>, <span class="code">text-lg</span>, <span class="code">text-xs</span> → ganti sesuai kebutuhan</td></tr>
+    <tr><td>Ganti nama menu sidebar</td><td>Buka <span class="code">resources/views/layouts/navigation.blade.php</span> → cari teksnya</td></tr>
+    <tr><td>Ganti judul halaman</td><td>Cari <span class="code">@section('title', '...')</span> di file blade yang bersangkutan</td></tr>
+    <tr><td>Tambah kolom di database</td><td>Buat file migration baru → jalankan <span class="code">php artisan migrate</span></td></tr>
+    <tr><td>Tambah validasi input</td><td>Buka Controller → cari <span class="code">$request->validate([...])</span> → tambah rule</td></tr>
+</table>
+
+<!-- ======================================================= -->
+<h2>8. Pertanyaan Umum Lain yang Sering Ditanya</h2>
+
+<table>
+    <tr><th style="width:45%">Pertanyaan</th><th>Jawaban Singkat</th></tr>
+    <tr><td>Apa perbedaan sistem dan aplikasi?</td><td>Sistem = keseluruhan proses bisnis. Aplikasi = alat digital untuk menjalankan sistem tersebut.</td></tr>
+    <tr><td>Mengapa pakai Laravel?</td><td>Laravel menyediakan struktur MVC yang rapi, ORM Eloquent untuk database, sistem routing, dan keamanan bawaan sehingga mempercepat pengembangan.</td></tr>
+    <tr><td>Apa itu Blade template?</td><td>Template engine milik Laravel untuk membuat tampilan HTML dengan sintaks PHP yang lebih sederhana. File berekstensi <span class="code">.blade.php</span>.</td></tr>
+    <tr><td>Apa itu migration?</td><td>Script PHP untuk membuat/mengubah struktur tabel database secara terprogram, sehingga perubahan database bisa di-track dan diulang.</td></tr>
+    <tr><td>Apa itu route?</td><td>Aturan yang menghubungkan URL dengan Controller. Contoh: URL <span class="code">/kas-masuk</span> diarahkan ke <span class="code">KasMasukController@index</span>.</td></tr>
+    <tr><td>Kenapa ada session di Laravel?</td><td>Untuk menyimpan data sementara di server (seperti status login, pesan notifikasi) yang hilang setelah browser ditutup.</td></tr>
+    <tr><td>Apa fungsi <span class="code">.env</span>?</td><td>File konfigurasi environment yang menyimpan data sensitif seperti nama database, password, API key. Tidak di-upload ke GitHub.</td></tr>
+</table>
+
+<!-- ======================================================= -->
+<h2>9. Relasi Antar Tabel & Kardinalitas</h2>
+
+<table>
+    <tr><th style="width:22%">Tabel A</th><th style="width:16%">Kardinalitas</th><th style="width:22%">Tabel B</th><th>Keterangan</th></tr>
+    <tr><td><span class="code">pemberi_proyek</span></td><td style="text-align:center"><b>1 → N</b></td><td><span class="code">proyek</span></td><td>Satu pemberi proyek dapat memberi banyak proyek</td></tr>
+    <tr><td><span class="code">proyek</span></td><td style="text-align:center"><b>1 → N</b></td><td><span class="code">termin_proyek</span></td><td>Satu proyek memiliki banyak termin pembayaran</td></tr>
+    <tr><td><span class="code">tipe_termin</span></td><td style="text-align:center"><b>1 → N</b></td><td><span class="code">termin_proyek</span></td><td>Satu tipe termin mengategorikan banyak termin proyek</td></tr>
+    <tr><td><span class="code">proyek</span></td><td style="text-align:center"><b>1 → N</b></td><td><span class="code">kas</span></td><td>Satu proyek bisa punya banyak transaksi kas</td></tr>
+    <tr><td><span class="code">termin_proyek</span></td><td style="text-align:center"><b>1 → 1</b></td><td><span class="code">kas</span></td><td>Satu termin hanya dibayar oleh satu transaksi kas masuk</td></tr>
+    <tr><td><span class="code">kas</span></td><td style="text-align:center"><b>1 → N</b></td><td><span class="code">rincian</span></td><td>Satu transaksi kas keluar bisa punya banyak rincian item</td></tr>
+    <tr><td><span class="code">vendor</span></td><td style="text-align:center"><b>1 → N</b></td><td><span class="code">kas</span></td><td>Satu vendor bisa menerima banyak transaksi kas keluar</td></tr>
+    <tr><td><span class="code">metode_bayar</span></td><td style="text-align:center"><b>1 → N</b></td><td><span class="code">kas</span></td><td>Satu metode bayar digunakan banyak transaksi kas</td></tr>
+    <tr><td><span class="code">kategori_kas</span></td><td style="text-align:center"><b>1 → N</b></td><td><span class="code">kas</span></td><td>Satu kategori kas digunakan banyak transaksi kas</td></tr>
+    <tr><td><span class="code">coa</span></td><td style="text-align:center"><b>1 → N</b></td><td><span class="code">jurnal_umum</span></td><td>Satu akun COA dipakai banyak baris jurnal</td></tr>
+    <tr><td><span class="code">kategori_kas</span></td><td style="text-align:center"><b>1 → N</b></td><td><span class="code">lra</span></td><td>Satu kategori kas menjadi acuan banyak item LRA</td></tr>
+    <tr><td><span class="code">users</span></td><td style="text-align:center"><b>N → N</b></td><td><span class="code">akses</span></td><td>Satu user bisa punya banyak akses, satu akses bisa dimiliki banyak user (via tabel pivot <span class="code">user_akses</span>)</td></tr>
+    <tr><td><span class="code">coa</span></td><td style="text-align:center"><b>1 → N</b></td><td><span class="code">coa (self)</span></td><td>Satu akun parent bisa punya banyak sub-akun (hierarki level 1→2→3)</td></tr>
+</table>
+
+<div class="note">
+    <b>Tabel AD (tanpa Controller):</b> tipe_termin, metode_bayar, rincian, user_akses — data dikelola via Controller lain (bukan punya CRUD sendiri). Tipe_termin & metode_bayar bersifat data statis/lookup.
+</div>
+
+<!-- ======================================================= -->
+<h2>10. Hal Penting Lain Sebelum Sidang</h2>
+
+<h3>Keamanan Aplikasi</h3>
+<ul>
+    <li>Autentikasi login menggunakan <b>Laravel Breeze</b></li>
+    <li>Semua halaman dilindungi <b>middleware auth</b> — hanya bisa diakses setelah login</li>
+    <li>Password disimpan dalam bentuk <b>hash bcrypt</b> — tidak bisa dibaca langsung di database</li>
+    <li>Form dilindungi <b>CSRF token</b> — mencegah serangan dari luar</li>
+</ul>
+
+<h3>Alur Teknis Saat Klik "Simpan"</h3>
+<ul>
+    <li>User klik Simpan → data dikirim via <b>HTTP POST</b></li>
+    <li>Masuk ke method <span class="code">store()</span> di Controller</li>
+    <li>Data <b>divalidasi</b> terlebih dahulu</li>
+    <li>Jika valid → <b>disimpan ke database</b></li>
+    <li>Jurnal otomatis dibuat di dalam method <span class="code">store()</span> yang sama</li>
+    <li>Redirect ke halaman index dengan <b>notifikasi SweetAlert2</b></li>
+</ul>
+
+<h3>Tools/Library yang Dipakai</h3>
+<table>
+    <tr><th style="width:30%">Nama</th><th>Fungsi</th></tr>
+    <tr><td><b>Laravel 12</b></td><td>Framework PHP utama, menyediakan MVC, routing, ORM</td></tr>
+    <tr><td><b>Laravel Breeze</b></td><td>Starter kit autentikasi (login, logout, register)</td></tr>
+    <tr><td><b>Tailwind CSS</b></td><td>Framework CSS untuk styling (class seperti <span class="code">bg-indigo-600</span>, <span class="code">text-sm</span>)</td></tr>
+    <tr><td><b>Alpine.js</b></td><td>JavaScript ringan untuk interaksi frontend (dropdown, toggle sidebar)</td></tr>
+    <tr><td><b>SweetAlert2</b></td><td>Library notifikasi popup yang muncul saat sukses/error/warning</td></tr>
+    <tr><td><b>DataTables</b></td><td>Plugin jQuery untuk tabel dengan fitur filter, sort, dan pagination</td></tr>
+    <tr><td><b>Vite</b></td><td>Build tool untuk compile CSS dan JS (<span class="code">npm run build</span>)</td></tr>
+    <tr><td><b>MySQL</b></td><td>Database yang digunakan untuk menyimpan semua data</td></tr>
+</table>
+
+<h3>Pertanyaan Jebakan yang Sering Muncul</h3>
+<table>
+    <tr><th style="width:45%">Pertanyaan</th><th>Jawaban</th></tr>
+    <tr><td>Kalau ada error, kamu carinya di mana?</td><td>Cek <span class="code">storage/logs/laravel.log</span> atau lihat pesan error di browser (mode debug aktif)</td></tr>
+    <tr><td>Kenapa pakai Laravel bukan CodeIgniter/PHP biasa?</td><td>Laravel lebih terstruktur (MVC), punya banyak fitur bawaan (auth, routing, ORM), dan komunitas besar sehingga mempercepat pengembangan</td></tr>
+    <tr><td>Apa itu Blade template?</td><td>Template engine milik Laravel untuk membuat tampilan HTML dengan sintaks PHP yang lebih sederhana. File berekstensi <span class="code">.blade.php</span></td></tr>
+    <tr><td>Apa itu migration?</td><td>Script PHP untuk membuat/mengubah struktur tabel database secara terprogram, sehingga perubahan bisa di-track</td></tr>
+    <tr><td>Apa itu route?</td><td>Aturan yang menghubungkan URL dengan Controller. Ada di <span class="code">routes/web.php</span></td></tr>
+    <tr><td>Apa keterbatasan aplikasimu?</td><td>1) Tidak ada modul penggajian detail, 2) Tidak membahas perpajakan, 3) Belum berbasis mobile</td></tr>
+    <tr><td>Apa perbedaan sistem dan aplikasi?</td><td>Sistem = keseluruhan proses bisnis. Aplikasi = alat digital untuk menjalankan sistem tersebut</td></tr>
+</table>
+
+</body>
+</html>

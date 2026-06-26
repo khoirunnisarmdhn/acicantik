@@ -72,7 +72,7 @@
                         <label class="block text-[10px] font-bold text-indigo-500 uppercase mb-1 ml-1 tracking-widest">Tahun</label>
                         <select name="tahun" onchange="document.getElementById('filterForm').submit()"
                             class="rounded-lg border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 text-sm focus:ring-indigo-500 w-32 font-bold cursor-pointer">
-                            @foreach (range(date('Y') - 5, date('Y') + 1) as $y)
+                            @foreach ($listTahun as $y)
                                 <option value="{{ $y }}" {{ $tahun == $y ? 'selected' : '' }}>{{ $y }}</option>
                             @endforeach
                         </select>
@@ -99,7 +99,7 @@
                     <p class="text-md uppercase mt-1 font-bold text-indigo-600">Laporan Transaksi Konstruksi</p>
                     <div class="mt-3 inline-block px-4 py-1">
                         <p class="text-xs font-bold uppercase tracking-widest">
-                            Periode: {{ date('F', mktime(0, 0, 0, $bulan, 1)) }} {{ $tahun }}
+                            Periode: {{ $bulan ? date('F', mktime(0, 0, 0, (int)$bulan, 1)) : 'Semua Bulan' }} {{ $tahun }}
                         </p>
                     </div>
                 </div>
@@ -130,10 +130,10 @@
                                     </td>
                                     <td class="p-4">
                                         <div class="{{ $j->posisi_dr_cr == 'cr' ? 'ml-8 italic text-gray-600 dark:text-gray-400' : 'font-bold text-gray-900 dark:text-white' }}">
-                                            {{ $j->nama_parent ?? $j->nama_akun }}
+                                            {{ $j->nama_akun }}
                                         </div>
                                         <div class="text-[10px] text-gray-400 italic mt-1 leading-tight {{ $j->posisi_dr_cr == 'cr' ? 'ml-8' : '' }}">
-                                            {{ $j->nama_akun }}
+                                            {{ $j->nama_parent ?? $j->nama_akun }}
                                         </div>
                                     </td>
                                     <td class="p-4 text-right font-mono font-semibold">

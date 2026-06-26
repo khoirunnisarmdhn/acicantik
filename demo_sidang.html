@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo Sidang - CV Zahfran Mulia Abadi</title>
+    <style>
+        body { font-family: "Times New Roman", serif; font-size: 12pt; margin: 2cm 3cm; color: #000; line-height: 1.6; }
+        h1 { text-align: center; font-size: 14pt; margin-bottom: 4px; }
+        h2 { font-size: 13pt; margin-top: 24px; margin-bottom: 6px; background-color: #1a3c6b; color: white; padding: 6px 12px; border-radius: 4px; }
+        h3 { font-size: 12pt; margin-top: 14px; margin-bottom: 4px; color: #1a3c6b; border-left: 4px solid #1a3c6b; padding-left: 8px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 11pt; }
+        th { background-color: #1a3c6b; color: white; border: 1px solid #000; padding: 6px 10px; text-align: left; }
+        td { border: 1px solid #000; padding: 6px 10px; vertical-align: top; }
+        .role-admin { background-color: #e2efda; }
+        .role-keuangan { background-color: #fce4d6; }
+        .role-pimpinan { background-color: #fff2cc; }
+        .role-administrasi { background-color: #dce6f1; }
+        .note { background-color: #fff2cc; border-left: 4px solid #f4b942; padding: 8px 12px; margin: 10px 0; font-size: 11pt; }
+        .result { background-color: #e2efda; border-left: 4px solid #70ad47; padding: 8px 12px; margin: 10px 0; font-size: 11pt; }
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10pt; font-weight: bold; color: white; }
+        .badge-admin { background-color: #1a3c6b; }
+        .badge-administrasi { background-color: #2e75b6; }
+        .badge-keuangan { background-color: #c55a11; }
+        .badge-pimpinan { background-color: #538135; }
+    </style>
+</head>
+<body>
+
+<h1>SKENARIO DEMO APLIKASI SAAT SIDANG</h1>
+<p style="text-align:center; font-size:11pt; color:#555;">CV Zahfran Mulia Abadi — Sistem Informasi Manajemen Keuangan Proyek</p>
+
+<div class="note">
+    <b>Urutan login untuk demo:</b> Admin → Administrasi → Keuangan → Pimpinan<br>
+    <b>Akun demo:</b> admin@admin.com | administrasi@administrasi.com | finance@finance.com | pemimpin@pemimpin.com<br>
+    <b>Password semua:</b> 12341234
+</div>
+
+<!-- ============================================================ -->
+<h2>SOAL 1 — Proyek Pembangunan Gedung Kantor PUPR (3 Termin)</h2>
+
+<div class="note">
+    <b>Data Real di Aplikasi:</b> Proyek Pembangunan Gedung Kantor PUPR | Client: Dinas PUPR Kota Serang | Nilai Kontrak: Rp 500.000.000 | Target Laba: 20% | Status: Aktif
+</div>
+
+<h3><span class="badge badge-administrasi">ADMINISTRASI</span> — Input Data Proyek</h3>
+<table>
+    <tr><th style="width:5%">No</th><th style="width:30%">Yang Dilakukan</th><th>Detail Input</th></tr>
+    <tr class="role-administrasi">
+        <td>1</td>
+        <td>Login sebagai Administrasi</td>
+        <td>Email: <b>administrasi@administrasi.com</b> | Password: <b>12341234</b></td>
+    </tr>
+    <tr class="role-administrasi">
+        <td>2</td>
+        <td>Lihat Data Proyek (sudah ada)</td>
+        <td>
+            Master Data → Proyek → Data Proyek<br><br>
+            Proyek yang sudah ada:<br>
+            • <b>Proyek Pembangunan Gedung Kantor PUPR</b> — Rp 500.000.000 — Aktif<br><br>
+            Termin yang sudah terbuat otomatis:<br>
+            • DP (Down Payment) 20% = <b>Rp 100.000.000</b> — Belum Dibayar<br>
+            • Termin Progress 70% = <b>Rp 350.000.000</b> — Belum Dibayar<br>
+            • Termin Akhir 10% = <b>Rp 50.000.000</b> — Belum Dibayar
+        </td>
+    </tr>
+</table>
+
+<h3><span class="badge badge-keuangan">KEUANGAN</span> — Input Kas Masuk (DP sudah dibayar)</h3>
+<table>
+    <tr><th style="width:5%">No</th><th style="width:30%">Yang Dilakukan</th><th>Detail Input</th></tr>
+    <tr class="role-keuangan">
+        <td>1</td>
+        <td>Login sebagai Keuangan</td>
+        <td>Email: <b>finance@finance.com</b> | Password: <b>12341234</b></td>
+    </tr>
+    <tr class="role-keuangan">
+        <td>2</td>
+        <td>Lihat Transaksi Kas Masuk yang sudah ada</td>
+        <td>
+            Transaksi → Kas Masuk<br><br>
+            Sudah ada: <b>KM-20260621-001</b> | 05/07/2026 | Pembayaran - Down Payment (DP) | Rp 100.000.000 | Cash
+        </td>
+    </tr>
+    <tr class="role-keuangan">
+        <td>3</td>
+        <td>Input Kas Keluar — Pembelian Material (sudah ada)</td>
+        <td>
+            Transaksi → Kas Keluar<br><br>
+            Sudah ada:<br>
+            • <b>KK-20260621-001</b> | 10/07/2026 | Pembelian Material | Rp 75.000.000 | CV Makmur Jaya | Bank<br>
+            • <b>KK-20260621-002</b> | 31/07/2026 | Tenaga Kerja Proyek | Rp 16.000.000 | Bank<br>
+            • Total Realisasi: <b>Rp 91.000.000</b>
+        </td>
+    </tr>
+    <tr class="role-keuangan">
+        <td>4</td>
+        <td>Tambah Kas Masuk — Termin Progress</td>
+        <td>
+            Transaksi → Kas Masuk → <b>+ Input Kas Masuk</b><br><br>
+            • Proyek: <b>Proyek Pembangunan Gedung Kantor PUPR</b><br>
+            • Kategori: <b>Pembayaran - Termin</b><br>
+            • Termin: <b>Termin Progress (70%) — Rp 350.000.000</b><br>
+            • Tanggal: <b>01/08/2026</b><br>
+            • Metode: <b>Bank</b><br>
+            • Upload Bukti: foto bukti transfer
+        </td>
+    </tr>
+    <tr class="role-keuangan">
+        <td>5</td>
+        <td>Cek Jurnal Umum</td>
+        <td>Laporan → Jurnal Umum → Filter: <b>Juli 2026</b> → jurnal debit/kredit otomatis muncul</td>
+    </tr>
+</table>
+
+<h3><span class="badge badge-pimpinan">PIMPINAN</span> — Review Laporan</h3>
+<table>
+    <tr><th style="width:5%">No</th><th style="width:30%">Yang Dilakukan</th><th>Detail Input</th></tr>
+    <tr class="role-pimpinan">
+        <td>1</td>
+        <td>Login sebagai Pimpinan</td>
+        <td>Email: <b>pemimpin@pemimpin.com</b> | Password: <b>12341234</b></td>
+    </tr>
+    <tr class="role-pimpinan">
+        <td>2</td>
+        <td>Lihat Laporan Realisasi Anggaran (LRA)</td>
+        <td>
+            Laporan → LRA Proyek → Pilih: <b>Proyek Pembangunan Gedung Kantor PUPR</b><br><br>
+            Yang tampil (data real):<br>
+            • Pembelian Material: Anggaran Rp 200.000.000 | Realisasi Rp 75.000.000 | Sisa Rp 125.000.000<br>
+            • Tenaga Kerja Proyek: Anggaran Rp 150.000.000 | Realisasi Rp 16.000.000 | Sisa Rp 134.000.000<br>
+            • Operasional Proyek: Anggaran Rp 50.000.000 | Realisasi Rp 0 | Sisa Rp 50.000.000<br>
+            • <b>Total Realisasi: Rp 91.000.000</b>
+        </td>
+    </tr>
+    <tr class="role-pimpinan">
+        <td>3</td>
+        <td>Lihat Laporan Laba Rugi</td>
+        <td>
+            Laporan → Laba Rugi → Pilih: <b>Proyek Pembangunan Gedung Kantor PUPR</b><br><br>
+            Yang tampil (data real):<br>
+            • Nilai Kontrak: <b>Rp 500.000.000</b><br>
+            • Target Laba (20%): <b>Rp 100.000.000</b><br>
+            • Anggaran Biaya: <b>Rp 400.000.000</b><br>
+            • Realisasi Biaya: <b>Rp 91.000.000</b><br>
+            • Efisiensi Biaya: <b>Rp 309.000.000</b><br>
+            • Estimasi Laba Akhir: <b>Rp 409.000.000 (81.8%)</b>
+        </td>
+    </tr>
+</table>
+
+<div class="result">
+    <b>Hasil yang diharapkan Soal 1:</b> Termin DP sudah "Lunas". Jurnal otomatis terbuat. LRA menampilkan realisasi Rp 91.000.000. Laba akhir estimasi Rp 409.000.000 (81.8%).
+</div>
+
+<!-- ============================================================ -->
+<h2>SOAL 2 — Proyek dengan 4 Termin + Full Payment</h2>
+
+<div class="note">
+    <b>Skenario Baru:</b> Tambah proyek baru dari PT Maju Sejahtera Konstruksi, nilai kontrak Rp 200.000.000, 4 termin, lalu bayar semua termin hingga proyek selesai.
+</div>
+
+<h3><span class="badge badge-administrasi">ADMINISTRASI</span> — Tambah Proyek Baru</h3>
+<table>
+    <tr><th style="width:5%">No</th><th style="width:30%">Yang Dilakukan</th><th>Detail Input</th></tr>
+    <tr class="role-administrasi">
+        <td>1</td>
+        <td>Login sebagai Administrasi</td>
+        <td>Email: <b>administrasi@administrasi.com</b> | Password: <b>12341234</b></td>
+    </tr>
+    <tr class="role-administrasi">
+        <td>2</td>
+        <td>Tambah Data Proyek Baru</td>
+        <td>
+            Master Data → Proyek → Data Proyek → <b>+ Tambah Proyek</b><br><br>
+            • Nama Proyek: <b>Proyek Renovasi Jalan Lingkungan</b><br>
+            • Client: <b>PT Maju Sejahtera Konstruksi</b><br>
+            • Nilai Kontrak: <b>Rp 200.000.000</b><br>
+            • Jumlah Termin: <b>4</b><br>
+            • Tanggal Mulai: <b>01/08/2026</b><br>
+            • Tanggal Selesai: <b>31/10/2026</b><br>
+            • Status: <b>Aktif</b>
+        </td>
+    </tr>
+    <tr class="role-administrasi">
+        <td>3</td>
+        <td>Cek Termin Otomatis Terbuat</td>
+        <td>
+            Master Data → Proyek → Termin Proyek<br><br>
+            • DP (Down Payment) 20% = <b>Rp 40.000.000</b><br>
+            • Termin Progress 35% = <b>Rp 70.000.000</b><br>
+            • Termin Progress 35% = <b>Rp 70.000.000</b><br>
+            • Termin Akhir 10% = <b>Rp 20.000.000</b>
+        </td>
+    </tr>
+</table>
+
+<h3><span class="badge badge-keuangan">KEUANGAN</span> — Bayar Semua Termin (Full Payment)</h3>
+<table>
+    <tr><th style="width:5%">No</th><th style="width:30%">Yang Dilakukan</th><th>Detail Input</th></tr>
+    <tr class="role-keuangan">
+        <td>1</td>
+        <td>Login sebagai Keuangan</td>
+        <td>Email: <b>finance@finance.com</b> | Password: <b>12341234</b></td>
+    </tr>
+    <tr class="role-keuangan">
+        <td>2</td>
+        <td>Input Kas Masuk — DP</td>
+        <td>
+            Kategori: <b>Pembayaran - Down Payment (DP)</b><br>
+            Proyek: <b>Proyek Renovasi Jalan Lingkungan</b><br>
+            Nominal otomatis: <b>Rp 40.000.000</b> | Tanggal: 05/08/2026 | Metode: Bank
+        </td>
+    </tr>
+    <tr class="role-keuangan">
+        <td>3</td>
+        <td>Input Kas Keluar — Operasional</td>
+        <td>
+            Kategori: <b>Operasional Proyek</b><br>
+            Proyek: <b>Proyek Renovasi Jalan Lingkungan</b><br>
+            Rincian: Sewa alat berat Rp 5.000.000 + BBM Rp 2.000.000 = <b>Rp 7.000.000</b>
+        </td>
+    </tr>
+    <tr class="role-keuangan">
+        <td>4</td>
+        <td>Input Kas Masuk — Termin Progress 1</td>
+        <td>
+            Kategori: <b>Pembayaran - Termin</b><br>
+            Termin: <b>Termin Progress (35%) — Rp 70.000.000</b> | Tanggal: 01/09/2026
+        </td>
+    </tr>
+    <tr class="role-keuangan">
+        <td>5</td>
+        <td>Input Kas Masuk — Termin Progress 2</td>
+        <td>
+            Kategori: <b>Pembayaran - Termin</b><br>
+            Termin: <b>Termin Progress (35%) — Rp 70.000.000</b> | Tanggal: 01/10/2026
+        </td>
+    </tr>
+    <tr class="role-keuangan">
+        <td>6</td>
+        <td>Input Kas Masuk — Termin Akhir (LUNAS)</td>
+        <td>
+            Kategori: <b>Pembayaran - Termin</b><br>
+            Termin: <b>Termin Akhir (10%) — Rp 20.000.000</b> | Tanggal: 31/10/2026<br><br>
+            <b>⚡ Status proyek otomatis berubah jadi "SELESAI"</b>
+        </td>
+    </tr>
+</table>
+
+<h3><span class="badge badge-pimpinan">PIMPINAN</span> — Review Laporan Final</h3>
+<table>
+    <tr><th style="width:5%">No</th><th style="width:30%">Yang Dilakukan</th><th>Detail Input</th></tr>
+    <tr class="role-pimpinan">
+        <td>1</td>
+        <td>Lihat Laporan LRA</td>
+        <td>
+            Laporan → LRA Proyek → Pilih: <b>Proyek Renovasi Jalan Lingkungan</b><br>
+            Realisasi: Rp 7.000.000 (Operasional) | Sisa anggaran masih besar
+        </td>
+    </tr>
+    <tr class="role-pimpinan">
+        <td>2</td>
+        <td>Lihat Laporan Laba Rugi</td>
+        <td>
+            Laporan → Laba Rugi → Pilih: <b>Proyek Renovasi Jalan Lingkungan</b><br><br>
+            • Nilai Kontrak: <b>Rp 200.000.000</b><br>
+            • Target Laba (20%): <b>Rp 40.000.000</b><br>
+            • Anggaran Biaya: <b>Rp 160.000.000</b><br>
+            • Realisasi Biaya: <b>Rp 7.000.000</b><br>
+            • Efisiensi: <b>Rp 153.000.000</b><br>
+            • Estimasi Laba Akhir: <b>Rp 193.000.000 (96.5%)</b>
+        </td>
+    </tr>
+</table>
+
+<div class="result">
+    <b>Hasil yang diharapkan Soal 2:</b> Semua 4 termin "Lunas". Status proyek otomatis "Selesai". Laporan LRA dan Laba Rugi menampilkan data final.
+</div>
+
+<!-- ============================================================ -->
+<h2>Ringkasan Akses Per Role</h2>
+<table>
+    <tr><th>Role</th><th>Yang Bisa Dilakukan</th><th>Yang TIDAK Bisa</th></tr>
+    <tr class="role-admin"><td><b>Admin</b></td><td>Semua fitur</td><td>—</td></tr>
+    <tr class="role-administrasi"><td><b>Administrasi</b></td><td>Input data master (proyek, pemberi, vendor, COA, dll)</td><td>Input transaksi kas, lihat laporan</td></tr>
+    <tr class="role-keuangan"><td><b>Keuangan</b></td><td>Input kas masuk & kas keluar, lihat jurnal & laporan</td><td>Input master data</td></tr>
+    <tr class="role-pimpinan"><td><b>Pimpinan</b></td><td>Lihat dashboard, jurnal, LRA, laba rugi</td><td>Input apapun</td></tr>
+</table>
+
+</body>
+</html>

@@ -106,6 +106,41 @@
                             class="w-full rounded-xl border-gray-200 dark:bg-gray-900 dark:border-gray-700 focus:ring-amber-500">{{ old('deskripsi', $proyek->deskripsi) }}</textarea>
                     </div>
 
+                    <!-- Alokasi Anggaran (RAB) & Target Laba -->
+                    <div class="col-span-2 border-t pt-6 mt-4 dark:border-gray-700 border-gray-100">
+                        <h4 class="text-sm font-bold text-amber-500 dark:text-amber-400 mb-4 uppercase tracking-wider">
+                            Rencana Anggaran Biaya (RAB) & Target Laba Proyek
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <!-- Target Laba -->
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Target Laba (%)</label>
+                                <input type="number" name="target_laba" id="target_laba" required min="1" max="100"
+                                    value="{{ old('target_laba', $proyek->target_laba) }}"
+                                    class="rab-input w-full rounded-xl border-gray-200 dark:bg-gray-900 dark:border-gray-700 focus:ring-amber-500">
+                                <p class="text-[9px] text-gray-400 mt-1 italic">* Target Laba saat ini: {{ $proyek->target_laba }}%</p>
+                            </div>
+
+                            <!-- Dynamic LRA items -->
+                            @foreach ($projectLras as $lra)
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-400 uppercase mb-2">{{ $lra->keterangan }} (%)</label>
+                                    <input type="number" name="lra_persen[{{ $lra->id_lra }}]" required min="0" max="100"
+                                        value="{{ old('lra_persen.' . $lra->id_lra, $lra->persentase) }}"
+                                        class="rab-input w-full rounded-xl border-gray-200 dark:bg-gray-900 dark:border-gray-700 focus:ring-amber-500">
+                                    <p class="text-[9px] text-gray-400 mt-1 italic">* Alokasi saat ini: {{ $lra->persentase }}%</p>
+                                </div>
+                            @endforeach
+                        </div>
+                        <p class="text-[10px] text-amber-500 mt-3 font-semibold" id="rab_info">
+                            ℹ️ Total penjumlahan persentase Target Laba + Alokasi Pos Biaya harus tepat **100%**. 
+                            (Saat ini: <span id="rab_total_display" class="font-black">100</span>%)
+                        </p>
+                        <p class="text-[10px] text-rose-500 mt-1 hidden font-bold" id="rab_error">
+                            ⚠️ Total persentase alokasi + laba tidak sama dengan 100%! Silakan sesuaikan kembali.
+                        </p>
+                    </div>
+
                     <div
                         class="col-span-2 flex justify-end gap-3 mt-4 border-t pt-6 border-gray-100 dark:border-gray-700">
                         <a href="{{ route('proyek.index') }}"
@@ -131,34 +166,123 @@
             const btnSubmit = $('#btnSubmit');
             const badgeDuration = $('#due_date_badge');
             const spanDays = $('#duration_days');
+            const rabInputs = $('.rab-input');
+            const rabTotalDisplay = $('#rab_total_display');
+            const rabError = $('#rab_error');
 
-            function calculateDuration() {
+            function validateForm() {
+                let hasDateError = false;
                 if (tglMulai.val() && tglSelesai.val()) {
                     const start = new Date(tglMulai.val());
                     const end = new Date(tglSelesai.val());
-
                     if (end < start) {
-                        dateError.removeClass('hidden');
-                        btnSubmit.prop('disabled', true).addClass('opacity-50 cursor-not-allowed');
-                        badgeDuration.addClass('hidden');
-                    } else {
-                        dateError.addClass('hidden');
-                        btnSubmit.prop('disabled', false).removeClass('opacity-50 cursor-not-allowed');
+                        hasDateError = true;
+                    }
+                }
 
+                let rabTotal = 0;
+                rabInputs.each(function() {
+                    rabTotal += parseFloat($(this).val()) || 0;
+                });
+                rabTotalDisplay.text(rabTotal);
+                let hasRabError = (rabTotal !== 100);
+
+                if (hasDateError) {
+                    dateError.removeClass('hidden');
+                    badgeDuration.addClass('hidden');
+                } else {
+                    dateError.addClass('hidden');
+                    if (tglMulai.val() && tglSelesai.val()) {
+                        const start = new Date(tglMulai.val());
+                        const end = new Date(tglSelesai.val());
                         const diffTime = Math.abs(end - start);
                         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
                         spanDays.text(diffDays);
                         badgeDuration.removeClass('hidden');
                     }
                 }
+
+                if (hasRabError) {
+                    rabError.removeClass('hidden');
+                } else {
+                    rabError.addClass('hidden');
+                }
+
+                if (hasDateError || hasRabError) {
+                    btnSubmit.prop('disabled', true).addClass('opacity-50 cursor-not-allowed');
+                } else {
+                    btnSubmit.prop('disabled', false).removeClass('opacity-50 cursor-not-allowed');
+                }
             }
 
-            tglMulai.on('change', calculateDuration);
-            tglSelesai.on('change', calculateDuration);
+            tglMulai.on('change', validateForm);
+            tglSelesai.on('change', validateForm);
+
+            // Store initial values as defaults on page load
+            const lraInputs = rabInputs.not('#target_laba');
+            lraInputs.each(function() {
+                $(this).attr('data-default', $(this).val());
+            });
+
+            // Auto-adjust LRA inputs when Target Laba changes
+            $('#target_laba').on('input change', function() {
+                let targetLabaVal = parseInt($(this).val()) || 0;
+                if (targetLabaVal > 100) {
+                    targetLabaVal = 100;
+                    $(this).val(100);
+                }
+                if (targetLabaVal < 0) {
+                    targetLabaVal = 0;
+                    $(this).val(0);
+                }
+
+                let remaining = 100 - targetLabaVal;
+                let defaults = [];
+                let totalDefault = 0;
+
+                lraInputs.each(function() {
+                    let def = parseFloat($(this).attr('data-default')) || 0;
+                    defaults.push(def);
+                    totalDefault += def;
+                });
+
+                if (totalDefault > 0) {
+                    let distributedSum = 0;
+                    let newValues = [];
+
+                    lraInputs.each(function(index) {
+                        let def = defaults[index];
+                        let newVal = Math.floor((def / totalDefault) * remaining);
+                        newValues.push(newVal);
+                        distributedSum += newVal;
+                    });
+
+                    let diff = remaining - distributedSum;
+                    let i = 0;
+                    while (diff > 0) {
+                        newValues[i % newValues.length]++;
+                        diff--;
+                        i++;
+                    }
+                    while (diff < 0) {
+                        if (newValues[i % newValues.length] > 0) {
+                            newValues[i % newValues.length]--;
+                            diff++;
+                        }
+                        i++;
+                    }
+
+                    lraInputs.each(function(index) {
+                        $(this).val(newValues[index]);
+                    });
+                }
+                validateForm();
+            });
+
+            lraInputs.on('input change', validateForm);
 
             // Jalankan kalkulasi saat halaman load
-            calculateDuration();
+            validateForm();
         });
 
         // --- HANDLER NOTIFIKASI (SWEETALERT2) ---

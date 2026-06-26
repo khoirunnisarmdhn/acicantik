@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Tabel Aliran Data Transaksi - CV Zahfran Mulia Abadi</title>
+    <style>
+        body { font-family: "Times New Roman", serif; font-size: 11pt; margin: 1.5cm 2cm; color: #000; }
+        h1 { text-align: center; font-size: 14pt; margin-bottom: 4px; }
+        h2 { font-size: 12pt; margin-top: 24px; margin-bottom: 6px; border-bottom: 2px solid #1a3c6b; padding-bottom: 3px; color: #1a3c6b; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 10.5pt; }
+        th { background-color: #1a3c6b; color: white; border: 1px solid #000; padding: 6px 10px; text-align: center; }
+        td { border: 1px solid #000; padding: 6px 10px; vertical-align: middle; }
+        .masuk { background-color: #e2efda; }
+        .keluar { background-color: #fce4d6; }
+        .header-row { background-color: #d6e4f0; font-weight: bold; }
+        .dr { text-align: right; color: #1a3c6b; font-weight: bold; }
+        .cr { text-align: right; color: #c00000; font-weight: bold; }
+        .center { text-align: center; }
+        .note { background-color: #fff2cc; border-left: 4px solid #f4b942; padding: 8px 12px; margin: 10px 0; font-size: 10pt; }
+        .kode { font-family: monospace; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<h1>Tabel Aliran Data Transaksi Keuangan<br>CV Zahfran Mulia Abadi</h1>
+
+<div class="note">
+    <b>Aliran Data:</b> Transaksi Kas Masuk / Kas Keluar → <b>Jurnal Umum (otomatis)</b> → <b>Laporan Realisasi Anggaran (LRA)</b> + <b>Laporan Laba Rugi Proyek</b>
+</div>
+
+<!-- ===== TABEL 1: CONTOH KAS MASUK ===== -->
+<h2>1. Contoh Pencatatan Kas Masuk & Jurnal Otomatis</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th style="width:12%">Tanggal</th>
+            <th style="width:28%">Keterangan</th>
+            <th style="width:12%">No. Ref</th>
+            <th style="width:20%">Akun</th>
+            <th style="width:14%">Debit (Rp)</th>
+            <th style="width:14%">Kredit (Rp)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Kas Masuk: Pembayaran Proyek - Termin -->
+        <tr class="header-row">
+            <td colspan="6">Kategori: <b>Pembayaran Proyek – Termin</b> | Proyek: Proyek 1 | Metode: Bank</td>
+        </tr>
+        <tr class="masuk">
+            <td class="center">01/01/2026</td>
+            <td>Penerimaan pembayaran termin proyek</td>
+            <td class="center kode">KM-001</td>
+            <td><span class="kode">1-1100</span> Kas / Bank</td>
+            <td class="dr">1.000.000</td>
+            <td></td>
+        </tr>
+        <tr class="masuk">
+            <td class="center">01/01/2026</td>
+            <td>Penerimaan pembayaran termin proyek</td>
+            <td class="center kode">KM-001</td>
+            <td><span class="kode">4-1100</span> Pendapatan Proyek</td>
+            <td></td>
+            <td class="cr">1.000.000</td>
+        </tr>
+
+        <!-- Kas Masuk: Pembayaran Proyek - Uang Muka -->
+        <tr class="header-row">
+            <td colspan="6">Kategori: <b>Pembayaran Proyek – Uang Muka</b> | Proyek: Proyek 2 | Metode: Bank</td>
+        </tr>
+        <tr class="masuk">
+            <td class="center">01/01/2026</td>
+            <td>Penerimaan uang muka proyek</td>
+            <td class="center kode">KM-002</td>
+            <td><span class="kode">1-1100</span> Kas / Bank</td>
+            <td class="dr">2.000.000</td>
+            <td></td>
+        </tr>
+        <tr class="masuk">
+            <td class="center">01/01/2026</td>
+            <td>Penerimaan uang muka proyek</td>
+            <td class="center kode">KM-002</td>
+            <td><span class="kode">2-1200</span> Uang Muka Diterima</td>
+            <td></td>
+            <td class="cr">2.000.000</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- ===== TABEL 2: CONTOH KAS KELUAR ===== -->
+<h2>2. Contoh Pencatatan Kas Keluar & Jurnal Otomatis</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th style="width:12%">Tanggal</th>
+            <th style="width:28%">Keterangan</th>
+            <th style="width:12%">No. Ref</th>
+            <th style="width:20%">Akun</th>
+            <th style="width:14%">Debit (Rp)</th>
+            <th style="width:14%">Kredit (Rp)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Kas Keluar: Pembelian Material -->
+        <tr class="header-row">
+            <td colspan="6">Kategori: <b>Pembelian Material</b> | Proyek: Proyek 1 | Vendor: CV Makmur Jaya</td>
+        </tr>
+        <tr class="keluar">
+            <td class="center">01/01/2026</td>
+            <td>Pembelian material proyek</td>
+            <td class="center kode">KK-001</td>
+            <td><span class="kode">5-1100</span> Biaya Material Proyek</td>
+            <td class="dr">1.000.000</td>
+            <td></td>
+        </tr>
+        <tr class="keluar">
+            <td class="center">01/01/2026</td>
+            <td>Pembelian material proyek</td>
+            <td class="center kode">KK-001</td>
+            <td><span class="kode">1-1100</span> Kas / Bank</td>
+            <td></td>
+            <td class="cr">1.000.000</td>
+        </tr>
+
+        <!-- Kas Keluar: Tenaga Kerja Proyek -->
+        <tr class="header-row">
+            <td colspan="6">Kategori: <b>Tenaga Kerja Proyek</b> | Proyek: Proyek 2</td>
+        </tr>
+        <tr class="keluar">
+            <td class="center">01/01/2026</td>
+            <td>Pembayaran upah tenaga kerja proyek</td>
+            <td class="center kode">KK-002</td>
+            <td><span class="kode">5-1200</span> Biaya Tenaga Kerja Proyek</td>
+            <td class="dr">1.000.000</td>
+            <td></td>
+        </tr>
+        <tr class="keluar">
+            <td class="center">01/01/2026</td>
+            <td>Pembayaran upah tenaga kerja proyek</td>
+            <td class="center kode">KK-002</td>
+            <td><span class="kode">1-1100</span> Kas / Bank</td>
+            <td></td>
+            <td class="cr">1.000.000</td>
+        </tr>
+
+        <!-- Kas Keluar: Tenaga Kerja Kantor -->
+        <tr class="header-row">
+            <td colspan="6">Kategori: <b>Tenaga Kerja Kantor</b> | Non-Proyek</td>
+        </tr>
+        <tr class="keluar">
+            <td class="center">01/01/2026</td>
+            <td>Pembayaran gaji staf kantor</td>
+            <td class="center kode">KK-003</td>
+            <td><span class="kode">5-2100</span> Biaya Gaji Karyawan</td>
+            <td class="dr">5.000.000</td>
+            <td></td>
+        </tr>
+        <tr class="keluar">
+            <td class="center">01/01/2026</td>
+            <td>Pembayaran gaji staf kantor</td>
+            <td class="center kode">KK-003</td>
+            <td><span class="kode">1-1100</span> Kas / Bank</td>
+            <td></td>
+            <td class="cr">5.000.000</td>
+        </tr>
+
+        <!-- Kas Keluar: Operasional Proyek -->
+        <tr class="header-row">
+            <td colspan="6">Kategori: <b>Operasional Proyek</b> | Proyek: Proyek 1</td>
+        </tr>
+        <tr class="keluar">
+            <td class="center">01/01/2026</td>
+            <td>Biaya operasional proyek (transportasi, ATK, dll)</td>
+            <td class="center kode">KK-004</td>
+            <td><span class="kode">5-1300</span> Biaya Operasional Proyek</td>
+            <td class="dr">500.000</td>
+            <td></td>
+        </tr>
+        <tr class="keluar">
+            <td class="center">01/01/2026</td>
+            <td>Biaya operasional proyek (transportasi, ATK, dll)</td>
+            <td class="center kode">KK-004</td>
+            <td><span class="kode">1-1100</span> Kas / Bank</td>
+            <td></td>
+            <td class="cr">500.000</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- ===== TABEL 3: MAPPING KATEGORI - COA ===== -->
+<h2>3. Mapping Kategori Kas → Akun COA (Jurnal Otomatis)</h2>
+
+<div class="note">
+    Setiap kali transaksi disimpan, sistem otomatis membuat 2 baris jurnal (Debit & Kredit) berdasarkan mapping berikut.
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th style="width:5%">Arus</th>
+            <th style="width:30%">Nama Kategori</th>
+            <th style="width:30%">Akun Debit</th>
+            <th style="width:30%">Akun Kredit</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="masuk">
+            <td class="center"><b>MASUK</b></td>
+            <td>Pembayaran Proyek – Termin</td>
+            <td><span class="kode">1-1100</span> Kas / Bank</td>
+            <td><span class="kode">4-1100</span> Pendapatan Proyek</td>
+        </tr>
+        <tr class="masuk">
+            <td class="center"><b>MASUK</b></td>
+            <td>Pembayaran Proyek – Uang Muka</td>
+            <td><span class="kode">1-1100</span> Kas / Bank</td>
+            <td><span class="kode">2-1200</span> Uang Muka Diterima</td>
+        </tr>
+        <tr class="masuk">
+            <td class="center"><b>MASUK</b></td>
+            <td>Penambahan Modal</td>
+            <td><span class="kode">1-1100</span> Kas / Bank</td>
+            <td><span class="kode">3-1100</span> Modal Pemilik</td>
+        </tr>
+        <tr class="masuk">
+            <td class="center"><b>MASUK</b></td>
+            <td>Piutang Bank</td>
+            <td><span class="kode">1-1100</span> Kas / Bank</td>
+            <td><span class="kode">2-1300</span> Hutang Bank</td>
+        </tr>
+        <tr class="keluar">
+            <td class="center"><b>KELUAR</b></td>
+            <td>Pembelian Material</td>
+            <td><span class="kode">5-1100</span> Biaya Material Proyek</td>
+            <td><span class="kode">1-1100</span> Kas / Bank</td>
+        </tr>
+        <tr class="keluar">
+            <td class="center"><b>KELUAR</b></td>
+            <td>Tenaga Kerja Proyek</td>
+            <td><span class="kode">5-1200</span> Biaya Tenaga Kerja Proyek</td>
+            <td><span class="kode">1-1100</span> Kas / Bank</td>
+        </tr>
+        <tr class="keluar">
+            <td class="center"><b>KELUAR</b></td>
+            <td>Tenaga Kerja Kantor</td>
+            <td><span class="kode">5-2100</span> Biaya Gaji Karyawan</td>
+            <td><span class="kode">1-1100</span> Kas / Bank</td>
+        </tr>
+        <tr class="keluar">
+            <td class="center"><b>KELUAR</b></td>
+            <td>Operasional Proyek</td>
+            <td><span class="kode">5-1300</span> Biaya Operasional Proyek</td>
+            <td><span class="kode">1-1100</span> Kas / Bank</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="note">
+    <b>Catatan:</b> Kode akun di atas mengikuti struktur COA di aplikasi. Pastikan kode akun disesuaikan dengan data COA yang ada di sistem kamu. Buka menu Master Data → COA (Akun) untuk melihat kode akun yang tepat.
+</div>
+
+</body>
+</html>

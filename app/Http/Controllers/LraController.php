@@ -12,6 +12,7 @@ class LraController extends Controller
         // Ambil data LRA beserta nama kategorinya
         $lras = DB::table('lra')
             ->leftJoin('kategori_kas', 'lra.id_kategori', '=', 'kategori_kas.id_kategori')
+            ->whereNull('lra.id_proyek')
             ->select('lra.*', 'kategori_kas.nama_kategori')
             ->orderBy('lra.id_lra', 'asc')
             ->get();
@@ -37,7 +38,7 @@ class LraController extends Controller
                 'id_kategori' => 'required|exists:kategori_kas,id_kategori',
             ]);
 
-            $totalSaatIni = DB::table('lra')->sum('persentase');
+            $totalSaatIni = DB::table('lra')->whereNull('id_proyek')->sum('persentase');
 
             // Validasi agar total tidak lebih dari 100%
             if (($totalSaatIni + $request->persentase) > 100) {
@@ -72,6 +73,7 @@ class LraController extends Controller
             // Hitung total persentase selain data yang sedang diedit
             $totalLainnya = DB::table('lra')
                 ->where('id_lra', '!=', $id)
+                ->whereNull('id_proyek')
                 ->sum('persentase');
 
             if (($totalLainnya + $request->persentase) > 100) {
@@ -131,8 +133,13 @@ class LraController extends Controller
                 if ($proyek) {
                     $totalAnggaranProyek = $proyek->nilai_kontrak;
 
-                    // Ambil Master LRA
-                    $masterLra = DB::table('lra')->get();
+                    // Ambil Master LRA khusus proyek
+                    $masterLra = DB::table('lra')->where('id_proyek', $selectedProyek)->get();
+
+                    // Fallback ke LRA global jika data khusus proyek belum ada
+                    if ($masterLra->isEmpty()) {
+                        $masterLra = DB::table('lra')->whereNull('id_proyek')->get();
+                    }
 
                     foreach ($masterLra as $item) {
                         // 1. Hitung Anggaran (Persentase LRA x Nilai Kontrak)
@@ -180,30 +187,67 @@ class LraController extends Controller
                     $targetLabaPersen = $proyek->target_laba; // pastikan kolom ini ada di table proyek
                     $nominalTargetLaba = ($targetLabaPersen / 100) * $nilaiKontrak;
 
-                    // 2. BIAYA (ANGGARAN)
-                    // Anggaran Biaya = Nilai Kontrak - Target Laba
-                    $anggaranBiaya = $nilaiKontrak - $nominalTargetLaba;
+                    // 2. AMBIL DETAIL RAB & REALISASI BIAYA PROYEK (5 Kategori LRA)
+                    $projectLras = DB::table('lra')->where('id_proyek', $selectedProyek)->get();
+                    if ($projectLras->isEmpty()) {
+                        $projectLras = DB::table('lra')->whereNull('id_proyek')->get();
+                    }
 
-                    // 3. REALISASI BIAYA (Ambil dari total pengeluaran di tabel KAS)
-                    $realisasiBiaya = DB::table('kas')
-                        ->where('id_proyek', $selectedProyek)
-                        ->where('arus', 'keluar')
-                        ->sum('nominal');
+                    $detailBiaya = [];
+                    $totalAnggaranBiaya = 0;
+                    $totalRealisasiBiaya = 0;
 
-                    // 4. EFISIENSI & TOTAL LABA
-                    $efisiensiBiaya = $anggaranBiaya - $realisasiBiaya;
+                    foreach ($projectLras as $item) {
+                        $anggaranItem = ($item->persentase / 100) * $nilaiKontrak;
+                        $realisasiItem = DB::table('kas')
+                            ->where('id_proyek', $selectedProyek)
+                            ->where('id_kategori', $item->id_kategori)
+                            ->sum('nominal');
+
+                        $detailBiaya[] = (object) [
+                            'keterangan' => $item->keterangan,
+                            'persentase' => $item->persentase,
+                            'anggaran' => $anggaranItem,
+                            'realisasi' => $realisasiItem,
+                        ];
+
+                        $totalAnggaranBiaya += $anggaranItem;
+                        $totalRealisasiBiaya += $realisasiItem;
+                    }
+
+                    // 3. EFISIENSI & TOTAL LABA
+                    $efisiensiBiaya = $totalAnggaranBiaya - $totalRealisasiBiaya;
                     $totalLabaAkhir = $nominalTargetLaba + $efisiensiBiaya;
+
+                    // Find latest transaction date for the period display
+                    $latestTransaction = DB::table('kas')
+                        ->where('id_proyek', $selectedProyek)
+                        ->orderBy('tanggal', 'desc')
+                        ->first();
+
+                    $timestamp = $latestTransaction ? strtotime($latestTransaction->tanggal) : strtotime($proyek->tanggal_mulai);
+                    $bulanIndo = [
+                        1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+                        5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+                        9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
+                    ];
+                    $bulanIndex = (int)date('m', $timestamp);
+                    $tahun = date('Y', $timestamp);
+                    $periodeStr = $bulanIndo[$bulanIndex] . ' ' . $tahun;
 
                     $data = (object) [
                         'proyek' => $proyek,
                         'nilai_kontrak' => $nilaiKontrak,
                         'target_laba_persen' => $targetLabaPersen,
                         'nominal_target_laba' => $nominalTargetLaba,
-                        'anggaran_biaya' => $anggaranBiaya,
-                        'realisasi_biaya' => $realisasiBiaya,
+                        'anggaran_biaya' => $totalAnggaranBiaya,
+                        'realisasi_biaya' => $totalRealisasiBiaya,
                         'efisiensi_biaya' => $efisiensiBiaya,
                         'total_laba_akhir' => $totalLabaAkhir,
-                        'persentase_laba_akhir' => ($totalLabaAkhir / $nilaiKontrak) * 100
+                        'persentase_laba_akhir' => ($nilaiKontrak > 0) ? (($totalLabaAkhir / $nilaiKontrak) * 100) : 0,
+                        'detail_biaya' => $detailBiaya,
+                        'tahun' => date('Y', strtotime($proyek->tanggal_mulai)),
+                        'periode' => $periodeStr
                     ];
                 }
             }

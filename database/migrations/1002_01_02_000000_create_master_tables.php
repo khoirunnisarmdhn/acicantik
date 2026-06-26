@@ -33,8 +33,8 @@ return new class extends Migration {
                 'nama_kategori' => 'Pembayaran Proyek - Termin',
                 'arus' => 'masuk',
                 'jenis' => 'proyek',
-                'id_coa_debit' => 12,
-                'id_coa_kredit' => 39,
+                'id_coa_debit' => 13, // Kas Bank
+                'id_coa_kredit' => 39, // Pendapatan Jasa Konstruksi
                 'deskripsi' => 'Pembayaran berdasarkan progres pekerjaan',
                 'created_at' => now(),
             ],
@@ -42,65 +42,146 @@ return new class extends Migration {
                 'nama_kategori' => 'Pembayaran Proyek - Uang Muka',
                 'arus' => 'masuk',
                 'jenis' => 'proyek',
-                'id_coa_debit' => 12,
-                'id_coa_kredit' => 23,
+                'id_coa_debit' => 13, // Kas Bank
+                'id_coa_kredit' => 39, // Pendapatan Jasa Konstruksi
                 'deskripsi' => 'Pembayaran awal proyek',
                 'created_at' => now(),
             ],
             [
-                'nama_kategori' => 'Penambahan Modal',
+                'nama_kategori' => 'Penerimaan Pinjaman Bank',
                 'arus' => 'masuk',
                 'jenis' => 'non-proyek',
-                'id_coa_debit' => 12,
-                'id_coa_kredit' => 36,
-                'deskripsi' => 'Setoran modal dari pemilik',
+                'id_coa_debit' => 13, // Kas Bank
+                'id_coa_kredit' => 32, // Utang Bank
+                'deskripsi' => 'Penerimaan dana pinjaman dari bank',
                 'created_at' => now(),
             ],
             [
-                'nama_kategori' => 'Piutang Bank',
+                'nama_kategori' => 'Setoran Modal Pemilik',
                 'arus' => 'masuk',
                 'jenis' => 'non-proyek',
-                'id_coa_debit' => 12,
-                'id_coa_kredit' => 33,
-                'deskripsi' => 'Pencairan dana dari pinjaman bank',
+                'id_coa_debit' => 13, // Kas Bank
+                'id_coa_kredit' => 35, // Modal Pemilik
+                'deskripsi' => 'Setoran modal dari pemilik ke rekening bank',
                 'created_at' => now(),
             ],
 
             // --- KATEGORI KAS KELUAR ---
             [
-                'nama_kategori' => 'Pembelian Material',
+                'nama_kategori' => 'Biaya Material',
                 'arus' => 'keluar',
                 'jenis' => 'proyek',
-                'id_coa_debit' => 43,
-                'id_coa_kredit' => 12,
-                'deskripsi' => 'Pembelian barang/bahan ke vendor',
+                'id_coa_debit' => 43, // Beban Material Proyek
+                'id_coa_kredit' => 13, // Kas Bank
+                'deskripsi' => 'Pembelian bahan dan material proyek',
                 'created_at' => now(),
             ],
             [
-                'nama_kategori' => 'Tenaga Kerja Proyek',
+                'nama_kategori' => 'Biaya Upah',
                 'arus' => 'keluar',
                 'jenis' => 'proyek',
-                'id_coa_debit' => 45,
-                'id_coa_kredit' => 12,
-                'deskripsi' => 'Pembayaran tukang, mandor, pekerja lapangan',
+                'id_coa_debit' => 44, // Beban Upah Proyek
+                'id_coa_kredit' => 13, // Kas Bank
+                'deskripsi' => 'Pembayaran upah tenaga kerja / tukang proyek',
                 'created_at' => now(),
             ],
             [
-                'nama_kategori' => 'Tenaga Kerja Kantor',
+                'nama_kategori' => 'Biaya Subkontraktor',
+                'arus' => 'keluar',
+                'jenis' => 'proyek',
+                'id_coa_debit' => 45, // Beban Subkontraktor Proyek
+                'id_coa_kredit' => 13, // Kas Bank
+                'deskripsi' => 'Pembayaran jasa pihak ketiga / subkontraktor',
+                'created_at' => now(),
+            ],
+            [
+                'nama_kategori' => 'Biaya Akomodasi',
+                'arus' => 'keluar',
+                'jenis' => 'proyek',
+                'id_coa_debit' => 46, // Beban Akomodasi Proyek
+                'id_coa_kredit' => 13, // Kas Bank
+                'deskripsi' => 'Transportasi, makan, dan akomodasi lapangan',
+                'created_at' => now(),
+            ],
+            [
+                'nama_kategori' => 'Biaya Overhead',
+                'arus' => 'keluar',
+                'jenis' => 'proyek',
+                'id_coa_debit' => 47, // Beban Overhead Proyek
+                'id_coa_kredit' => 13, // Kas Bank
+                'deskripsi' => 'Sewa alat, air/listrik proyek, dan operasional lapangan',
+                'created_at' => now(),
+            ],
+            [
+                'nama_kategori' => 'Beban Gaji Kantor',
                 'arus' => 'keluar',
                 'jenis' => 'non-proyek',
-                'id_coa_debit' => 50,
-                'id_coa_kredit' => 12,
+                'id_coa_debit' => 49, // Beban Gaji Kantor
+                'id_coa_kredit' => 13, // Kas Bank
                 'deskripsi' => 'Gaji administratif kantor / staf internal',
                 'created_at' => now(),
             ],
             [
-                'nama_kategori' => 'Operasional Proyek',
+                'nama_kategori' => 'Beban Sewa Kantor',
                 'arus' => 'keluar',
-                'jenis' => 'proyek',
-                'id_coa_debit' => 47,
-                'id_coa_kredit' => 12,
-                'deskripsi' => 'Transportasi, ATK, listrik lapangan, dll.',
+                'jenis' => 'non-proyek',
+                'id_coa_debit' => 50, // Beban Sewa Kantor
+                'id_coa_kredit' => 13, // Kas Bank
+                'deskripsi' => 'Sewa kantor bulanan / tahunan',
+                'created_at' => now(),
+            ],
+            [
+                'nama_kategori' => 'Beban Listrik & Air Kantor',
+                'arus' => 'keluar',
+                'jenis' => 'non-proyek',
+                'id_coa_debit' => 51, // Beban Listrik & Air Kantor
+                'id_coa_kredit' => 13, // Kas Bank
+                'deskripsi' => 'Tagihan listrik & air kantor',
+                'created_at' => now(),
+            ],
+            [
+                'nama_kategori' => 'Beban Internet',
+                'arus' => 'keluar',
+                'jenis' => 'non-proyek',
+                'id_coa_debit' => 52, // Beban Internet
+                'id_coa_kredit' => 13, // Kas Bank
+                'deskripsi' => 'Tagihan internet/wifi kantor',
+                'created_at' => now(),
+            ],
+            [
+                'nama_kategori' => 'Beban Pemasaran',
+                'arus' => 'keluar',
+                'jenis' => 'non-proyek',
+                'id_coa_debit' => 53, // Beban Pemasaran
+                'id_coa_kredit' => 13, // Kas Bank
+                'deskripsi' => 'Biaya promosi dan iklan',
+                'created_at' => now(),
+            ],
+            [
+                'nama_kategori' => 'Beban Administrasi Bank',
+                'arus' => 'keluar',
+                'jenis' => 'non-proyek',
+                'id_coa_debit' => 54, // Beban Administrasi Bank
+                'id_coa_kredit' => 13, // Kas Bank
+                'deskripsi' => 'Biaya admin bulanan bank',
+                'created_at' => now(),
+            ],
+            [
+                'nama_kategori' => 'Prive Pemilik',
+                'arus' => 'keluar',
+                'jenis' => 'non-proyek',
+                'id_coa_debit' => 36, // Prive
+                'id_coa_kredit' => 13, // Kas Bank
+                'deskripsi' => 'Pengambilan pribadi pemilik',
+                'created_at' => now(),
+            ],
+            [
+                'nama_kategori' => 'Beban Pajak Usaha',
+                'arus' => 'keluar',
+                'jenis' => 'non-proyek',
+                'id_coa_debit' => 56, // Beban Pajak Usaha
+                'id_coa_kredit' => 13, // Kas Bank
+                'deskripsi' => 'Pembayaran pajak tahunan/bulanan perusahaan',
                 'created_at' => now(),
             ],
         ]);
@@ -115,9 +196,11 @@ return new class extends Migration {
         });
 
         DB::table('lra')->insert([
-            ['keterangan' => 'Gaji Karyawan', 'persentase' => '60', 'id_kategori' => 8],
-            ['keterangan' => 'Biaya Operasional Proyek', 'persentase' => '5', 'id_kategori' => 6],
             ['keterangan' => 'Biaya Material', 'persentase' => '15', 'id_kategori' => 5],
+            ['keterangan' => 'Biaya Upah', 'persentase' => '20', 'id_kategori' => 6],
+            ['keterangan' => 'Biaya Subkontraktor', 'persentase' => '30', 'id_kategori' => 7],
+            ['keterangan' => 'Biaya Akomodasi', 'persentase' => '10', 'id_kategori' => 8],
+            ['keterangan' => 'Biaya Overhead', 'persentase' => '5', 'id_kategori' => 9],
         ]);
 
         // Tabel Pemberi Proyek

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Penjelasan Relasi Fitur - SIM Keuangan Konstruksi</title>
+    <style>
+        body { font-family: "Times New Roman", serif; font-size: 12pt; margin: 2cm 3cm; color: #000; line-height: 1.6; }
+        h1 { text-align: center; font-size: 14pt; margin-bottom: 4px; }
+        h2 { font-size: 13pt; margin-top: 24px; margin-bottom: 6px; background-color: #1a3c6b; color: white; padding: 6px 12px; border-radius: 4px; }
+        p { text-align: justify; margin-bottom: 8px; }
+        .note { background-color: #e2efda; border-left: 4px solid #70ad47; padding: 8px 12px; margin: 10px 0; font-size: 11pt; }
+        .relasi { background-color: #dce6f1; border-left: 4px solid #2e75b6; padding: 8px 12px; margin: 8px 0; font-size: 11pt; }
+        ul { margin: 4px 0 10px 16px; }
+        li { margin-bottom: 4px; }
+        b { color: #1a3c6b; }
+    </style>
+</head>
+<body>
+
+<h1>Penjelasan Relasi Antar Fitur<br>SIM Keuangan Konstruksi — CV Zahfran Mulia Abadi</h1>
+
+<!-- ===== 1 ===== -->
+<h2>1. Master Data Proyek (Pemberi Proyek + Data Proyek + Termin Proyek)</h2>
+
+<p><b>Pemberi Proyek</b> adalah data klien/instansi yang memberikan proyek ke perusahaan. Saat menginput <b>Data Proyek</b>, pengguna memilih siapa pemberi proyeknya — jadi Pemberi Proyek berelasi sebagai "pemilik" proyek. Setelah proyek disimpan, sistem secara otomatis membuat <b>Termin Proyek</b> (jadwal pembayaran bertahap) sesuai jumlah yang dipilih yaitu 3 atau 4 termin, dengan pola DP 20% + Progress 70% (dibagi rata) + Akhir 10%.</p>
+
+<div class="relasi">
+<b>Relasi dari Master Data Proyek ke fitur lain:</b>
+<ul>
+    <li>Data Proyek muncul di dropdown form <b>Kas Masuk</b> — untuk mencatat pembayaran dari klien per termin</li>
+    <li>Data Proyek muncul di dropdown form <b>Kas Keluar</b> — untuk mengalokasikan pengeluaran ke proyek tertentu</li>
+    <li>Termin Proyek muncul di form Kas Masuk — user pilih termin mana yang dibayar, lalu status termin berubah "Lunas"</li>
+    <li>Nilai kontrak proyek menjadi dasar perhitungan di <b>Laporan LRA</b> (anggaran = % LRA × nilai kontrak)</li>
+    <li>Data Proyek menjadi dasar di <b>Laporan Laba Rugi</b> (nilai kontrak, target laba, total pengeluaran)</li>
+    <li>Jika semua termin sudah lunas → status proyek otomatis berubah "Selesai"</li>
+</ul>
+</div>
+
+<!-- ===== 2 ===== -->
+<h2>2. Master Data Vendor</h2>
+
+<p><b>Vendor</b> adalah supplier atau penyedia material yang menerima pembayaran dari perusahaan. Data Vendor muncul di dropdown form <b>Kas Keluar</b>, khusus untuk kategori pengeluaran yang melibatkan pembayaran ke vendor seperti Pembelian Material. Saat input kas keluar, pengguna bisa mencatat "dibayar ke vendor siapa". Informasi ini akan tampil di daftar kas keluar dan halaman detail pengeluaran.</p>
+
+<div class="relasi">
+<b>Relasi:</b>
+<ul>
+    <li>Vendor muncul di dropdown form <b>Kas Keluar</b> sebagai penerima pembayaran</li>
+    <li>Data vendor tampil di halaman daftar dan detail Kas Keluar</li>
+</ul>
+</div>
+
+<!-- ===== 3 ===== -->
+<h2>3. Master Data COA (Chart of Accounts)</h2>
+
+<p><b>COA</b> adalah daftar akun keuangan yang digunakan untuk pencatatan jurnal. Setiap akun memiliki kode, nama, dan level (Level 1 = header utama, Level 2 = sub-header, Level 3 = akun transaksi). COA berelasi dengan <b>Kategori Kas</b> — setiap kategori memiliki mapping COA debit dan COA kredit yang menentukan akun mana yang di-debit dan di-kredit saat transaksi disimpan.</p>
+
+<div class="relasi">
+<b>Relasi:</b>
+<ul>
+    <li>COA berelasi dengan <b>Kategori Kas</b> — sebagai mapping akun debit dan kredit</li>
+    <li>COA muncul di <b>Jurnal Umum</b> — sebagai keterangan akun per baris jurnal (Level 2 = keterangan, Level 3 = nama akun)</li>
+    <li>COA memiliki relasi parent-child (hierarki Level 1→2→3)</li>
+</ul>
+</div>
+
+<!-- ===== 4 ===== -->
+<h2>4. Master Data Kategori Kas</h2>
+
+<p><b>Kategori Kas</b> adalah pengelompokan jenis transaksi kas masuk dan kas keluar. Contoh kategori kas masuk: "Pembayaran - Down Payment (DP)", "Pembayaran - Termin", "Penambahan Modal Pribadi". Contoh kategori kas keluar: "Pembelian Material", "Tenaga Kerja Proyek", "Operasional Proyek". Setiap kategori memiliki mapping ke COA debit dan COA kredit — ini yang membuat <b>jurnal otomatis terbuat</b> saat transaksi disimpan.</p>
+
+<div class="relasi">
+<b>Relasi:</b>
+<ul>
+    <li>Kategori Kas muncul di dropdown form <b>Kas Masuk</b> dan <b>Kas Keluar</b></li>
+    <li>Mapping COA-nya digunakan untuk <b>membuat jurnal otomatis</b> (debit & kredit)</li>
+    <li>Kategori Kas berelasi dengan <b>LRA</b> — setiap item anggaran LRA merujuk ke satu kategori, sehingga realisasi pengeluaran bisa dihitung otomatis</li>
+</ul>
+</div>
+
+<!-- ===== 5 ===== -->
+<h2>5. Master Data LRA (Struktur Laporan Realisasi Anggaran)</h2>
+
+<p><b>LRA</b> berisi daftar item anggaran berupa persentase per kategori pengeluaran. Contoh: Pembelian Material 40%, Tenaga Kerja Proyek 30%, Operasional Proyek 10%. Total persentase LRA maksimal 80% (karena 20% sudah dialokasikan sebagai target keuntungan perusahaan). Data ini menjadi dasar perhitungan di Laporan LRA.</p>
+
+<div class="relasi">
+<b>Relasi:</b>
+<ul>
+    <li>Setiap item LRA merujuk ke satu <b>Kategori Kas</b></li>
+    <li>Persentase LRA × Nilai Kontrak Proyek = <b>Anggaran per kategori</b> di Laporan LRA</li>
+    <li>Realisasi diambil dari total <b>Kas Keluar</b> pada proyek & kategori yang sama</li>
+</ul>
+</div>
+
+<!-- ===== 6 ===== -->
+<h2>6. Transaksi Kas Masuk</h2>
+
+<p><b>Kas Masuk</b> mencatat penerimaan uang dari klien berdasarkan termin proyek, atau penerimaan umum non-proyek seperti penambahan modal pribadi dan pinjaman bank.</p>
+
+<div class="relasi">
+<b>Yang terjadi saat transaksi Kas Masuk disimpan:</b>
+<ul>
+    <li>Status termin yang dipilih otomatis berubah jadi <b>"Lunas"</b></li>
+    <li>Sistem otomatis membuat <b>2 baris Jurnal Umum</b>: Debit (Kas/Bank) dan Kredit (Pendapatan/Uang Muka) berdasarkan mapping COA dari kategori kas</li>
+    <li>Jika semua termin proyek sudah lunas → status proyek otomatis jadi <b>"Selesai"</b></li>
+    <li>Data kas masuk tampil di <b>Dashboard</b> sebagai ringkasan keuangan</li>
+</ul>
+</div>
+
+<!-- ===== 7 ===== -->
+<h2>7. Transaksi Kas Keluar</h2>
+
+<p><b>Kas Keluar</b> mencatat pengeluaran uang perusahaan untuk material, gaji tenaga kerja, dan operasional proyek. Setiap transaksi kas keluar wajib memiliki minimal satu rincian item pengeluaran.</p>
+
+<div class="relasi">
+<b>Yang terjadi saat transaksi Kas Keluar disimpan:</b>
+<ul>
+    <li><b>Rincian item</b> pengeluaran tersimpan di tabel rincian (nama + nominal per item)</li>
+    <li>Sistem otomatis membuat <b>2 baris Jurnal Umum</b>: Debit (Beban Material/Tenaga Kerja/Operasional) dan Kredit (Kas/Bank)</li>
+    <li>Sistem mengecek apakah total pengeluaran kategori tersebut sudah <b>melebihi anggaran LRA</b> — jika iya, muncul pesan warning tapi data tetap tersimpan</li>
+    <li>Data kas keluar tampil di <b>Dashboard</b> dan digunakan untuk menghitung realisasi di <b>Laporan LRA</b> dan <b>Laporan Laba Rugi</b></li>
+</ul>
+</div>
+
+<!-- ===== 8 ===== -->
+<h2>8. Laporan Jurnal Umum</h2>
+
+<p><b>Jurnal Umum tidak diinput manual</b> — seluruh datanya di-generate otomatis dari setiap transaksi kas masuk dan kas keluar. Setiap 1 transaksi menghasilkan 2 baris jurnal (debit + kredit). Jurnal bisa difilter berdasarkan proyek, bulan, dan tahun.</p>
+
+<div class="note">
+<b>Data yang tampil:</b> Tanggal, No. Referensi, Kode Akun, Keterangan Akun (Level 2), Nama Akun (Level 3), Nominal Debit, Nominal Kredit. Total debit dan kredit akan selalu seimbang (balance).
+</div>
+
+<!-- ===== 9 ===== -->
+<h2>9. Laporan Realisasi Anggaran (LRA)</h2>
+
+<p><b>LRA</b> menampilkan perbandingan antara anggaran dan realisasi pengeluaran per proyek berdasarkan kategori yang sudah diatur di Master LRA.</p>
+
+<div class="note">
+<b>Rumus perhitungan:</b>
+<ul>
+    <li><b>Anggaran</b> = Persentase LRA × Nilai Kontrak Proyek (diambil dari Master LRA + Data Proyek)</li>
+    <li><b>Realisasi</b> = Total kas keluar pada proyek tersebut per kategori (diambil dari Transaksi Kas Keluar)</li>
+    <li><b>Sisa Anggaran</b> = Anggaran − Realisasi</li>
+    <li><b>Penyerapan (%)</b> = (Realisasi ÷ Anggaran) × 100%</li>
+</ul>
+</div>
+
+<!-- ===== 10 ===== -->
+<h2>10. Laporan Laba Rugi</h2>
+
+<p><b>Laporan Laba Rugi</b> menghitung estimasi keuntungan per proyek berdasarkan perbandingan antara target laba dan realisasi biaya yang dikeluarkan selama proyek berlangsung.</p>
+
+<div class="note">
+<b>Rumus perhitungan:</b>
+<ul>
+    <li><b>Target Laba</b> = % Target Laba × Nilai Kontrak (diambil dari Data Proyek)</li>
+    <li><b>Batas Maksimal Biaya</b> = Nilai Kontrak − Target Laba</li>
+    <li><b>Total Biaya Dikeluarkan</b> = Total semua kas keluar pada proyek tersebut (dari Transaksi Kas Keluar)</li>
+    <li><b>Sisa Anggaran Biaya</b> = Batas Maksimal Biaya − Total Biaya Dikeluarkan</li>
+    <li><b>Estimasi Keuntungan</b> = Target Laba + Sisa Anggaran Biaya</li>
+    <li><b>Persentase Keuntungan</b> = (Estimasi Keuntungan ÷ Nilai Kontrak) × 100%</li>
+</ul>
+</div>
+
+</body>
+</html>

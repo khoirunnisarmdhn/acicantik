@@ -77,8 +77,8 @@
                 {{-- Header Laporan --}}
                 <div class="p-10 text-center border-b border-gray-100 dark:border-gray-800">
                     <h1 class="text-2xl font-black uppercase dark:text-white tracking-tighter">Laporan Realisasi Anggaran</h1>
-                    @if ($selectedProyek)
-                        @php $proyekDetail = $listProyek->where('id_proyek', $selectedProyek)->first(); @endphp
+                    @php $proyekDetail = $selectedProyek ? $listProyek->where('id_proyek', $selectedProyek)->first() : null; @endphp
+                    @if ($proyekDetail)
                         <p class="text-lg uppercase mt-1 text-indigo-600 font-bold tracking-wide">{{ $proyekDetail->nama }}</p>
                         <div class="inline-block mt-2 px-4 py-1">
                             <p class="text-xs font-bold uppercase">Nilai Kontrak: Rp {{ number_format($proyekDetail->nilai_kontrak, 0, ',', '.') }}</p>
@@ -89,7 +89,7 @@
                 </div>
 
                 <div class="p-8">
-                    @if (!$selectedProyek)
+                    @if (!$proyekDetail)
                         <div class="py-20 text-center border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-2xl">
                             <svg class="w-16 h-16 mx-auto text-gray-200 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -172,7 +172,7 @@
                         {{-- Catatan Alokasi Profit --}}
                         <div class="mt-4 px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl">
                             <p class="text-xs text-amber-700 font-semibold">
-                                <span class="font-bold">Catatan:</span> Sisa 20% dari nilai kontrak dialokasikan sebagai target keuntungan (profit) perusahaan dan tidak termasuk dalam anggaran biaya operasional proyek.
+                                <span class="font-bold">Catatan:</span> Sisa {{ $proyekDetail->target_laba }}% dari nilai kontrak dialokasikan sebagai target keuntungan (profit) perusahaan dan tidak termasuk dalam anggaran biaya operasional proyek.
                             </p>
                         </div>
 

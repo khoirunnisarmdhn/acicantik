@@ -6,9 +6,24 @@
 
             {{-- Header Info Proyek --}}
             <div class="bg-white dark:bg-gray-800 shadow-xl rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-700">
-                <div class="bg-indigo-600 px-8 py-6 text-white">
-                    <h1 class="text-2xl font-black tracking-tight">{{ $proyek->nama }}</h1>
-                    <p class="text-indigo-200 text-sm mt-1">{{ $proyek->nama_pemberi }} ({{ $proyek->jenis }})</p>
+                <div class="bg-indigo-600 px-8 py-6 text-white flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <h1 class="text-2xl font-black tracking-tight">{{ $proyek->nama }}</h1>
+                        <p class="text-indigo-200 text-sm mt-1">{{ $proyek->nama_pemberi }} ({{ $proyek->jenis }})</p>
+                    </div>
+                    <div>
+                        <a href="{{ route('proyek.rab', $proyek->id_proyek) }}" target="_blank"
+                            class="inline-flex items-center gap-2 transition"
+                            style="background-color: #fbbf24; color: #111827; padding: 14px 28px; font-weight: 800; border-radius: 12px; font-size: 16px; box-shadow: 0 10px 15px -3px rgba(251, 191, 36, 0.3), 0 4px 6px -4px rgba(251, 191, 36, 0.3); text-decoration: none;"
+                            onmouseover="this.style.backgroundColor='#f59e0b'; this.style.transform='translateY(-1px)';"
+                            onmouseout="this.style.backgroundColor='#fbbf24'; this.style.transform='translateY(0)';">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="stroke: #111827; stroke-width: 2.5; width: 20px; height: 20px;">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                            </svg>
+                            <span style="color: #111827; font-weight: 900;">Cetak RAB Penawaran</span>
+                        </a>
+                    </div>
                 </div>
 
                 <div class="p-8 grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -166,13 +181,13 @@
             @endif
 
             {{-- Tombol Kembali --}}
-            <div class="flex justify-start">
-                <a href="{{ route('proyek.index') }}"
-                    class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gray-100 text-gray-600 font-bold hover:bg-gray-200 transition">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
-                    Back
-                </a>
-            </div>
+             <div class="flex justify-start">
+                 <a href="{{ route('proyek.index') }}"
+                     class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gray-100 text-gray-600 font-bold hover:bg-gray-200 transition">
+                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                     Back
+                 </a>
+             </div>
         </div>
     </div>
 </x-app-layout>

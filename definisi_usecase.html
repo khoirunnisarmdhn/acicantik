@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Definisi Aktor & Use Case - SIM Keuangan Konstruksi</title>
+    <style>
+        body { font-family: "Times New Roman", Times, serif; font-size: 12pt; margin: 2.5cm 3cm 2.5cm 4cm; color: #000; }
+        p { text-align: justify; margin-bottom: 8px; }
+        .caption { text-align: center; font-size: 11pt; margin-bottom: 6px; margin-top: 8px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 11pt; }
+        th { background-color: #bdd7ee; border: 1px solid #000; padding: 6px 10px; text-align: center; font-weight: bold; }
+        td { border: 1px solid #000; padding: 6px 10px; vertical-align: top; }
+        .c { text-align: center; vertical-align: middle; }
+        .sub { font-weight: bold; margin-top: 16px; margin-bottom: 6px; }
+    </style>
+</head>
+<body>
+
+<p>Diagram <em>use case</em> pada Gambar 3.x memiliki skenario <em>use case</em>, definisi aktor, dan definisi <em>use case</em>. Definisi aktor dijabarkan pada Tabel 3.x dan definisi <em>use case</em> dijabarkan pada Tabel 3.x berikut ini.</p>
+
+<!-- ===== DEFINISI AKTOR ===== -->
+<div class="sub">a. Definisi Aktor</div>
+<p>Terdapat empat aktor dalam <em>use case</em> yaitu Admin, Administrasi, Keuangan, dan Pimpinan. Setiap aktor pada <em>use case</em> didefinisikan pada Tabel 3.x berikut.</p>
+
+<div class="caption">Tabel 3.x Definisi Aktor</div>
+<table>
+    <thead>
+        <tr>
+            <th style="width:6%">No.</th>
+            <th style="width:18%">Aktor</th>
+            <th style="width:76%">Deskripsi</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="c">1.</td>
+            <td>Admin</td>
+            <td>Admin merupakan aktor yang memiliki hak akses penuh ke seluruh fitur sistem, meliputi mengelola user dan role, mengelola seluruh data master (pemberi proyek, data proyek, termin proyek, vendor, COA, kategori kas, struktur LRA), mengelola transaksi kas masuk dan kas keluar, serta melihat seluruh laporan keuangan.</td>
+        </tr>
+        <tr>
+            <td class="c">2.</td>
+            <td>Administrasi</td>
+            <td>Administrasi merupakan aktor yang memiliki hak akses untuk mengelola data master saja, yaitu mengelola data pemberi proyek, data proyek, termin proyek, vendor, COA, kategori kas, dan struktur LRA. Aktor ini tidak memiliki akses ke menu transaksi maupun laporan keuangan.</td>
+        </tr>
+        <tr>
+            <td class="c">3.</td>
+            <td>Keuangan</td>
+            <td>Keuangan merupakan aktor yang memiliki hak akses untuk mengelola transaksi kas masuk dan kas keluar, serta melihat seluruh laporan keuangan yang meliputi laporan realisasi anggaran, jurnal umum, dan laporan laba rugi proyek.</td>
+        </tr>
+        <tr>
+            <td class="c">4.</td>
+            <td>Pimpinan</td>
+            <td>Pimpinan merupakan aktor yang hanya memiliki hak akses untuk melihat <em>dashboard</em> dan laporan keuangan, meliputi laporan realisasi anggaran, jurnal umum, dan laporan laba rugi proyek, tanpa akses ke pengelolaan data maupun transaksi.</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- ===== DEFINISI USE CASE ===== -->
+<div class="sub">b. Definisi <em>Use Case</em></div>
+<p>Terdapat 12 <em>use case</em> yang menggambarkan aplikasi secara umum. Tabel 3.x berikut ini merupakan definisi dari setiap <em>use case</em> di atas.</p>
+
+<div class="caption">Tabel 3.x Definisi <em>Use Case</em></div>
+<table>
+    <thead>
+        <tr>
+            <th style="width:6%">No.</th>
+            <th style="width:28%"><em>Use Case</em></th>
+            <th style="width:66%">Deskripsi</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="c">1.</td>
+            <td>Mengelola User &amp; Role</td>
+            <td>Merupakan proses menambah, mengubah, dan menghapus data pengguna sistem beserta hak aksesnya ke basis data.</td>
+        </tr>
+        <tr>
+            <td class="c">2.</td>
+            <td>Mengelola Data Proyek</td>
+            <td>Merupakan proses menambah, mengubah, dan menghapus data proyek ke basis data. Saat proyek ditambahkan, sistem secara otomatis membuat data termin pembayaran sesuai jumlah termin yang ditentukan.</td>
+        </tr>
+        <tr>
+            <td class="c">3.</td>
+            <td>Mengelola Pemberi Proyek</td>
+            <td>Merupakan proses menambah, mengubah, dan menghapus data pemberi proyek (klien) ke basis data.</td>
+        </tr>
+        <tr>
+            <td class="c">4.</td>
+            <td>Mengelola Termin Proyek</td>
+            <td>Merupakan proses mengubah data termin proyek, termasuk persentase, nominal, due date, dan keterangan. Nominal termin dihitung otomatis berdasarkan persentase dikali nilai kontrak proyek.</td>
+        </tr>
+        <tr>
+            <td class="c">5.</td>
+            <td>Mengelola Vendor</td>
+            <td>Merupakan proses menambah, mengubah, dan menghapus data vendor atau supplier ke basis data.</td>
+        </tr>
+        <tr>
+            <td class="c">6.</td>
+            <td>Mengelola COA</td>
+            <td>Merupakan proses menambah, mengubah, dan menghapus data akun COA (<em>Chart of Accounts</em>) yang digunakan sebagai dasar pencatatan jurnal keuangan.</td>
+        </tr>
+        <tr>
+            <td class="c">7.</td>
+            <td>Mengelola Kategori Kas</td>
+            <td>Merupakan proses menambah, mengubah, dan menghapus kategori transaksi kas beserta mapping akun COA debit dan kredit yang digunakan untuk pembuatan jurnal otomatis.</td>
+        </tr>
+        <tr>
+            <td class="c">8.</td>
+            <td>Mengelola Struktur LRA</td>
+            <td>Merupakan proses menambah, mengubah, dan menghapus item anggaran pada struktur Laporan Realisasi Anggaran (LRA) beserta persentase alokasi per kategori pengeluaran.</td>
+        </tr>
+        <tr>
+            <td class="c">9.</td>
+            <td>Mengelola Transaksi Kas Masuk &amp; Kas Keluar</td>
+            <td>Merupakan proses mencatat transaksi penerimaan kas (kas masuk) dan pengeluaran kas (kas keluar). Setiap transaksi yang disimpan akan secara otomatis menghasilkan jurnal debit dan kredit berdasarkan mapping COA kategori kas terkait.</td>
+        </tr>
+        <tr>
+            <td class="c">10.</td>
+            <td>Melihat Laporan Realisasi Anggaran</td>
+            <td>Merupakan proses menampilkan laporan perbandingan antara anggaran dan realisasi pengeluaran per kategori berdasarkan proyek yang dipilih.</td>
+        </tr>
+        <tr>
+            <td class="c">11.</td>
+            <td>Melihat Laporan Jurnal Umum</td>
+            <td>Merupakan proses menampilkan laporan jurnal umum yang berisi seluruh entri debit dan kredit dari transaksi kas masuk dan kas keluar berdasarkan periode bulan dan tahun yang dipilih.</td>
+        </tr>
+        <tr>
+            <td class="c">12.</td>
+            <td>Melihat Laporan Laba Rugi</td>
+            <td>Merupakan proses menampilkan laporan laba rugi proyek yang berisi nilai kontrak, target laba, anggaran biaya, realisasi biaya, efisiensi biaya, dan total laba akhir proyek.</td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

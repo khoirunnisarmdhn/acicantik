@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Skenario Use Case - SIM Keuangan Konstruksi</title>
+    <style>
+        body { font-family: "Times New Roman", Times, serif; font-size: 11pt; margin: 2cm 2.5cm; color: #000; }
+        h2 { text-align: center; font-size: 14pt; margin-bottom: 20px; }
+        .uc-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; font-size: 11pt; }
+        .uc-table td { border: 1px solid #000; padding: 5px 8px; vertical-align: top; }
+        .uc-table th { border: 1px solid #000; padding: 5px 8px; text-align: center; background-color: #d9d9d9; font-weight: bold; }
+        .info-label { width: 25%; font-weight: normal; }
+        .info-value { width: 75%; }
+        .section-header td { background-color: #f2f2f2; font-weight: bold; }
+        .no-col { width: 5%; text-align: left; vertical-align: top; }
+        .actor-col { width: 47.5%; vertical-align: top; }
+        .system-col { width: 47.5%; vertical-align: top; }
+        .page-break { page-break-before: always; }
+    </style>
+</head>
+<body>
+
+<h2>LAMPIRAN</h2>
+
+<!-- ===================================================== -->
+<!-- UC 1: LOGIN -->
+<!-- ===================================================== -->
+<table class="uc-table">
+    <tr><td class="info-label">Use case</td><td class="info-value">: Login</td></tr>
+    <tr><td class="info-label">Aktor</td><td class="info-value">: Admin, Administrasi, Keuangan, Pimpinan</td></tr>
+    <tr><td class="info-label">Deskripsi</td><td class="info-value">: Proses autentikasi pengguna untuk masuk ke dalam sistem</td></tr>
+    <tr><td class="info-label">Pre-Condition</td><td class="info-value">: Aktor membuka halaman login sistem</td></tr>
+    <tr><td class="info-label">Post-Condition</td><td class="info-value">: Sistem mengarahkan pengguna ke halaman dashboard sesuai hak aksesnya</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Normal</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor membuka halaman login.</td><td></td></tr>
+    <tr><td></td><td>2. Sistem menampilkan form login dengan field email dan password.</td></tr>
+    <tr><td>3. Aktor memasukkan email dan password yang valid.</td><td></td></tr>
+    <tr><td>4. Aktor menekan tombol "Masuk ke Sistem".</td><td></td></tr>
+    <tr><td></td><td>5. Sistem memverifikasi data dan mengarahkan pengguna ke halaman dashboard sesuai hak akses.</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Alternatif: Email Tidak Terdaftar</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor membuka halaman login.</td><td></td></tr>
+    <tr><td></td><td>2. Sistem menampilkan form login.</td></tr>
+    <tr><td>3. Aktor memasukkan email yang tidak terdaftar.</td><td></td></tr>
+    <tr><td>4. Aktor menekan tombol "Masuk ke Sistem".</td><td></td></tr>
+    <tr><td></td><td>5. Sistem menampilkan pesan error "These credentials do not match our records".</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Alternatif: Password Salah</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor membuka halaman login.</td><td></td></tr>
+    <tr><td></td><td>2. Sistem menampilkan form login.</td></tr>
+    <tr><td>3. Aktor memasukkan password yang salah.</td><td></td></tr>
+    <tr><td>4. Aktor menekan tombol "Masuk ke Sistem".</td><td></td></tr>
+    <tr><td></td><td>5. Sistem menampilkan pesan error "These credentials do not match our records".</td></tr>
+</table>
+
+<div style="text-align:center; font-style:italic; margin-bottom:20px;">Lampiran 1 Skenario Use Case Login</div>
+
+<!-- ===================================================== -->
+<!-- UC 2: MENGELOLA USER & ROLE -->
+<!-- ===================================================== -->
+<table class="uc-table">
+    <tr><td class="info-label">Use case</td><td class="info-value">: Mengelola User &amp; Role</td></tr>
+    <tr><td class="info-label">Aktor</td><td class="info-value">: Admin</td></tr>
+    <tr><td class="info-label">Deskripsi</td><td class="info-value">: Proses menambah, mengubah, dan menghapus data pengguna beserta hak aksesnya</td></tr>
+    <tr><td class="info-label">Pre-Condition</td><td class="info-value">: Aktor berhasil login sebagai admin dan membuka menu User Management</td></tr>
+    <tr><td class="info-label">Post-Condition</td><td class="info-value">: Sistem menyimpan data user beserta hak aksesnya dan menampilkan hasil masukan dari admin</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Normal</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor menekan tombol tambah user.</td><td></td></tr>
+    <tr><td></td><td>2. Sistem menampilkan form tambah user.</td></tr>
+    <tr><td>3. Aktor mengisi username, nama lengkap, email, memilih hak akses, dan mengisi password.</td><td></td></tr>
+    <tr><td>4. Aktor menekan tombol Simpan.</td><td></td></tr>
+    <tr><td></td><td>5. Sistem menyimpan data user dan hak aksesnya, menampilkan pesan "User dan hak akses berhasil dibuat!" dan menampilkan data user pada tabel.</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Alternatif: Password Tidak Cocok</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor menekan tombol tambah user.</td><td></td></tr>
+    <tr><td></td><td>2. Sistem menampilkan form tambah user.</td></tr>
+    <tr><td>3. Aktor mengisi password dan konfirmasi password yang berbeda.</td><td></td></tr>
+    <tr><td>4. Aktor menekan tombol Simpan.</td><td></td></tr>
+    <tr><td></td><td>5. Sistem tidak menyimpan data dan menampilkan pesan error "konfirmasi password tidak cocok".</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Alternatif: Email Sudah Terdaftar</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor menekan tombol tambah user.</td><td></td></tr>
+    <tr><td></td><td>2. Sistem menampilkan form tambah user.</td></tr>
+    <tr><td>3. Aktor memasukkan email yang sudah terdaftar.</td><td></td></tr>
+    <tr><td>4. Aktor menekan tombol Simpan.</td><td></td></tr>
+    <tr><td></td><td>5. Sistem tidak menyimpan data dan menampilkan pesan error "email sudah terdaftar".</td></tr>
+</table>
+
+<div style="text-align:center; font-style:italic; margin-bottom:20px;">Lampiran 2 Skenario Use Case Mengelola User &amp; Role</div>
+
+<!-- ===================================================== -->
+<!-- UC 3: MENGELOLA PEMBERI PROYEK -->
+<!-- ===================================================== -->
+<table class="uc-table">
+    <tr><td class="info-label">Use case</td><td class="info-value">: Mengelola Pemberi Proyek</td></tr>
+    <tr><td class="info-label">Aktor</td><td class="info-value">: Admin, Administrasi</td></tr>
+    <tr><td class="info-label">Deskripsi</td><td class="info-value">: Proses menambah, mengubah, dan menghapus data pemberi proyek</td></tr>
+    <tr><td class="info-label">Pre-Condition</td><td class="info-value">: Aktor berhasil login dan membuka menu Pemberi Proyek</td></tr>
+    <tr><td class="info-label">Post-Condition</td><td class="info-value">: Sistem menyimpan data pemberi proyek dan menampilkan hasil masukan dari aktor</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Normal</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor menekan tombol tambah data.</td><td></td></tr>
+    <tr><td></td><td>2. Sistem menampilkan form tambah pemberi proyek.</td></tr>
+    <tr><td>3. Aktor mengisi jenis, nama, penanggung jawab, alamat, no. telp, dan email dengan data valid.</td><td></td></tr>
+    <tr><td>4. Aktor menekan tombol Simpan.</td><td></td></tr>
+    <tr><td></td><td>5. Sistem menyimpan data pemberi proyek dan menampilkan pesan "Data Pemberi Proyek berhasil disimpan!" serta menampilkan data pada tabel.</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Alternatif: Nama Tidak Diisi</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor menekan tombol tambah data.</td><td></td></tr>
+    <tr><td></td><td>2. Sistem menampilkan form tambah pemberi proyek.</td></tr>
+    <tr><td>3. Aktor mengosongkan field nama.</td><td></td></tr>
+    <tr><td>4. Aktor menekan tombol Simpan.</td><td></td></tr>
+    <tr><td></td><td>5. Sistem tidak menyimpan data dan menampilkan pesan error "Tidak boleh kosong".</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Alternatif: Format Email Tidak Valid</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor menekan tombol tambah data.</td><td></td></tr>
+    <tr><td></td><td>2. Sistem menampilkan form tambah pemberi proyek.</td></tr>
+    <tr><td>3. Aktor memasukkan format email yang tidak valid.</td><td></td></tr>
+    <tr><td>4. Aktor menekan tombol Simpan.</td><td></td></tr>
+    <tr><td></td><td>5. Sistem tidak menyimpan data dan menampilkan pesan error "Format email tidak valid".</td></tr>
+</table>
+
+<div style="text-align:center; font-style:italic; margin-bottom:20px;">Lampiran 3 Skenario Use Case Mengelola Pemberi Proyek</div>
+
+<!-- ===================================================== -->
+<!-- UC 4: MENGELOLA DATA PROYEK -->
+<!-- ===================================================== -->
+<table class="uc-table">
+    <tr><td class="info-label">Use case</td><td class="info-value">: Mengelola Data Proyek</td></tr>
+    <tr><td class="info-label">Aktor</td><td class="info-value">: Admin, Administrasi</td></tr>
+    <tr><td class="info-label">Deskripsi</td><td class="info-value">: Proses menambah, mengubah, dan menghapus data proyek</td></tr>
+    <tr><td class="info-label">Pre-Condition</td><td class="info-value">: Aktor berhasil login dan membuka menu Data Proyek</td></tr>
+    <tr><td class="info-label">Post-Condition</td><td class="info-value">: Sistem menyimpan data proyek, termin otomatis terbuat, dan menampilkan hasil masukan dari aktor</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Normal</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor menekan tombol tambah proyek.</td><td></td></tr>
+    <tr><td></td><td>2. Sistem menampilkan form tambah proyek.</td></tr>
+    <tr><td>3. Aktor mengisi nama proyek, memilih client, mengisi nilai kontrak, jumlah termin (3 atau 4), tanggal mulai, tanggal selesai, dan status.</td><td></td></tr>
+    <tr><td>4. Aktor menekan tombol Simpan.</td><td></td></tr>
+    <tr><td></td><td>5. Sistem menyimpan data proyek, membuat termin secara otomatis (DP 20%, Termin tengah, Termin Akhir 10%), dan menampilkan pesan sukses.</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Alternatif: Jumlah Termin Tidak Valid</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor menekan tombol tambah proyek.</td><td></td></tr>
+    <tr><td></td><td>2. Sistem menampilkan form tambah proyek.</td></tr>
+    <tr><td>3. Aktor mengisi jumlah termin dengan nilai di luar range 3–4.</td><td></td></tr>
+    <tr><td>4. Aktor menekan tombol Simpan.</td><td></td></tr>
+    <tr><td></td><td>5. Sistem tidak menyimpan data dan menampilkan pesan validasi.</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Alternatif: Nama Proyek Tidak Diisi</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor menekan tombol tambah proyek.</td><td></td></tr>
+    <tr><td></td><td>2. Sistem menampilkan form tambah proyek.</td></tr>
+    <tr><td>3. Aktor mengosongkan field nama proyek.</td><td></td></tr>
+    <tr><td>4. Aktor menekan tombol Simpan.</td><td></td></tr>
+    <tr><td></td><td>5. Sistem tidak menyimpan data dan menampilkan pesan error "Tidak boleh kosong".</td></tr>
+</table>
+
+<div style="text-align:center; font-style:italic; margin-bottom:20px;">Lampiran 4 Skenario Use Case Mengelola Data Proyek</div>
+
+<!-- ===================================================== -->
+<!-- UC 5: MENGELOLA TERMIN PROYEK -->
+<!-- ===================================================== -->
+<table class="uc-table">
+    <tr><td class="info-label">Use case</td><td class="info-value">: Mengelola Termin Proyek</td></tr>
+    <tr><td class="info-label">Aktor</td><td class="info-value">: Admin, Administrasi</td></tr>
+    <tr><td class="info-label">Deskripsi</td><td class="info-value">: Proses mengubah data termin proyek yang telah dibuat otomatis oleh sistem</td></tr>
+    <tr><td class="info-label">Pre-Condition</td><td class="info-value">: Aktor berhasil login dan membuka menu Termin Proyek</td></tr>
+    <tr><td class="info-label">Post-Condition</td><td class="info-value">: Sistem memperbarui data termin dan menghitung nominal otomatis berdasarkan persentase × nilai kontrak</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Normal</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor menekan tombol edit pada salah satu termin.</td><td></td></tr>
+    <tr><td></td><td>2. Sistem menampilkan form edit termin proyek.</td></tr>
+    <tr><td>3. Aktor mengubah due date dan keterangan dengan data valid.</td><td></td></tr>
+    <tr><td>4. Aktor menekan tombol Simpan.</td><td></td></tr>
+    <tr><td></td><td>5. Sistem menyimpan perubahan data termin, menghitung nominal otomatis, dan menampilkan pesan sukses.</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Alternatif: Persentase Melebihi 100%</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor menekan tombol edit pada salah satu termin.</td><td></td></tr>
+    <tr><td></td><td>2. Sistem menampilkan form edit termin proyek.</td></tr>
+    <tr><td>3. Aktor mengubah persentase sehingga total semua termin dalam proyek melebihi 100%.</td><td></td></tr>
+    <tr><td>4. Aktor menekan tombol Simpan.</td><td></td></tr>
+    <tr><td></td><td>5. Sistem tidak menyimpan data dan menampilkan pesan error "Total persentase melebihi 100%! Sisa yang tersedia: X%".</td></tr>
+</table>
+
+<div style="text-align:center; font-style:italic; margin-bottom:20px;">Lampiran 5 Skenario Use Case Mengelola Termin Proyek</div>
+
+<!-- ===================================================== -->
+<!-- UC 6: MENGELOLA VENDOR -->
+<!-- ===================================================== -->
+<table class="uc-table">
+    <tr><td class="info-label">Use case</td><td class="info-value">: Mengelola Vendor</td></tr>
+    <tr><td class="info-label">Aktor</td><td class="info-value">: Admin, Administrasi</td></tr>
+    <tr><td class="info-label">Deskripsi</td><td class="info-value">: Proses menambah, mengubah, dan menghapus data vendor</td></tr>
+    <tr><td class="info-label">Pre-Condition</td><td class="info-value">: Aktor berhasil login dan membuka menu Vendor</td></tr>
+    <tr><td class="info-label">Post-Condition</td><td class="info-value">: Sistem menyimpan data vendor dan menampilkan hasil masukan dari aktor</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Normal</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor menekan tombol tambah data.</td><td></td></tr>
+    <tr><td></td><td>2. Sistem menampilkan form tambah vendor.</td></tr>
+    <tr><td>3. Aktor mengisi nama, penanggung jawab, alamat, no. telp, dan email dengan data valid.</td><td></td></tr>
+    <tr><td>4. Aktor menekan tombol Simpan.</td><td></td></tr>
+    <tr><td></td><td>5. Sistem menyimpan data vendor dan menampilkan pesan "Vendor berhasil ditambahkan!" serta menampilkan data pada tabel.</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Alternatif: Nama Tidak Diisi</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor menekan tombol tambah data.</td><td></td></tr>
+    <tr><td></td><td>2. Sistem menampilkan form tambah vendor.</td></tr>
+    <tr><td>3. Aktor mengosongkan field nama vendor.</td><td></td></tr>
+    <tr><td>4. Aktor menekan tombol Simpan.</td><td></td></tr>
+    <tr><td></td><td>5. Sistem tidak menyimpan data dan menampilkan pesan error "Tidak boleh kosong".</td></tr>
+</table>
+
+<div style="text-align:center; font-style:italic; margin-bottom:20px;">Lampiran 6 Skenario Use Case Mengelola Vendor</div>
+
+<!-- ===================================================== -->
+<!-- UC 7: MENGELOLA COA -->
+<!-- ===================================================== -->
+<table class="uc-table">
+    <tr><td class="info-label">Use case</td><td class="info-value">: Mengelola COA</td></tr>
+    <tr><td class="info-label">Aktor</td><td class="info-value">: Admin, Administrasi</td></tr>
+    <tr><td class="info-label">Deskripsi</td><td class="info-value">: Proses menambah, mengubah, dan menghapus data akun COA (Chart of Accounts)</td></tr>
+    <tr><td class="info-label">Pre-Condition</td><td class="info-value">: Aktor berhasil login dan membuka menu COA</td></tr>
+    <tr><td class="info-label">Post-Condition</td><td class="info-value">: Sistem menyimpan data COA dan menampilkan hasil masukan dari aktor</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Normal</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor menekan tombol tambah data.</td><td></td></tr>
+    <tr><td></td><td>2. Sistem menampilkan form tambah COA.</td></tr>
+    <tr><td>3. Aktor mengisi kode akun, nama akun, level, dan urutan dengan data valid.</td><td></td></tr>
+    <tr><td>4. Aktor menekan tombol Simpan.</td><td></td></tr>
+    <tr><td></td><td>5. Sistem menyimpan data COA dan menampilkan pesan "Akun COA baru berhasil ditambahkan!" serta menampilkan data pada tabel.</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Alternatif: Kode Akun Duplikat</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor menekan tombol tambah data.</td><td></td></tr>
+    <tr><td></td><td>2. Sistem menampilkan form tambah COA.</td></tr>
+    <tr><td>3. Aktor memasukkan kode akun yang sudah terdaftar.</td><td></td></tr>
+    <tr><td>4. Aktor menekan tombol Simpan.</td><td></td></tr>
+    <tr><td></td><td>5. Sistem tidak menyimpan data dan menampilkan pesan error "Kode Akun sudah terdaftar di sistem".</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Alternatif: Hapus COA yang Masih Memiliki Sub-Akun</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor menekan tombol hapus pada akun yang masih memiliki sub-akun.</td><td></td></tr>
+    <tr><td></td><td>2. Sistem tidak menghapus data dan menampilkan pesan error "Akun ini masih memiliki sub-akun. Hapus sub-akunnya dulu".</td></tr>
+</table>
+
+<div style="text-align:center; font-style:italic; margin-bottom:20px;">Lampiran 7 Skenario Use Case Mengelola COA</div>
+
+<!-- ===================================================== -->
+<!-- UC 8: MENGELOLA KATEGORI KAS -->
+<!-- ===================================================== -->
+<table class="uc-table">
+    <tr><td class="info-label">Use case</td><td class="info-value">: Mengelola Kategori Kas</td></tr>
+    <tr><td class="info-label">Aktor</td><td class="info-value">: Admin, Administrasi</td></tr>
+    <tr><td class="info-label">Deskripsi</td><td class="info-value">: Proses menambah, mengubah, dan menghapus kategori transaksi kas beserta mapping akun COA</td></tr>
+    <tr><td class="info-label">Pre-Condition</td><td class="info-value">: Aktor berhasil login dan membuka menu Kategori Kas</td></tr>
+    <tr><td class="info-label">Post-Condition</td><td class="info-value">: Sistem menyimpan data kategori kas dan menampilkan hasil masukan dari aktor</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Normal</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor menekan tombol tambah data.</td><td></td></tr>
+    <tr><td></td><td>2. Sistem menampilkan form tambah kategori kas.</td></tr>
+    <tr><td>3. Aktor mengisi nama kategori, memilih arus, jenis, COA debit, dan COA kredit dengan data valid.</td><td></td></tr>
+    <tr><td>4. Aktor menekan tombol Simpan.</td><td></td></tr>
+    <tr><td></td><td>5. Sistem menyimpan data kategori kas dan menampilkan pesan "Kategori baru berhasil ditambahkan!" serta menampilkan data pada tabel.</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Alternatif: Nama Kategori Tidak Diisi</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor menekan tombol tambah data.</td><td></td></tr>
+    <tr><td></td><td>2. Sistem menampilkan form tambah kategori kas.</td></tr>
+    <tr><td>3. Aktor mengosongkan field nama kategori.</td><td></td></tr>
+    <tr><td>4. Aktor menekan tombol Simpan.</td><td></td></tr>
+    <tr><td></td><td>5. Sistem tidak menyimpan data dan menampilkan pesan error "Tidak boleh kosong".</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Alternatif: Hapus Kategori yang Sudah Digunakan Transaksi</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor menekan tombol hapus pada kategori yang sudah digunakan di transaksi kas.</td><td></td></tr>
+    <tr><td></td><td>2. Sistem tidak menghapus data dan menampilkan pesan error "Kategori tidak bisa dihapus karena sudah memiliki data transaksi".</td></tr>
+</table>
+
+<div style="text-align:center; font-style:italic; margin-bottom:20px;">Lampiran 8 Skenario Use Case Mengelola Kategori Kas</div>
+
+<!-- ===================================================== -->
+<!-- UC 9: MENGELOLA STRUKTUR LRA -->
+<!-- ===================================================== -->
+<table class="uc-table">
+    <tr><td class="info-label">Use case</td><td class="info-value">: Mengelola Struktur LRA</td></tr>
+    <tr><td class="info-label">Aktor</td><td class="info-value">: Admin, Administrasi</td></tr>
+    <tr><td class="info-label">Deskripsi</td><td class="info-value">: Proses menambah, mengubah, dan menghapus item anggaran pada struktur Laporan Realisasi Anggaran</td></tr>
+    <tr><td class="info-label">Pre-Condition</td><td class="info-value">: Aktor berhasil login dan membuka menu LRA</td></tr>
+    <tr><td class="info-label">Post-Condition</td><td class="info-value">: Sistem menyimpan item LRA dan menampilkan hasil masukan dari aktor</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Normal</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor menekan tombol tambah item LRA.</td><td></td></tr>
+    <tr><td></td><td>2. Sistem menampilkan form tambah item LRA.</td></tr>
+    <tr><td>3. Aktor mengisi keterangan, persentase, dan memilih kategori kas dengan data valid.</td><td></td></tr>
+    <tr><td>4. Aktor menekan tombol Simpan.</td><td></td></tr>
+    <tr><td></td><td>5. Sistem menyimpan item LRA dan menampilkan pesan "Master Item LRA berhasil ditambahkan!" serta menampilkan data pada tabel.</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Alternatif: Total Persentase Melebihi 100%</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor menekan tombol tambah item LRA.</td><td></td></tr>
+    <tr><td></td><td>2. Sistem menampilkan form tambah item LRA.</td></tr>
+    <tr><td>3. Aktor mengisi persentase yang menyebabkan total seluruh item LRA melebihi 100%.</td><td></td></tr>
+    <tr><td>4. Aktor menekan tombol Simpan.</td><td></td></tr>
+    <tr><td></td><td>5. Sistem tidak menyimpan data dan menampilkan pesan error "Gagal! Total alokasi anggaran melebihi 100%. Sisa yang tersedia: X%".</td></tr>
+</table>
+
+<div style="text-align:center; font-style:italic; margin-bottom:20px;">Lampiran 9 Skenario Use Case Mengelola Struktur LRA</div>
+
+<!-- ===================================================== -->
+<!-- UC 10: MENGELOLA TRANSAKSI KAS MASUK & KELUAR -->
+<!-- ===================================================== -->
+<table class="uc-table">
+    <tr><td class="info-label">Use case</td><td class="info-value">: Mengelola Transaksi Kas Masuk &amp; Kas Keluar</td></tr>
+    <tr><td class="info-label">Aktor</td><td class="info-value">: Admin, Keuangan</td></tr>
+    <tr><td class="info-label">Deskripsi</td><td class="info-value">: Proses mencatat transaksi penerimaan kas dan pengeluaran kas secara otomatis menghasilkan jurnal debit dan kredit</td></tr>
+    <tr><td class="info-label">Pre-Condition</td><td class="info-value">: Aktor berhasil login dan membuka menu Transaksi</td></tr>
+    <tr><td class="info-label">Post-Condition</td><td class="info-value">: Sistem menyimpan transaksi kas, jurnal otomatis terbuat, dan status termin diperbarui</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Normal: Kas Masuk</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor membuka menu Transaksi → Kas Masuk dan menekan tombol tambah.</td><td></td></tr>
+    <tr><td></td><td>2. Sistem menampilkan form tambah kas masuk dengan no form otomatis.</td></tr>
+    <tr><td>3. Aktor mengisi tanggal, memilih kategori, proyek, termin, metode bayar, nominal, keterangan, dan mengupload bukti transfer.</td><td></td></tr>
+    <tr><td>4. Aktor menekan tombol Simpan.</td><td></td></tr>
+    <tr><td></td><td>5. Sistem menyimpan transaksi kas masuk, mengubah status termin menjadi "Lunas", membuat jurnal otomatis (debit dan kredit), dan menampilkan pesan sukses.</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Normal: Kas Keluar</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor membuka menu Transaksi → Kas Keluar dan menekan tombol tambah.</td><td></td></tr>
+    <tr><td></td><td>2. Sistem menampilkan form tambah kas keluar dengan no form otomatis.</td></tr>
+    <tr><td>3. Aktor mengisi tanggal, memilih kategori, proyek, vendor, metode bayar, mengisi rincian item, dan keterangan.</td><td></td></tr>
+    <tr><td>4. Aktor menekan tombol Simpan.</td><td></td></tr>
+    <tr><td></td><td>5. Sistem menyimpan transaksi kas keluar dengan total nominal rincian, menyimpan rincian item, membuat jurnal otomatis, dan menampilkan pesan sukses.</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Alternatif: Bukti Transfer Tidak Diupload (Kas Masuk)</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor mengisi form kas masuk tanpa mengupload bukti transfer.</td><td></td></tr>
+    <tr><td>2. Aktor menekan tombol Simpan.</td><td></td></tr>
+    <tr><td></td><td>3. Sistem tidak menyimpan data dan menampilkan pesan error "bukti transfer wajib diupload".</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Alternatif: Rincian Kosong (Kas Keluar)</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor mengisi form kas keluar tanpa mengisi rincian item.</td><td></td></tr>
+    <tr><td>2. Aktor menekan tombol Simpan.</td><td></td></tr>
+    <tr><td></td><td>3. Sistem tidak menyimpan data dan menampilkan pesan error "rincian minimal 1 item wajib diisi".</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Alternatif: Pengeluaran Melebihi Anggaran LRA</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor mengisi form kas keluar dengan nominal yang melebihi anggaran LRA kategori tersebut.</td><td></td></tr>
+    <tr><td>2. Aktor menekan tombol Simpan.</td><td></td></tr>
+    <tr><td></td><td>3. Sistem menyimpan data tetapi menampilkan pesan peringatan "PERINGATAN: Pengeluaran kategori melebihi anggaran LRA" beserta selisih kelebihan anggaran.</td></tr>
+</table>
+
+<div style="text-align:center; font-style:italic; margin-bottom:20px;">Lampiran 10 Skenario Use Case Mengelola Transaksi Kas Masuk &amp; Kas Keluar</div>
+
+<!-- ===================================================== -->
+<!-- UC 11: MELIHAT LAPORAN REALISASI ANGGARAN -->
+<!-- ===================================================== -->
+<table class="uc-table">
+    <tr><td class="info-label">Use case</td><td class="info-value">: Melihat Laporan Realisasi Anggaran</td></tr>
+    <tr><td class="info-label">Aktor</td><td class="info-value">: Admin, Keuangan, Pimpinan</td></tr>
+    <tr><td class="info-label">Deskripsi</td><td class="info-value">: Proses menampilkan laporan perbandingan anggaran dan realisasi pengeluaran per kategori berdasarkan proyek</td></tr>
+    <tr><td class="info-label">Pre-Condition</td><td class="info-value">: Aktor berhasil login dan membuka menu Laporan → LRA Proyek</td></tr>
+    <tr><td class="info-label">Post-Condition</td><td class="info-value">: Sistem menampilkan tabel perbandingan anggaran vs realisasi beserta selisih per kategori</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Normal</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor membuka menu Laporan → LRA Proyek.</td><td></td></tr>
+    <tr><td></td><td>2. Sistem menampilkan halaman laporan LRA dengan dropdown pilihan proyek.</td></tr>
+    <tr><td>3. Aktor memilih proyek dari dropdown.</td><td></td></tr>
+    <tr><td>4. Aktor menekan tombol Lihat Laporan.</td><td></td></tr>
+    <tr><td></td><td>5. Sistem menampilkan tabel perbandingan anggaran vs realisasi per kategori dilengkapi dengan kolom selisih.</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Alternatif: Proyek Tidak Dipilih</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor membuka menu Laporan → LRA Proyek tanpa memilih proyek.</td><td></td></tr>
+    <tr><td>2. Aktor menekan tombol Lihat Laporan.</td><td></td></tr>
+    <tr><td></td><td>3. Sistem tidak menampilkan data tabel, halaman menunggu pemilihan proyek.</td></tr>
+</table>
+
+<div style="text-align:center; font-style:italic; margin-bottom:20px;">Lampiran 11 Skenario Use Case Melihat Laporan Realisasi Anggaran</div>
+
+<!-- ===================================================== -->
+<!-- UC 12: MELIHAT JURNAL UMUM -->
+<!-- ===================================================== -->
+<table class="uc-table">
+    <tr><td class="info-label">Use case</td><td class="info-value">: Melihat Laporan Jurnal Umum</td></tr>
+    <tr><td class="info-label">Aktor</td><td class="info-value">: Admin, Keuangan, Pimpinan</td></tr>
+    <tr><td class="info-label">Deskripsi</td><td class="info-value">: Proses menampilkan laporan jurnal umum berisi entri debit dan kredit dari seluruh transaksi kas berdasarkan periode</td></tr>
+    <tr><td class="info-label">Pre-Condition</td><td class="info-value">: Aktor berhasil login dan membuka menu Laporan → Jurnal Umum</td></tr>
+    <tr><td class="info-label">Post-Condition</td><td class="info-value">: Sistem menampilkan daftar jurnal sesuai periode yang dipilih</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Normal</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor membuka menu Laporan → Jurnal Umum.</td><td></td></tr>
+    <tr><td></td><td>2. Sistem menampilkan halaman jurnal umum dengan filter bulan dan tahun (default bulan berjalan).</td></tr>
+    <tr><td>3. Aktor memilih filter bulan dan tahun.</td><td></td></tr>
+    <tr><td>4. Aktor menekan tombol Filter.</td><td></td></tr>
+    <tr><td></td><td>5. Sistem menampilkan daftar jurnal dengan kolom tanggal, no referensi, kode akun, nama akun, debit, dan kredit sesuai periode yang dipilih.</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Alternatif: Periode Tidak Ada Transaksi</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor membuka menu Jurnal Umum.</td><td></td></tr>
+    <tr><td></td><td>2. Sistem menampilkan halaman jurnal umum.</td></tr>
+    <tr><td>3. Aktor memilih bulan dan tahun yang tidak memiliki transaksi.</td><td></td></tr>
+    <tr><td>4. Aktor menekan tombol Filter.</td><td></td></tr>
+    <tr><td></td><td>5. Sistem menampilkan pesan "Data jurnal periode tersebut tidak ditemukan" dan mengarahkan kembali ke halaman jurnal.</td></tr>
+</table>
+
+<div style="text-align:center; font-style:italic; margin-bottom:20px;">Lampiran 12 Skenario Use Case Melihat Laporan Jurnal Umum</div>
+
+<!-- ===================================================== -->
+<!-- UC 13: MELIHAT LAPORAN LABA RUGI -->
+<!-- ===================================================== -->
+<table class="uc-table">
+    <tr><td class="info-label">Use case</td><td class="info-value">: Melihat Laporan Laba Rugi</td></tr>
+    <tr><td class="info-label">Aktor</td><td class="info-value">: Admin, Keuangan, Pimpinan</td></tr>
+    <tr><td class="info-label">Deskripsi</td><td class="info-value">: Proses menampilkan laporan laba rugi proyek berisi nilai kontrak, target laba, realisasi biaya, efisiensi, dan total laba akhir</td></tr>
+    <tr><td class="info-label">Pre-Condition</td><td class="info-value">: Aktor berhasil login dan membuka menu Laporan → Laba Rugi Proyek</td></tr>
+    <tr><td class="info-label">Post-Condition</td><td class="info-value">: Sistem menampilkan ringkasan laporan laba rugi proyek yang dipilih</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Normal</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor membuka menu Laporan → Laba Rugi Proyek.</td><td></td></tr>
+    <tr><td></td><td>2. Sistem menampilkan halaman laba rugi dengan dropdown pilihan proyek.</td></tr>
+    <tr><td>3. Aktor memilih proyek dari dropdown.</td><td></td></tr>
+    <tr><td>4. Aktor menekan tombol Lihat Laporan.</td><td></td></tr>
+    <tr><td></td><td>5. Sistem menampilkan laporan laba rugi berisi nilai kontrak, target laba (%), anggaran biaya, realisasi biaya, efisiensi biaya, dan total laba akhir proyek.</td></tr>
+    <tr class="section-header"><td colspan="2">Skenario Alternatif: Proyek Tidak Dipilih</td></tr>
+    <tr><th class="actor-col">Aktor</th><th class="system-col">Sistem</th></tr>
+    <tr><td>1. Aktor membuka menu Laporan → Laba Rugi Proyek tanpa memilih proyek.</td><td></td></tr>
+    <tr><td>2. Aktor menekan tombol Lihat Laporan.</td><td></td></tr>
+    <tr><td></td><td>3. Sistem tidak menampilkan data laporan, halaman menunggu pemilihan proyek.</td></tr>
+</table>
+
+<div style="text-align:center; font-style:italic; margin-bottom:20px;">Lampiran 13 Skenario Use Case Melihat Laporan Laba Rugi</div>
+
+</body>
+</html>

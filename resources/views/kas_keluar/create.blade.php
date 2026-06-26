@@ -4,40 +4,87 @@
     <div class="py-12" x-data="{
         isProyek: false,
         showVendor: false,
-        placeholderRincian: 'Contoh: Semen 50 sak',
-        placeholderKeterangan: 'Contoh: Pembelian material semen 50 sak...',
+        placeholderRincian: 'Nama item pengeluaran',
+        placeholderKeterangan: 'Keterangan pengeluaran...',
         kategoriUmum: @js($kategoriUmum),
         kategoriProyek: @js($kategoriProyek),
         kategoriAktif: @js($kategoriUmum),
         rincian: [{ nama: '', nominal: '' }],
+        isFullPayment: false,
+
         handleProyekChange(id) {
             if (id !== '') {
                 this.isProyek = true;
                 this.kategoriAktif = this.kategoriProyek;
+                
+                // Fetch check for Full Payment
+                fetch(`{{ url('/api/proyek') }}/${id}/termin`)
+                    .then(res => res.json())
+                    .then(data => {
+                        let jumlahTermin = data.length > 0 ? (parseInt(data[0].jumlah_termin) || 0) : 0;
+                        this.isFullPayment = (jumlahTermin === 1);
+                    })
+                    .catch(() => {
+                        this.isFullPayment = false;
+                    });
             } else {
                 this.isProyek = false;
                 this.kategoriAktif = this.kategoriUmum;
                 this.showVendor = false;
+                this.isFullPayment = false;
             }
         },
-        handleKategoriChange(el) {
-            const nama = el.options[el.selectedIndex].text.toLowerCase();
-            this.showVendor = nama.includes('material') || nama.includes('pembelian');
+        updatePlaceholders(categoryName) {
+            const nama = categoryName.toLowerCase();
+            this.showVendor = nama.includes('material');
+            
             if (nama.includes('material') || nama.includes('pembelian')) {
                 this.placeholderRincian = 'Contoh: Semen 50 sak';
                 this.placeholderKeterangan = 'Contoh: Pembelian material semen 50 sak...';
-            } else if (nama.includes('tenaga') || nama.includes('kerja')) {
-                this.placeholderRincian = 'Contoh: Gaji 5 Orang Karyawan';
-                this.placeholderKeterangan = 'Contoh: Pembayaran gaji tukang dan mandor...';
-            } else if (nama.includes('operasional')) {
-                this.placeholderRincian = 'Contoh: Biaya Listrik 2 Bulan';
-                this.placeholderKeterangan = 'Contoh: Biaya operasional lapangan...';
+            } else if (nama.includes('upah') || nama.includes('tenaga') || nama.includes('kerja') || nama.includes('gaji')) {
+                this.placeholderRincian = 'Contoh: Upah tukang mingguan';
+                this.placeholderKeterangan = 'Contoh: Pembayaran upah harian/mingguan para pekerja...';
+            } else if (nama.includes('subkon')) {
+                this.placeholderRincian = 'Contoh: Pekerjaan pasang keramik';
+                this.placeholderKeterangan = 'Contoh: Pembayaran jasa pengerjaan oleh pihak subkontraktor...';
+            } else if (nama.includes('akomodasi') || nama.includes('transport') || nama.includes('perjalanan')) {
+                this.placeholderRincian = 'Contoh: Sewa mobil / Bensin / Tol';
+                this.placeholderKeterangan = 'Contoh: Pengeluaran biaya akomodasi & transportasi tim proyek...';
+            } else if (nama.includes('overhead') || nama.includes('operasional') || nama.includes('listrik')) {
+                this.placeholderRincian = 'Contoh: Tagihan Listrik / Air / Internet';
+                this.placeholderKeterangan = 'Contoh: Pengeluaran biaya overhead operasional kantor atau lapangan...';
             } else {
                 this.placeholderRincian = 'Nama item pengeluaran';
                 this.placeholderKeterangan = 'Keterangan pengeluaran...';
             }
+        },
+        handleKategoriChange(el) {
+            const id = el ? el.value : '';
+            if (!id) {
+                this.placeholderRincian = 'Nama item pengeluaran';
+                this.placeholderKeterangan = 'Keterangan pengeluaran...';
+                this.showVendor = false;
+                return;
+            }
+            const found = this.kategoriAktif.find(k => k.id_kategori == id);
+            if (found) {
+                this.updatePlaceholders(found.nama_kategori);
+            } else {
+                this.placeholderRincian = 'Nama item pengeluaran';
+                this.placeholderKeterangan = 'Keterangan pengeluaran...';
+                this.showVendor = false;
+            }
         }
-    }" x-init="@if (old('id_proyek')) handleProyekChange('{{ old('id_proyek') }}') @endif">
+    }" x-init="
+        @if (old('id_proyek')) handleProyekChange('{{ old('id_proyek') }}') @endif
+        const oldKategoriId = '{{ old('id_kategori') }}';
+        if (oldKategoriId) {
+            const found = this.kategoriAktif.find(k => k.id_kategori == oldKategoriId);
+            if (found) {
+                this.updatePlaceholders(found.nama_kategori);
+            }
+        }
+    ">
 
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div
@@ -78,6 +125,17 @@
                             </select>
                             <p class="mt-1 text-[10px] text-gray-400">Pilih proyek jika pengeluaran ini dibebankan ke
                                 proyek tertentu.</p>
+
+                            <!-- Warning Note for Full Payment -->
+                            <div x-show="isProyek && isFullPayment" x-transition x-cloak 
+                                class="mt-3 p-4 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 rounded-2xl flex items-start gap-3">
+                                <span class="text-amber-600 dark:text-amber-400 font-bold text-lg">⚠️</span>
+                                <div>
+                                    <p class="text-xs font-bold text-amber-800 dark:text-amber-300">
+                                        Harap konfirmasi kepada pihak Administrasi untuk update status proyek apabila proyek telah selesai!
+                                    </p>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="md:col-span-2">
@@ -101,7 +159,7 @@
 
                             <div class="flex items-center justify-between">
                                 <label class="block text-[11px] font-black text-gray-400 uppercase tracking-widest">
-                                    Rincian Pengeluaran
+                                    Keterangan Pengeluaran
                                 </label>
 
                                 <button type="button"
@@ -231,7 +289,7 @@
                         <div class="md:col-span-2">
                             <label
                                 class="block text-[11px] font-black text-gray-400 uppercase mb-2 tracking-widest">Keterangan
-                                Pengeluaran</label>
+                                Tambahan (Opsional)</label>
                             <textarea name="keterangan" rows="3" :placeholder="placeholderKeterangan"
                                 class="w-full border-2 border-gray-100 rounded-2xl focus:ring-4 focus:ring-rose-500/10 focus:border-rose-500">{{ old('keterangan') }}</textarea>
                         </div>

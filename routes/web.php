@@ -47,6 +47,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/laba-rugi', [LraController::class, 'labarugi'])->name('lra.labarugi');
     Route::resource('pemberi', PemberiProyekController::class);
     Route::resource('proyek', ProyekController::class);
+    Route::get('/proyek/{id}/rab', [ProyekController::class, 'printRab'])->name('proyek.rab');
     Route::resource('termin', TerminProyekController::class);
     Route::resource('vendor', VendorController::class);
     Route::resource('coa', CoaController::class);

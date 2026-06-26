@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Pengujian Manual - CV Zahfran Mulia Abadi</title>
+    <style>
+        body {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 12pt;
+            margin: 2.5cm 3cm 2.5cm 4cm;
+            color: #000;
+        }
+        h2 {
+            text-align: center;
+            font-size: 13pt;
+            margin-bottom: 4px;
+        }
+        .sub-judul {
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 6px;
+            font-size: 12pt;
+        }
+        .caption {
+            text-align: center;
+            font-style: italic;
+            font-size: 11pt;
+            margin-bottom: 6px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 11pt;
+        }
+        th {
+            background-color: #d9d9d9;
+            border: 1px solid #000;
+            padding: 6px 8px;
+            text-align: center;
+            font-weight: bold;
+        }
+        td {
+            border: 1px solid #000;
+            padding: 6px 8px;
+            vertical-align: top;
+        }
+        td.center { text-align: center; }
+        td.status-ok { text-align: center; font-weight: bold; }
+        @media print {
+            body { margin: 2cm; }
+        }
+    </style>
+</head>
+<body>
+
+<h2>4.2.1 Pengujian Manual</h2>
+<p>Berikut ini merupakan pengujian manual dengan contoh studi kasus Pengelolaan Keuangan Konstruksi pada CV Zahfran Mulia Abadi.</p>
+
+<!-- ============================================================ -->
+<div class="sub-judul">1) Pengujian Manual Proses Tambah Data Proyek</div>
+<div class="caption">Tabel 4.x Pengujian Manual Proses Tambah Data Proyek</div>
+<table>
+    <thead>
+        <tr>
+            <th style="width:4%">No</th>
+            <th style="width:20%">Skenario</th>
+            <th style="width:30%">Input</th>
+            <th style="width:33%">Output yang Diharapkan</th>
+            <th style="width:13%">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="center">1</td>
+            <td>Tambah proyek baru dengan data valid</td>
+            <td>Nama: "Proyek Renovasi Gedung A", Client: Dinas PUPR Kota Serang, Nilai Kontrak: 50.000.000, Jumlah Termin: 3, Tgl Mulai: 01/07/2026, Tgl Selesai: 31/12/2026, Status: Aktif</td>
+            <td>Data proyek tersimpan, termin otomatis terbuat (DP 20%, Termin 1 70%, Termin Akhir 10%), muncul notifikasi sukses</td>
+            <td class="status-ok">✓ Berhasil</td>
+        </tr>
+        <tr>
+            <td class="center">2</td>
+            <td>Tambah proyek tanpa mengisi nama proyek</td>
+            <td>Nama dikosongkan, field lain diisi lengkap</td>
+            <td>Muncul pesan validasi "nama wajib diisi", data tidak tersimpan</td>
+            <td class="status-ok">✓ Berhasil</td>
+        </tr>
+        <tr>
+            <td class="center">3</td>
+            <td>Jumlah termin di luar range yang diizinkan</td>
+            <td>Jumlah Termin diisi: 2</td>
+            <td>Muncul pesan validasi, input ditolak karena jumlah termin harus antara 3–4</td>
+            <td class="status-ok">✓ Berhasil</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- ============================================================ -->
+<div class="sub-judul">2) Pengujian Manual Proses Transaksi Kas Masuk</div>
+<div class="caption">Tabel 4.x Pengujian Manual Proses Transaksi Kas Masuk</div>
+<table>
+    <thead>
+        <tr>
+            <th style="width:4%">No</th>
+            <th style="width:20%">Skenario</th>
+            <th style="width:30%">Input</th>
+            <th style="width:33%">Output yang Diharapkan</th>
+            <th style="width:13%">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="center">1</td>
+            <td>Input kas masuk pembayaran termin dengan data valid</td>
+            <td>No Form: KM-auto, Tanggal: 01/07/2026, Kategori: Pembayaran Proyek-Termin, Proyek: Renovasi Gedung A, Termin: DP, Metode: Bank, Nominal: 10.000.000, Bukti: bukti.jpg</td>
+            <td>Kas masuk tersimpan, status termin DP berubah menjadi "Lunas", jurnal otomatis terbuat (Dr. Kas / Cr. Piutang Proyek)</td>
+            <td class="status-ok">✓ Berhasil</td>
+        </tr>
+        <tr>
+            <td class="center">2</td>
+            <td>Input kas masuk tanpa melampirkan bukti transfer</td>
+            <td>Field upload bukti dibiarkan kosong</td>
+            <td>Muncul pesan validasi "bukti transfer wajib diupload", data tidak tersimpan</td>
+            <td class="status-ok">✓ Berhasil</td>
+        </tr>
+        <tr>
+            <td class="center">3</td>
+            <td>Semua termin proyek telah lunas</td>
+            <td>Input kas masuk untuk termin terakhir (Termin Akhir) milik proyek yang sama</td>
+            <td>Data kas masuk tersimpan, status proyek otomatis berubah menjadi "Selesai"</td>
+            <td class="status-ok">✓ Berhasil</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- ============================================================ -->
+<div class="sub-judul">3) Pengujian Manual Proses Transaksi Kas Keluar</div>
+<div class="caption">Tabel 4.x Pengujian Manual Proses Transaksi Kas Keluar</div>
+<table>
+    <thead>
+        <tr>
+            <th style="width:4%">No</th>
+            <th style="width:20%">Skenario</th>
+            <th style="width:30%">Input</th>
+            <th style="width:33%">Output yang Diharapkan</th>
+            <th style="width:13%">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="center">1</td>
+            <td>Input kas keluar pembelian material dengan data valid</td>
+            <td>No Form: KK-auto, Tanggal: 05/07/2026, Kategori: Pembelian Material, Proyek: Renovasi Gedung A, Vendor: CV Makmur Jaya, Metode: Cash, Rincian: Besi Rp5.000.000 + Semen Rp2.000.000</td>
+            <td>Kas keluar tersimpan dengan total nominal Rp7.000.000, rincian item tersimpan, jurnal otomatis terbuat (Dr. Beban Material / Cr. Kas)</td>
+            <td class="status-ok">✓ Berhasil</td>
+        </tr>
+        <tr>
+            <td class="center">2</td>
+            <td>Pengeluaran melebihi anggaran LRA pada kategori tertentu</td>
+            <td>Input kas keluar dengan nominal yang menyebabkan total realisasi kategori melebihi persentase LRA × nilai kontrak</td>
+            <td>Data tetap tersimpan namun muncul pesan peringatan (warning) berisi selisih kelebihan anggaran</td>
+            <td class="status-ok">✓ Berhasil</td>
+        </tr>
+        <tr>
+            <td class="center">3</td>
+            <td>Input kas keluar tanpa mengisi rincian</td>
+            <td>Tabel rincian dikosongkan, field lain diisi</td>
+            <td>Muncul pesan validasi "rincian minimal 1 item wajib diisi", data tidak tersimpan</td>
+            <td class="status-ok">✓ Berhasil</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- ============================================================ -->
+<div class="sub-judul">4) Pengujian Manual Laporan Jurnal Umum</div>
+<div class="caption">Tabel 4.x Pengujian Manual Laporan Jurnal Umum</div>
+<table>
+    <thead>
+        <tr>
+            <th style="width:4%">No</th>
+            <th style="width:20%">Skenario</th>
+            <th style="width:30%">Input</th>
+            <th style="width:33%">Output yang Diharapkan</th>
+            <th style="width:13%">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="center">1</td>
+            <td>Melihat jurnal umum periode bulan berjalan</td>
+            <td>Filter Bulan: Juli, Tahun: 2026</td>
+            <td>Tampil daftar jurnal dengan kolom tanggal, no referensi, kode akun, nama akun, nominal debit, dan nominal kredit sesuai transaksi yang telah diinput</td>
+            <td class="status-ok">✓ Berhasil</td>
+        </tr>
+        <tr>
+            <td class="center">2</td>
+            <td>Filter periode yang tidak memiliki transaksi</td>
+            <td>Filter Bulan: Januari, Tahun: 2026</td>
+            <td>Muncul pesan "Data jurnal periode Januari 2026 tidak ditemukan", halaman tetap dapat diakses</td>
+            <td class="status-ok">✓ Berhasil</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- ============================================================ -->
+<div class="sub-judul">5) Pengujian Manual Laporan Realisasi Anggaran (LRA)</div>
+<div class="caption">Tabel 4.x Pengujian Manual Laporan Realisasi Anggaran (LRA)</div>
+<table>
+    <thead>
+        <tr>
+            <th style="width:4%">No</th>
+            <th style="width:20%">Skenario</th>
+            <th style="width:30%">Input</th>
+            <th style="width:33%">Output yang Diharapkan</th>
+            <th style="width:13%">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="center">1</td>
+            <td>Melihat laporan LRA proyek yang memiliki transaksi</td>
+            <td>Pilih Proyek: Renovasi Gedung A</td>
+            <td>Tampil tabel perbandingan anggaran vs realisasi per kategori pengeluaran, dilengkapi kolom selisih (sisa/lebih anggaran)</td>
+            <td class="status-ok">✓ Berhasil</td>
+        </tr>
+        <tr>
+            <td class="center">2</td>
+            <td>Melihat laporan Laba Rugi proyek</td>
+            <td>Pilih Proyek: Renovasi Gedung A pada menu Laba Rugi</td>
+            <td>Tampil ringkasan: nilai kontrak, target laba (%), anggaran biaya, realisasi biaya, efisiensi biaya, dan total laba akhir proyek</td>
+            <td class="status-ok">✓ Berhasil</td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

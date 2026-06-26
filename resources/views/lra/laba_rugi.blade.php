@@ -70,59 +70,50 @@
 
         @if($data)
         <div id="printArea" class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm overflow-hidden">
-            <div class="p-8 text-center border-b border-gray-100 dark:border-gray-800">
-                <h1 class="text-2xl font-black uppercase dark:text-white tracking-tighter">Laporan Laba Rugi</h1>
-                <p class="text-indigo-600 font-bold mt-1 text-lg uppercase">{{ $data->proyek->nama }}</p>
+            <div class="p-8 text-center border-b border-gray-100 dark:border-gray-800 space-y-1">
+                <h2 class="text-lg font-bold uppercase dark:text-white">CV Zahfran Mulia Abadi</h2>
+                <h1 class="text-lg font-bold uppercase dark:text-white">Laporan Laba Rugi</h1>
+                <p class="text-lg font-bold uppercase dark:text-white">Periode {{ $data->periode }}</p>
+                <p class="text-indigo-600 font-extrabold text-[10px] uppercase tracking-widest pt-2">Proyek: {{ $data->proyek->nama }}</p>
             </div>
 
             <div class="p-8">
                 <table id="labarugiTable" class="w-full text-sm">
                     <thead>
-                        <tr class="border-b-2 border-black dark:border-gray-600 bg-gray-50 dark:bg-gray-800">
-                            <th class="p-4 text-left uppercase tracking-wider font-bold">Keterangan Analisis</th>
-                            <th class="p-4 text-right uppercase tracking-wider font-bold w-64">Nilai (IDR)</th>
+                        <tr class="border-b border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800">
+                            <th class="p-4 text-left uppercase tracking-wider font-bold">Keterangan</th>
+                            <th class="p-4 text-right uppercase tracking-wider font-bold w-64">{{ $data->tahun ?? date('Y') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
-                        {{-- SEKSI PENDAPATAN --}}
-                        <tr class="bg-gray-50/50 dark:bg-gray-800/50">
-                            <td class="py-4 px-4 font-bold text-xs uppercase tracking-widest text-gray-400" colspan="2">A. Pendapatan & Target Laba</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-8 italic font-medium">Nilai Kontrak Proyek</td>
-                            <td class="py-3 px-4 text-right font-bold text-gray-900 dark:text-white">Rp {{ number_format($data->nilai_kontrak, 0, ',', '.') }}</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-8 italic font-medium text-emerald-600">Target Laba ({{ $data->target_laba_persen }}%)</td>
-                            <td class="py-3 px-4 text-right text-emerald-600 font-black italic">Rp {{ number_format($data->nominal_target_laba, 0, ',', '.') }}</td>
+                        {{-- PENDAPATAN --}}
+                        <tr class="bg-gray-50/30 dark:bg-gray-800/10 font-bold">
+                            <td class="py-3 px-4">Pendapatan Proyek</td>
+                            <td class="py-3 px-4 text-right">Rp. {{ number_format($data->nilai_kontrak, 0, ',', '.') }}</td>
                         </tr>
 
-                        {{-- SEKSI BIAYA --}}
-                        <tr class="bg-gray-50/50 dark:bg-gray-800/50">
-                            <td class="py-4 px-4 font-bold text-xs uppercase tracking-widest text-gray-400" colspan="2">B. Beban & Biaya Lapangan</td>
+                        {{-- BIAYA PROYEK --}}
+                        <tr class="bg-gray-50/50 dark:bg-gray-800/50 font-bold">
+                            <td class="py-3 px-4" colspan="2">Biaya proyek:</td>
                         </tr>
-                        <tr>
-                            <td class="py-3 px-8 italic font-medium">Batas Maksimal Biaya</td>
-                            <td class="py-3 px-4 text-right font-medium">Rp {{ number_format($data->anggaran_biaya, 0, ',', '.') }}</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-8 italic font-medium text-rose-600">Total Biaya yang Sudah Dikeluarkan</td>
-                            <td class="py-3 px-4 text-right text-rose-600 font-bold">(Rp {{ number_format($data->realisasi_biaya, 0, ',', '.') }})</td>
-                        </tr>
-                        <tr class="bg-indigo-50/30 dark:bg-indigo-900/10">
-                            <td class="py-3 px-8 font-bold italic text-indigo-600">Sisa Anggaran Biaya</td>
-                            <td class="py-3 px-4 text-right font-black {{ $data->efisiensi_biaya < 0 ? 'text-rose-600' : 'text-emerald-600' }}">
-                                Rp {{ number_format($data->efisiensi_biaya, 0, ',', '.') }}
-                            </td>
-                        </tr>
+                        @foreach ($data->detail_biaya as $biaya)
+                            <tr>
+                                <td class="py-3 px-8 italic font-medium">{{ $biaya->keterangan }}</td>
+                                <td class="py-3 px-4 text-right font-medium text-gray-700 dark:text-gray-300">Rp. {{ number_format($biaya->realisasi, 0, ',', '.') }}</td>
+                            </tr>
+                        @endforeach
 
-                        {{-- GRAND TOTAL --}}
+                        {{-- TOTAL BIAYA --}}
+                        <tr class="bg-gray-100/50 dark:bg-gray-800/80 font-bold border-t border-gray-300">
+                            <td class="py-3 px-4 uppercase font-black text-gray-800 dark:text-gray-200">Total Biaya Proyek</td>
+                            <td class="py-3 px-4 text-right text-rose-600">Rp. ({{ number_format($data->realisasi_biaya, 0, ',', '.') }})</td>
+                        </tr>
                     </tbody>
                     <tfoot>
                         <tr class="bg-gray-900 text-white dark:bg-white dark:text-black">
-                            <td class="p-6 text-lg font-black uppercase tracking-tighter">Estimasi Keuntungan Proyek</td>
+                            <td class="p-6 text-lg font-black uppercase tracking-tighter">Laba (Rugi) Kotor</td>
                             <td class="p-6 text-right text-2xl font-black tracking-tight">
-                                Rp {{ number_format($data->total_laba_akhir, 0, ',', '.') }}
+                                Rp. {{ number_format($data->total_laba_akhir, 0, ',', '.') }}
                             </td>
                         </tr>
                     </tfoot>

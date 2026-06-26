@@ -208,12 +208,14 @@
         }
 
         // ===== ZOOM FUNCTIONS =====
-        const ZOOM_MIN = 70;
-        const ZOOM_MAX = 150;
+        const ZOOM_MIN = 70; // Label 70% (CSS 40%)
+        const ZOOM_MAX = 150; // Label 150% (CSS 120%)
         const ZOOM_STEP = 10;
 
         function applyZoom(level) {
-            document.body.style.zoom = level + '%';
+            // Map label zoom level (e.g. 100) to actual visual CSS zoom (e.g. 70%)
+            const cssZoom = level - 30;
+            document.body.style.zoom = cssZoom + '%';
             localStorage.setItem('page-zoom', level);
             const label = document.getElementById('zoom-label');
             if (label) label.textContent = level + '%';
@@ -225,6 +227,7 @@
             applyZoom(next);
         }
 
+        // Reset zoom now returns label to 100% (which applies 70% visual zoom)
         function resetZoom() {
             applyZoom(100);
         }
@@ -232,7 +235,8 @@
         // Apply saved zoom on page load
         (function() {
             const savedZoom = parseInt(localStorage.getItem('page-zoom') || '100');
-            document.body.style.zoom = savedZoom + '%';
+            const cssZoom = savedZoom - 30;
+            document.body.style.zoom = cssZoom + '%';
             document.addEventListener('DOMContentLoaded', function() {
                 const label = document.getElementById('zoom-label');
                 if (label) label.textContent = savedZoom + '%';

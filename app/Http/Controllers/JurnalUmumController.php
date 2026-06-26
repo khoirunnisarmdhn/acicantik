@@ -39,16 +39,17 @@ class JurnalUmumController extends Controller
                 $query->where('kas.id_proyek', $proyekId);
             }
 
+            // Find all unique years from transaction dates in database
+            $minYear = DB::table('jurnal_umum')->min(DB::raw('YEAR(tanggal)'));
+            $earliestYear = $minYear ? (int)$minYear : (date('Y') - 5);
+            $latestYear = date('Y') + 1;
+            $listTahun = range(min($earliestYear, date('Y') - 5), $latestYear);
+
             $jurnals = $query->orderBy('jurnal_umum.tanggal', 'asc')
                 ->orderBy('jurnal_umum.id_jurnal', 'asc')
                 ->get();
 
-            if ($jurnals->isEmpty() && $request->hasAny(['bulan', 'tahun', 'proyek_id'])) {
-                return redirect()->route('jurnal.index')
-                    ->with('error', 'Data jurnal tidak ditemukan untuk filter yang dipilih.');
-            }
-
-            return view('jurnal.index', compact('jurnals', 'bulan', 'tahun', 'proyekId', 'listProyek'));
+            return view('jurnal.index', compact('jurnals', 'bulan', 'tahun', 'proyekId', 'listProyek', 'listTahun'));
 
         } catch (\Exception $e) {
             return redirect()->route('jurnal.index')
