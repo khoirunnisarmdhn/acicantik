@@ -52,10 +52,10 @@ return new class extends Migration {
         });
 
         DB::table('users')->insert([
-            ['name' => 'admin',        'nama_lengkap' => 'Administrator',        'email' => 'admin@admin.com',               'id_level' => 1, 'password' => bcrypt('12341234'), 'created_at' => now()],
-            ['name' => 'keuangan',     'nama_lengkap' => 'Staff Keuangan',       'email' => 'finance@finance.com',           'id_level' => 2, 'password' => bcrypt('12341234'), 'created_at' => now()],
-            ['name' => 'administrasi', 'nama_lengkap' => 'Staff Administrasi',   'email' => 'administrasi@administrasi.com', 'id_level' => 2, 'password' => bcrypt('12341234'), 'created_at' => now()],
-            ['name' => 'pemimpin',     'nama_lengkap' => 'Pemimpin',             'email' => 'pemimpin@pemimpin.com',         'id_level' => 2, 'password' => bcrypt('12341234'), 'created_at' => now()],
+            ['name' => 'admin',        'nama_lengkap' => 'admin',        'email' => 'admin@admin.com',               'id_level' => 1, 'password' => bcrypt('12341234'), 'created_at' => now()],
+            ['name' => 'keuangan',     'nama_lengkap' => 'keuangan',     'email' => 'finance@finance.com',           'id_level' => 2, 'password' => bcrypt('12341234'), 'created_at' => now()],
+            ['name' => 'administrasi', 'nama_lengkap' => 'administrasi', 'email' => 'administrasi@administrasi.com', 'id_level' => 2, 'password' => bcrypt('12341234'), 'created_at' => now()],
+            ['name' => 'pemimpin',     'nama_lengkap' => 'pemimpin',     'email' => 'pemimpin@pemimpin.com',         'id_level' => 2, 'password' => bcrypt('12341234'), 'created_at' => now()],
         ]);
 
         // 3. Tabel Pivot (Biar 1 User bisa punya banyak akses)
