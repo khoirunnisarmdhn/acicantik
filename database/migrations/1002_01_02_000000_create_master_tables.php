@@ -215,6 +215,12 @@ return new class extends Migration {
             $table->timestamps();
         });
 
+        DB::table('pemberi_proyek')->insert([
+            ['jenis' => 'Pemerintah', 'nama' => 'Dinas PUPR Kota Serang', 'alamat' => 'Jl. Mayor Syafei No. 12, Kota Serang', 'penanggung_jawab' => 'Syarifudin, ST', 'no_telp' => '0812-3456-7890', 'email' => 'puprserang@serangkota.go.id'],
+            ['jenis' => 'Swasta', 'nama' => 'PT Maju Sejahtera Konstruksi', 'alamat' => 'Jl. Industri No. 88, Cilegon', 'penanggung_jawab' => 'Ahmad Rudi', 'no_telp' => '0813-9876-5520', 'email' => 'info@maju-sejahtera.co.id'],
+            ['jenis' => 'Perorangan', 'nama' => 'Bapak Hadi Sutrisno', 'alamat' => 'Jl. Trip Jamaksari No. 5, Serang', 'penanggung_jawab' => 'Hadi Sutrisno', 'no_telp' => '0812-2244-3344', 'email' => '-'],
+        ]);
+
         // Tabel Proyek 
         Schema::create('proyek', function (Blueprint $table) {
             $table->id('id_proyek');
@@ -240,6 +246,13 @@ return new class extends Migration {
             $table->string('email', 100);
             $table->timestamps();
         });
+
+        DB::table('vendor')->insert([
+            ['nama' => 'CV Makmur Jaya', 'alamat' => 'Jl. Raya Serang No. 12, Banten', 'penanggung_jawab' => 'Budi Santoso', 'no_telp' => '081234567890', 'email' => 'cs@makmurjaya.com'],
+            ['nama' => 'UD Sumber Rezeki', 'alamat' => 'Jl. A. Yani No. 33, Serang', 'penanggung_jawab' => 'Dedi', 'no_telp' => '082233445566', 'email' => '-'],
+            ['nama' => 'Toko Bangunan “Pak Udin”', 'alamat' => 'Pasar Lama Serang, Banten', 'penanggung_jawab' => 'Udin', 'no_telp' => '081278889900', 'email' => '-'],
+            ['nama' => 'PT Beton Prima', 'alamat' => 'Kawasan Industri Cikande', 'penanggung_jawab' => 'Rita', 'no_telp' => '081299223344', 'email' => 'sales@betonprima.co.id'],
+        ]);
 
         Schema::create('metode_bayar', function (Blueprint $table) {
             $table->id('id_metode_bayar');
