@@ -19,14 +19,14 @@
 </head>
 
 <body class="font-sans text-gray-900 antialiased">
-    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-        {{-- <div>
-                <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-                </a>
-            </div> --}}
+    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 relative"
+        style="background-image: url('{{ asset('images/login.jpg') }}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+        
+        <!-- Overlay blur & dark tint to make login card pop -->
+        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(17, 24, 39, 0.45); backdrop-filter: blur(2px); z-index: 1;"></div>
 
-        <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+        <div class="w-full sm:max-w-md mt-6 px-8 py-8 bg-white/95 dark:bg-gray-800/95 shadow-2xl overflow-hidden sm:rounded-2xl"
+            style="position: relative; z-index: 10;">
             {{ $slot }}
         </div>
     </div>
