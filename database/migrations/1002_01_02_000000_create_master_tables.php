@@ -39,12 +39,12 @@ return new class extends Migration {
                 'created_at' => now(),
             ],
             [
-                'nama_kategori' => 'Pembayaran Proyek - Uang Muka',
+                'nama_kategori' => 'Pembayaran Proyek - Full Payment',
                 'arus' => 'masuk',
                 'jenis' => 'proyek',
                 'id_coa_debit' => 13, // Kas Bank
                 'id_coa_kredit' => 39, // Pendapatan Jasa Konstruksi
-                'deskripsi' => 'Pembayaran awal proyek',
+                'deskripsi' => 'Pembayaran penuh (Full Payment)',
                 'created_at' => now(),
             ],
             [
