@@ -5,7 +5,7 @@
                 
                 <div class="bg-rose-600 px-8 py-8 text-white flex justify-between items-center print:bg-white print:text-black print:border-b print:px-0">
                     <div>
-                        <h2 class="text-3xl font-black tracking-tighter">RINCIAN PENGELUARAN</h2>
+                        <h2 class="text-3xl font-black tracking-tighter">DETAIL KAS KELUAR</h2>
                         <p class="text-sm opacity-80 font-mono">{{ $data->no_form }}</p>
                     </div>
                     <div class="text-right hidden sm:block print:hidden">
