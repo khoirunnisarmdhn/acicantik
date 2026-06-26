@@ -25,16 +25,7 @@
         </div>
 
         <div>
-            {{-- <div class="flex items-center justify-between">
-                <x-input-label for="password" :value="__('Password')"
-                    class="font-semibold text-gray-700 dark:text-gray-300" />
-                @if (Route::has('password.request'))
-                    <a class="text-xs text-indigo-600 hover:text-indigo-500 font-medium transition-colors"
-                        href="{{ route('password.request') }}">
-                        {{ __('Lupa password?') }}
-                    </a>
-                @endif
-            </div> --}}
+            <x-input-label for="password" :value="__('Password')" class="font-semibold text-gray-700 dark:text-gray-300" />
             <div class="relative mt-1">
 
                 <x-text-input id="password"
