@@ -17,10 +17,6 @@ return new class extends Migration {
 
         DB::table('akses')->insert([
             [
-                'nama_akses' => 'Super Admin',
-                'fitur_slug' => 'all',
-            ],
-            [
                 'nama_akses' => 'Admin',
                 'fitur_slug' => 'all',
             ],
@@ -67,10 +63,10 @@ return new class extends Migration {
         });
 
         DB::table('user_akses')->insert([
-            ['user_id' => 1, 'id_akses' => 2, 'created_at' => now(), 'updated_at' => now()], // admin -> Admin
-            ['user_id' => 2, 'id_akses' => 4, 'created_at' => now(), 'updated_at' => now()], // keuangan -> Keuangan
-            ['user_id' => 3, 'id_akses' => 3, 'created_at' => now(), 'updated_at' => now()], // administrasi -> Administrasi
-            ['user_id' => 4, 'id_akses' => 5, 'created_at' => now(), 'updated_at' => now()], // pemimpin -> Pimpinan
+            ['user_id' => 1, 'id_akses' => 1, 'created_at' => now(), 'updated_at' => now()], // admin -> Admin
+            ['user_id' => 2, 'id_akses' => 3, 'created_at' => now(), 'updated_at' => now()], // keuangan -> Keuangan
+            ['user_id' => 3, 'id_akses' => 2, 'created_at' => now(), 'updated_at' => now()], // administrasi -> Administrasi
+            ['user_id' => 4, 'id_akses' => 4, 'created_at' => now(), 'updated_at' => now()], // pemimpin -> Pimpinan
         ]);
 
         // 4. Tabel Pendukung Laravel
